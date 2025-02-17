@@ -22,7 +22,7 @@ printf ""a-xyz\nabc-xyz\n"" | sort -V
 sched_getaffinity -p $$ > /dev/null && echo ""Expected failure didn't occur"" || true 
 getconf _NPROCESSORS_ONLN 
 (While the first two commands are more about demonstrating system calls and behavior, a definitive reproducing test case would likely involve writing a C program that uses sched_getaffinity with varying sizes of CPU sets to demonstrate the issue. However, based on provided information, we focus on nproc as the primary command related to the bug description.)",None,None,https://bugzilla.redhat.com/show_bug.cgi?id=2325167,
-2311888,Lukas Ruzicka,2024-09-12T10:03:15Z,2024-09-12T11:45:23Z,CLOSED NOTABUG,unspecified,unspecified,Fedora,coreutils,[abrt] coreutils: __clock_nanosleep(): sleep killed by SIGSEGV,,,,,,,None,None,None,https://bugzilla.redhat.com/show_bug.cgi?id=2311888,
+2311888,Lukas Ruzicka,2024-09-12T10:03:15Z,2024-09-12T11:45:23Z,CLOSED NOTABUG,unspecified,unspecified,Fedora,coreutils,[abrt] coreutils: __clock_nanosleep(): sleep killed by SIGSEGV,,,,,,None,None,None,None,https://bugzilla.redhat.com/show_bug.cgi?id=2311888,
 2307847,Allison Karlitskaya,2024-08-26T09:16:20Z,2024-08-27T14:19:44Z,CLOSED ERRATA,unspecified,medium,Fedora,coreutils,coreutils-9.5-8.fc41 no longer lists Cockpit logins in `who`,normal,The session should be listed in `who` (as it was with coreutils-9.5-7).,The 'web console' session is not listed in the output of who.,Always,"- Install cockpit, login to a session
 - run 'who'",,"dnf install cockpit
 cockpit-session --login
