@@ -1067,7 +1067,7 @@ ls","touch ""File with spaces.txt""
 ls"
 1348043,"dnf --installroot /tmp/hoge --releasever=25 --disablerepo=* \
 --enablerepo=rawhide install coreutils",dnf --installroot /tmp/hoge --releasever=25 --disablerepo=* --enablerepo=rawhide install coreutils,Not Applicable,Not Applicable
-1335320,,Not Applicable,Not Applicable,Not Applicable
+1335320,Not Applicable,Not Applicable,Not Applicable,Not Applicable
 1303795,"cd /
 df *
 df /*
