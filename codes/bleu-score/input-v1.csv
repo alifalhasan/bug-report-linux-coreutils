@@ -7,7 +7,7 @@ printf """"a-xyz\nabc-xyz\n"""" | sort -V","```bash
 printf ""a-xyz\nabc-xyz\n"" | sort
 printf ""a-xyz\nabc-xyz\n"" | sort -V
 ```","printf ""a-xyz\nabc-xyz\n"" | sort -V","printf ""a-xyz\nabc-xyz\n"" | sort -V"
-2311888,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+2311888,,,,
 2296201,"fold badfile
 echo $?","```bash
 fold badfile
@@ -15,7 +15,7 @@ echo ""$?""
 ```","fold badfile
 echo ""$?""","fold badfile  
 echo ""$?"""
-1349579,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+1349579,,,,
 492369,"chmod 4755 filename
 ls -l filename
 chmod 0755 filename
@@ -27,9 +27,9 @@ chmod 0755 file
 ls -l file
 chmod u-s file
 ls -l file
-```",Not Applicable,Not Applicable
-2265756,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-1346074,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+```",,
+2265756,,,,
+1346074,,,,
 2269948,"/usr/bin/date --date ""1976-05-30""","/usr/bin/date --date ""1976-05-30"" 
 /usr/bin/date --date ""30 May 1976""","/usr/bin/date --date ""1976-05-30""","/usr/bin/date --date ""1976-05-30""
 /usr/bin/date --date ""30 May 1976"""
@@ -46,29 +46,29 @@ split -C 131072 ---output=io=131072 in
 ```","{ printf '%131070s\n' ''; printf 'x\n'; printf '%131071s\n' ''; } > in
 split -C 131072 ---io=131072 in","{ printf '%131070s\n' ''; printf 'x\n'; printf '%131071s\n' ''; } > in
 split -C 131072 --io=131072 in"
-2248503,uname -i,uname -i,Not Applicable,Not Applicable
-2160675,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+2248503,uname -i,uname -i,,
+2160675,,,,
 2236321,"cp -v -u <source> <destination>
 mv -v -u <source> <destination>","cp -u -v file1 file2
 mv -i -v file3 file4 
 cp -u -v --debug file1 file2
-mv -i -v --debug file3 file4",Not Applicable,Not Applicable
-2236739,Not Applicable,sleep 50,Not Applicable,Not Applicable
+mv -i -v --debug file3 file4",,
+2236739,,sleep 50,,
 2208048,"rpm -q coreutils
-uname -i",uname -m,Not Applicable,Not Applicable
+uname -i",uname -m,,
 2203350,uname -p,uname -p,uname -p,uname -p
 2189656,uname -p,uname -p,uname -p,uname -p
 2188689,uname -i,"rpm -q coreutils
-uname -i",uname -i,Not Applicable
+uname -i",uname -i,
 1646701,sudo dnf install AdobeReader_enu-9.5.5-1.i486,"```bash
 dnf install AdobeReader_enu-9.5.5-1.i486
 ```
-Note: The exact command might vary depending on the package manager used (e.g., `yum` instead of `dnf`). However, based on the provided information, this should be sufficient to reproduce the issue related to the missing `/bin/basename` and `libidn.so.11`.",Not Applicable,Not Applicable
-2175057,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-2172323,sleep 500,sleep 500,Not Applicable,sleep 500
+Note: The exact command might vary depending on the package manager used (e.g., `yum` instead of `dnf`). However, based on the provided information, this should be sufficient to reproduce the issue related to the missing `/bin/basename` and `libidn.so.11`.",,
+2175057,,,,
+2172323,sleep 500,sleep 500,,sleep 500
 2162873,"uname -p
 arch
-cat /proc/cpuinfo",uname -p,Not Applicable,Not Applicable
+cat /proc/cpuinfo",uname -p,,
 1830619,"LC_TIME=""en_US.UTF-8""  
 date  
 date +%c","```bash
@@ -76,11 +76,11 @@ LC_TIME=""en_US.UTF-8"" date
 LC_TIME=""en_US.UTF-8"" date +%c
 ```","export LC_TIME=""en_US.UTF-8""
 date
-date +%c",Not Applicable
-2150513,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-2138908,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+date +%c",
+2150513,,,,
+2138908,,,,
 2112870,printf '\f'  | unexpand,printf '\f' | unexpand,printf '\f' | unexpand,printf '\f' | unexpand
-548834,uname -i,uname -i,Not Applicable,Not Applicable
+548834,uname -i,uname -i,,
 2112593,"mkdir ~/.dir_colors
 cp /etc/DIR_COLORS ~/.dir_colors
 gnome-terminal","```bash
@@ -92,7 +92,7 @@ cp /etc/DIR_COLORS ~/.dir_colors
 gnome-terminal","mkdir ~/.dir_colors
 cp /etc/DIR_COLORS ~/.dir_colors
 gnome-terminal"
-2104212,Not Applicable,Not Applicable,"Not Applicable of the provided information directly describes a specific command or test case that reproduces a particular bug. Instead, the text primarily discusses the upcoming removal of i686 Java packages from Fedora and requests package maintainers to adapt their packages accordingly.
+2104212,,," of the provided information directly describes a specific command or test case that reproduces a particular bug. Instead, the text primarily discusses the upcoming removal of i686 Java packages from Fedora and requests package maintainers to adapt their packages accordingly.
 
 The main points conveyed are:
 1. The plan to drop i686 support for Java.
@@ -105,7 +105,7 @@ Therefore, the response is:
 
 **No specific commands or test cases required to reproduce a bug. The issue involves adapting the package configuration to handle exclusion of Java-specific features on the i686 architecture as per the guidelines provided in the message.**
 
-If you need further assistance with how to adapt your package configuration specifically, please provide more details about your package and its current setup.","Not Applicable
+If you need further assistance with how to adapt your package configuration specifically, please provide more details about your package and its current setup.","
 
 The provided bug description does not detail any specific issue that could be reproduced through a command or a test case. The report is more of an advisory for package maintainers about the removal of i686 Java packages in Fedora 37 and instructions on how to adapt their packages accordingly.
 
@@ -123,12 +123,12 @@ echo ÄÖÜäöü | tr -d [:alpha:]
 echo ÄÖÜäöü | tr -d [[:alpha:]]
 echo abcABC | tr -d [:alpha:]
 echo abcABC | tr -d [[:alpha:]]",echo абвАБВіїІЇ | tr -d абв
-2066546,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+2066546,,,,
 2035258,"sudo dnf install coreutils
 sudo /usr/bin/install","sudo dnf install coreutils
 which install
 sudo /usr/bin/install 
-which id",Not Applicable,Not Applicable
+which id",,
 1831575,TZ=Europe/Berlin date -d '05/12/2020 11:00 CET',"```bash
 TZ=Europe/Berlin date -d '05/12/2020 11:00 CET'
 ```",TZ=Europe/Berlin date -d '05/12/2020 11:00 CET',TZ=Europe/Berlin date -d '05/12/2020 11:00 CET'
@@ -158,7 +158,7 @@ filefrag -v a; filefrag -v b"
 execute df w/o for all file systems
 RC 1",df -h > /dev/null; echo $?,"systemctl --user start xdg-document-portal.service
 df -h > /dev/null; echo $?",df -h > /dev/null; echo $?
-1992341,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+1992341,,,,
 1960792,"rpmbuild -bb coreutils.spec 
 rpmbuild --rebuild coreutils-8.32-24.fc34.src.rpm","To reproduce the bug described in the output of the `tests/ls/stat-free-color.sh` script from the coreutils package, you would need to follow these steps based on the information provided:
 
@@ -321,9 +321,9 @@ chmod 0640 test
 ll -a test"
 1952490,"rpm -qa --queryformat ""%{NAME}-%{VERSION}\n"" automake autoconf m4 mingw64-* | column | sort","```bash
 rpm -qa --queryformat ""%{NAME}-%{VERSION}\n"" automake autoconf m4 mingw64-* | column | sort
-```","rpm -qa --queryformat ""%{NAME}-%{VERSION}\n"" automake autoconf m4 mingw64-* | column | sort",Not Applicable
+```","rpm -qa --queryformat ""%{NAME}-%{VERSION}\n"" automake autoconf m4 mingw64-* | column | sort",
 1944688,"rpm -qf `which basename`
-rpm -q --provides coreutils",Not Applicable,Not Applicable,Not Applicable
+rpm -q --provides coreutils",,,
 1634200,"docker run -it --rm fedora:latest /bin/bash
 rpm -q coreutils-single
 ls -l /bin/basename
@@ -339,9 +339,9 @@ dnf repoquery --whatprovides /usr/bin/basename
 rpm -q coreutils-single
 ls -l /bin/basename  
 rpm -q --whatprovides /bin/basename
-dnf repoquery --whatprovides /bin/basename",Not Applicable
+dnf repoquery --whatprovides /bin/basename",
 1921427,stat -f '<file/folder from exFAT drive>',"mkfs.exfat /dev/sdX (replace /dev/sdX with your actual device)
-stat -f '/mount/point/of/exfat/drive' (replace /mount/point/of/exfat/drive with actual mount point)","Not Applicable
+stat -f '/mount/point/of/exfat/drive' (replace /mount/point/of/exfat/drive with actual mount point)","
 
 The provided information indicates that a specific setup is necessary to reproduce the bug (i.e., connecting an exFAT drive), which cannot be represented simply by shell commands alone without the physical media or virtual equivalent being specified. Therefore, a complete and precise command-line-only reproduction isn't feasible based on the given description.",stat -f '/run/media/aurora/LABEL/iiiiiii.txt'
 959597,"info date
@@ -359,11 +359,11 @@ diff Bar Baz
 ```","touch Foo; echo -e ""192.168.0.1\n192.168.0.1\n192.168.0.2\n192.168.0.2"" > Foo
 sort -n -u < Foo > Bar
 sort -n < Foo | uniq > Baz
-diff Bar Baz",Not Applicable
+diff Bar Baz",
 1914737,stat <file-or-directory>,"stat /path/to/existing/file
 stat /path/to/existing/directory 
 
-(Note: The actual path should be replaced with an existing file or directory on a Btrfs filesystem in Fedora 33)",Not Applicable,stat /path/to/file_or_directory
+(Note: The actual path should be replaced with an existing file or directory on a Btrfs filesystem in Fedora 33)",,stat /path/to/file_or_directory
 1869624,"mkdir -p /tmp/foo
 test -w /tmp/foo; echo $?","```bash
 mkdir -p /tmp/foo
@@ -371,7 +371,7 @@ test -w /tmp/foo; echo $?
 ```","mkdir -p /tmp/foo
 test -w /tmp/foo; echo $?","mkdir -p /tmp/foo
 test -w /tmp/foo; echo $?"
-1783903,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+1783903,,,,
 1882187,"rpm -q bash coreutils
 file='AAA'$'\n''BBB'
 printf -- '%s' """"$file"""" | od -c
@@ -388,7 +388,7 @@ cp -v /dev/null ""$file""
 md5sum ""$file""","file='AAA'$'\n''BBB'
 cp -v /dev/null ""$file""
 md5sum ""$file"""
-467622,Not Applicable,"```bash
+467622,,"```bash
 # Create a simple OpenMP program (e.g., test.c)
 cat > test.c <<EOF
 #include <omp.h>
@@ -418,7 +418,7 @@ ssh user@remotehost ""nohup ./test &""
 # Alternatively, to simulate timeout, close the SSH connection without logging out
 ssh user@remotehost ""nohup ./test &""
 # Immediately close the SSH connection (e.g., using Ctrl+])
-```",Not Applicable,Not Applicable
+```",,
 1870385,"date --date=""2019-03-10 01:23:45"" +""%s""
 date --date=""2019-03-10 02:23:45"" +""%s""
 date --date=""2019-03-10 03:23:45"" +""%s""
@@ -428,8 +428,8 @@ date --date=""2019-03-10 02:23:45"" +""%s""
 date --date=""2019-03-10 03:23:45"" +""%s""
 TZ=UTC date --date=""2019-03-10 02:23:45"" +""%s""
 ```","date --date=""2019-03-10 02:23:45"" +""%s""","TZ=PDT date --date=""2019-03-10 02:23:45"" +""%s"""
-1830318,Not Applicable,ls --color /usr/libexec,Not Applicable,Not Applicable
-1883685,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+1830318,,ls --color /usr/libexec,,
+1883685,,,,
 1877625,df -h,"To reproduce the bug, you would need a system with Btrfs and a specific disk layout where `/dev/sda3` is mounted on both `/` and `/home`. The exact steps might involve:
 
 1. Installing Fedora 33 on an x86_64 system.
@@ -475,9 +475,9 @@ For direct reproduction based on provided details without additional setup:
 
 ```bash
 df -h
-```",Not Applicable,Not Applicable
-1861108,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-1111722,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+```",,
+1861108,,,,
+1111722,,,,
 1800597,"cd rpmbuild/BUILD/coreutils-8.31/single  
 make check","```bash
 make check
@@ -493,7 +493,7 @@ sudo make check
 or 
 ```bash
 sudo make test
-```",Not Applicable,make check
+```",,make check
 1739747,"date -d 1981-12-31  
 date -d 1982-01-01","```bash
 TZ=Asia/Singapore date -d '1981-12-31'
@@ -530,14 +530,14 @@ RUN dnf -y update coreutils
 sudo docker build -t my-fedora-coreutils .
 
 sudo docker run -it --rm my-fedora-coreutils ls /"
-1728986,Not Applicable,"ln -s non_existent_file existing_link
-ls -l existing_link",Not Applicable,Not Applicable
+1728986,,"ln -s non_existent_file existing_link
+ls -l existing_link",,
 1713901,"env LANG=en_EN date
 env LANG=en_US date","env LANG=en_EN date
 env LANG=en_US date","env LANG=en_EN date
 env LANG=en_US date","env LANG=en_EN date
 env LANG=en_US date"
-1688740,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+1688740,,,,
 1705229,sort -V sort_test.txt,"```bash
 cat > sort_test.txt <<EOF
 samba-common-4.10.2-1.fc30.noarch
@@ -617,7 +617,7 @@ systemctl restart autofs
 cd /mnt/test/test004
 cd
 systemctl stop nfs
-strace -Tttfvs 4096 df -l","Not Applicable
+strace -Tttfvs 4096 df -l","
 
 The provided bug description includes a set of steps that would be necessary to configure and test the issue in a real environment, but it does not provide a direct command or test case to reproduce the bug without setting up an NFS server, configuring autofs maps, and other preparatory actions. Therefore, we cannot provide a single command or test case to directly reproduce the bug as described."
 1634045,LC_NUMERIC=de_DE.UTF-8 printf %f 1.2,"```bash
@@ -627,17 +627,17 @@ LC_NUMERIC=de_DE.UTF-8 printf %f 1,2
 LC_NUMERIC=de_DE.UTF-8 /usr/bin/printf %f 1,2
 ```",LC_NUMERIC=de_DE.UTF-8 printf %f 1.2,LC_NUMERIC=de_DE.UTF-8 printf %f 1.2
 1649774,man install,"man install
-wget https://www.gnu.org/software/coreutils/install || echo ""404 error""",man install,Not Applicable
-199066,"su root -c ""command""",Not Applicable,Not Applicable,Not Applicable
-1635899,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-1637531,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-1611211,./man-page-day.sh coreutils,Not Applicable,Not Applicable,Not Applicable
-1598518,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+wget https://www.gnu.org/software/coreutils/install || echo ""404 error""",man install,
+199066,"su root -c ""command""",,,
+1635899,,,,
+1637531,,,,
+1611211,./man-page-day.sh coreutils,,,
+1598518,,,,
 1596183,LANG=C df -P,"```bash
 LANG=C df -P
 lsblk -b
 ```","LANG=C df -P
-lsblk -b",Not Applicable
+lsblk -b",
 1303456,"dd if=/dev/fedora/root of=/dev/fedora23/root
 dd if=/dev/fedora/home of=/dev/fedora23/home
 
@@ -671,9 +671,9 @@ mount /dev/fedora23/home /mnt/homen
 
 du -h /mnt/rootn | tail -1
 du -h /mnt/homen | tail -1
-```","Not Applicable
+```","
 
-The provided information indicates a discrepancy between the data copied using `dd` and the actual space used on the filesystems as reported by `df`. However, there is no specific coreutils command that can be isolated from this scenario to directly reproduce the described issue. The commands given are part of a broader process involving RAID setup and LVM partition management which cannot be simply reduced to a single or set of coreutils commands for reproduction purposes without additional context or environment specifics.",Not Applicable
+The provided information indicates a discrepancy between the data copied using `dd` and the actual space used on the filesystems as reported by `df`. However, there is no specific coreutils command that can be isolated from this scenario to directly reproduce the described issue. The commands given are part of a broader process involving RAID setup and LVM partition management which cannot be simply reduced to a single or set of coreutils commands for reproduction purposes without additional context or environment specifics.",
 1594812,ls -l /var/lib/libvirt/pictures/,"```bash
 export LANG=fi_FI
 ls -l /var/lib/libvirt/pictures/
@@ -686,11 +686,11 @@ ln -s /usr/local/waterfox/waterfox /usr/bin/waterfox
 ls -l /usr/bin | grep waterfox
 ls -l `find /usr/bin -maxdepth 1 -type l -print` | grep waterfox
 ```","ls -l /usr/bin | grep waterfox
-ls -l `find /usr/bin -maxdepth 1 -type l -print` | grep waterfox",Not Applicable
-1591002,whoami; id; id hrw; sudo id hrw,whoami; id; id hrw; sudo id hrw,"Not Applicable
+ls -l `find /usr/bin -maxdepth 1 -type l -print` | grep waterfox",
+1591002,whoami; id; id hrw; sudo id hrw,whoami; id; id hrw; sudo id hrw,"
 
-The bug described involves an issue with group access not being correctly recognized after logging in, which affects the `pulseaudio` service and possibly other applications. The problem seems related to how the user's group memberships are handled upon login rather than an issue directly reproducible through coreutils commands alone. Since the provided description does not offer a specific command or test case that can reproduce this exact behavior with just `coreutils`, the response is ""Not Applicable"".",Not Applicable
-1537070,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+The bug described involves an issue with group access not being correctly recognized after logging in, which affects the `pulseaudio` service and possibly other applications. The problem seems related to how the user's group memberships are handled upon login rather than an issue directly reproducible through coreutils commands alone. Since the provided description does not offer a specific command or test case that can reproduce this exact behavior with just `coreutils`, the response is """".",
+1537070,,,,
 1577872,"LC_ALL=ca_ES.utf8 ls -l
 date ""+%OB""","```bash
 LC_ALL=ca_ES.utf8 ls -l
@@ -698,7 +698,7 @@ date ""+%OB""
 ```","LC_ALL=ca_ES.utf8 ls -l
 date ""+%OB""","LC_ALL=ca_ES.utf8 ls -l
 date ""+%OB"""
-1582165,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+1582165,,,,
 453709,"/bin/ls -i /
 /bin/ls -i -color=auto","/bin/ls -i /
 /bin/ls -i --color=auto 
@@ -713,8 +713,8 @@ rpm -ql coreutils-debuginfo-8.27-20.fc27.x86_64 | grep date
 rpm -qlp coreutils-debuginfo-8.22-18.el7.x86_64.rpm | grep date","sudo dnf debuginfo-install coreutils
 gdb --args date
 break parse_datetime2 
-run",Not Applicable,Not Applicable
-1532285,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+run",,
+1532285,,,,
 1259942,"base64 /dev/urandom | head -n 10000 > 10000.txt
 valgrind sort 10000.txt > /dev/null
 valgrind sort -M 10000.txt > /dev/null","```bash
@@ -743,7 +743,7 @@ ls -l /run/media/yk/FEDORA-WS-L/install.sh
 
 # Alternatively, try executing with bash
 bash /run/media/yk/FEDORA-WS-L/install.sh
-```","Not Applicable
+```","
 
 The provided information indicates a scenario where execute permissions are not applied to a `.sh` file when it is located on an external USB drive formatted with VFAT, but there isn't a specific command sequence given that would allow us to directly reproduce this issue in any environment without access to the exact conditions (such as having an identical VFAT-formatted USB drive and the specific version of bash). The commands provided are descriptive of the problem encountered rather than prescriptive steps for reproducing it.","touch install.sh  
 chmod +x install.sh  
@@ -791,7 +791,7 @@ chmod +t file
 chmod + /file
 chmod ugao- /file
 
-Replace `/file` with an actual file path for testing.",Not Applicable
+Replace `/file` with an actual file path for testing.",
 1499625,"mkdir old new
 ln -s old foo
 ln -sf new foo
@@ -840,10 +840,10 @@ wc -l test.txt
 ```","echo -ne ""ba\rcd\nfe\r\n"" > test.txt
 wc -l test.txt","echo -e 'ba\rcd\nfe\r' > test.txt
 wc -l test.txt"
-1446266,Not Applicable,sleep 1000,Not Applicable,Not Applicable
-1360903,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-1482445,ptx reproducer_file,ptx reproducer_file,Not Applicable,Not Applicable
-1483938,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+1446266,,sleep 1000,,
+1360903,,,,
+1482445,ptx reproducer_file,ptx reproducer_file,,
+1483938,,,,
 1470769,"cd coreutils-8.25/src
 cp chroot.c chroot.c.orig
 sed -i 's/execvp (argv\[0\], argv);/errno = EIO;  \/* execvp (argv[0], argv); *\//g' chroot.c","```c
@@ -862,11 +862,11 @@ sed -i 's/execvp (argv\[0\], argv);/errno = EIO;  \/* execvp (argv[0], argv); *\
 // Compile and run the modified chroot command
 gcc -o chroot coreutils-8.25/src/chroot.c
 ./chroot /mnt/sysimage /bin/sh
-```",Not Applicable,Not Applicable
+```",,
 1024730,"mount /dev/mpath1 /tmp/test/
 umount /mnt
 mount /dev/mpath2 /tmp/test/
-df",Not Applicable,Not Applicable,Not Applicable
+df",,,
 1465935,"mv file1 file2 /path/to/same/folder/
 curl https://fedoramagazine.org/verify-fedora-iso-file/
 (Follow the instructions until the sha256sum command is mentioned)","```bash
@@ -875,9 +875,9 @@ cd test_dir
 wget https://example.com/image.iso  # replace with actual ISO download URL
 wget https://example.com/image.iso.sha256  # replace with actual SHA256 sum download URL
 sha256sum image.iso
-```",Not Applicable,Not Applicable
-1463384,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-1457214,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+```",,
+1463384,,,,
+1457214,,,,
 1283760,"tail -F scratchdir/tests.log
 rm -rf scratchdir && mkdir scratchdir","```bash
 mkdir scratchdir
@@ -901,11 +901,11 @@ TAIL_PID=$!
 sleep 1
 rm -rf scratchdir && mkdir scratchdir && touch scratchdir/tests.log && echo ""test"" >> scratchdir/tests.log
 sleep 1
-kill $TAIL_PID",Not Applicable
-1444802,dnf install coreutils-single,dnf2 install coreutils-single,Not Applicable,Not Applicable
+kill $TAIL_PID",
+1444802,dnf install coreutils-single,dnf2 install coreutils-single,,
 1446494,"sudo yum install coreutils
 sudo yum install coreutils-single-8.27-3.fc27.x86_64
-sudo yum install coreutils",Not Applicable,Not Applicable,Not Applicable
+sudo yum install coreutils",,,
 1361694,ls,"```bash
 mkdir test_dir
 cd test_dir
@@ -949,10 +949,10 @@ echo -- -e
 echo -- -E
 echo -- --help",echo -- -n,"echo -n  
 echo -- -n"
-953194,sleep 1000,sleep 1000,Not Applicable,Not Applicable
-1320681,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-1396064,who,who,who,Not Applicable
-1392210,sudo dnf upgrade coreutils-common,dnf update coreutils-common,Not Applicable,Not Applicable
+953194,sleep 1000,sleep 1000,,
+1320681,,,,
+1396064,who,who,who,
+1392210,sudo dnf upgrade coreutils-common,dnf update coreutils-common,,
 1339135,"sudo semanage fcontext -a -t user_home_t ""/tmp/foobar(/.*)?""
 touch foo
 install -D foo /tmp/foobar/foo
@@ -1031,26 +1031,26 @@ mount --bind /Volumes/dune/buildserver/autotest /Volumes/dune/www-servers/autote
 
 # Run the df command to reproduce the bug
 df -hT --exclude-type=tmpfs --exclude-type=devtmpfs
-```",Not Applicable,Not Applicable
-1312864,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+```",,
+1312864,,,,
 901517,"sort -n ./ethercodes.dat > ./sorted_ethercodes.dat
 diff -up ./ethercodes.dat.orig ./sorted_ethercodes.dat","```bash
 echo -e ""0:0:1f Telco Systems, Inc.\n0:0:1  XEROX CORPORATION"" > ethercodes.dat
 sort -n -t: -k1,1 -k2,2 -k3,3 ethercodes.dat
 sort -n ethercodes.dat
-```",Not Applicable,Not Applicable
-1376801,man echo,Not Applicable,Not Applicable,Not Applicable
+```",,
+1376801,man echo,,,
 1374678,"echo ""./Invoice.m4""; echo ""./Invoice.java""; echo ""./InvoiceLine.m4""; echo ""./InvoiceLine.java"" | sort","(echo ""./Invoice.m4""; echo ""./Invoice.java""; echo ""./InvoiceLine.m4""; echo ""./InvoiceLine.java"") | sort","(echo ""./Invoice.m4""; echo ""./Invoice.java""; echo ""./InvoiceLine.m4""; echo ""./InvoiceLine.java"") | sort","(echo ""./Invoice.m4""; echo ""./Invoice.java""; echo ""./InvoiceLine.m4""; echo ""./InvoiceLine.java"") | sort"
-1347746,ls -l /dev/disk/by-uuid,Not Applicable,Not Applicable,Not Applicable
+1347746,ls -l /dev/disk/by-uuid,,,
 1370362,ls -l /dev/disk/by-xxxx,"```bash
 ls -l /dev/disk/by-uuid
 ls -l /dev/disk/by-label
-```",Not Applicable,"ls -l /dev/disk/by-uuid
+```",,"ls -l /dev/disk/by-uuid
 ls -l /dev/disk/by-label"
 1349701,ls 'My Documents',ls /hdd/VirtualBox\ VMs -d,ls /hdd/VirtualBox\ VMs -d,ls '/hdd/VirtualBox VMs' -d
 1358888,"uname -v
 man uname","uname -v 
-man uname",Not Applicable,uname -v
+man uname",,uname -v
 1285623,"mount | grep ds  
 /usr/bin/df","```bash
 mkdir -p /volume1/syntegra /volume1/misty /volume1/video
@@ -1058,16 +1058,16 @@ mount -t nfs4 ds:/volume1/syntegra /syntegra
 mount -t nfs4 ds:/volume1/misty /home/egreshko/misty
 mount -t nfs4 ds:/volume1/video /home/egreshko/Videos
 df
-```",Not Applicable,Not Applicable
-1354078,dnf --installroot=/tmp --releasever=24 install coreutils,dnf --installroot=/tmp --releasever=24 install coreutils,Not Applicable,Not Applicable
+```",,
+1354078,dnf --installroot=/tmp --releasever=24 install coreutils,dnf --installroot=/tmp --releasever=24 install coreutils,,
 1352691,"> ""File with spaces.txt""
 ls","touch ""File with spaces.txt""
 ls","touch ""File with spaces.txt""
 ls","touch ""File with spaces.txt""
 ls"
 1348043,"dnf --installroot /tmp/hoge --releasever=25 --disablerepo=* \
---enablerepo=rawhide install coreutils",dnf --installroot /tmp/hoge --releasever=25 --disablerepo=* --enablerepo=rawhide install coreutils,Not Applicable,Not Applicable
-1335320,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+--enablerepo=rawhide install coreutils",dnf --installroot /tmp/hoge --releasever=25 --disablerepo=* --enablerepo=rawhide install coreutils,,
+1335320,,,,
 1303795,"cd /
 df *
 df /*
@@ -1089,8 +1089,8 @@ df --totals /l*
 df --totals bin lib lib64 sbin
 ```
 
-These commands are intended to show how `df` currently handles output, including potential duplicates, and the lack of an option to enforce strict ordering or uniqueness in its output.",Not Applicable,Not Applicable
-647786,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+These commands are intended to show how `df` currently handles output, including potential duplicates, and the lack of an option to enforce strict ordering or uniqueness in its output.",,
+647786,,,,
 440056,"cp --help
 man cp","```bash
 cp /etc/shadow /tmp/shadow-dpPR
@@ -1105,7 +1105,7 @@ cp --preserve=context /etc/shadow /tmp/shadow--preserve=context
 ls -Z /tmp/shadow--preserve=context
 cp -a /etc/shadow /tmp/shadow-a
 ls -Z /tmp/shadow-a
-```",touch /tmp/shadow; chcon system_u:object_r:shadow_t:s0 /tmp/shadow; cp /tmp/shadow /tmp/shadow-dpPR -dpPR; cp /tmp/shadow /tmp/shadow-p -p; cp /tmp/shadow /tmp/shadow--preserve --preserve; cp /tmp/shadow /tmp/shadow--preserve=all --preserve=all; cp /tmp/shadow /tmp/shadow--preserve=context --preserve=context; cp /tmp/shadow /tmp/shadow-a -a,Not Applicable
+```",touch /tmp/shadow; chcon system_u:object_r:shadow_t:s0 /tmp/shadow; cp /tmp/shadow /tmp/shadow-dpPR -dpPR; cp /tmp/shadow /tmp/shadow-p -p; cp /tmp/shadow /tmp/shadow--preserve --preserve; cp /tmp/shadow /tmp/shadow--preserve=all --preserve=all; cp /tmp/shadow /tmp/shadow--preserve=context --preserve=context; cp /tmp/shadow /tmp/shadow-a -a,
 921708,"stat source
 cp --reflink=always source dest
 stat dest","```bash
@@ -1113,23 +1113,23 @@ touch source
 stat source
 cp --reflink=always source dest
 stat dest
-```","touch source; echo ""data"" > source; dd if=/dev/zero of=source bs=1K count=172253; cp --reflink=always source dest; stat dest",Not Applicable
+```","touch source; echo ""data"" > source; dd if=/dev/zero of=source bs=1K count=172253; cp --reflink=always source dest; stat dest",
 981845,man rm,"rm -i file1 file2 file3 file4
-rm -I file1 file2 file3 file4",Not Applicable,Not Applicable
-1250113,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+rm -I file1 file2 file3 file4",,
+1250113,,,,
 890223,du -sh 6e56p56v.default/,du -sh -sh 6e56p56v.default/,du -sh -sh 6e56p56v.default/,du -sh 6e56p56v.default/
 1334898,"mkdir Test\ Dir
 ls","mkdir ""Test Dir""
 ls","mkdir 'Test Dir'
 ls","mkdir 'Test Dir'
 ls"
-1323163,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+1323163,,,,
 1319594,"export LANG=zh_CN.UTF-8
 ls -lh","```bash
 LANG=en_US.UTF-8 ls -lh
 LANG=zh_CN.UTF-8 ls -lh
 ```","export LANG=zh_CN.UTF-8
-ls -lh",Not Applicable
+ls -lh",
 706605,"od --help
 man od","od --help
 man od
@@ -1138,7 +1138,7 @@ od -S=10 file.txt
 od -S=10 /bin/ls 
 od -w file.txt
 od -w=10 file.txt
-od -w=10 /bin/ls",Not Applicable,Not Applicable
+od -w=10 /bin/ls",,
 1314722,"echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0"" | cut -d'|' -f2","```bash
 echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0""|cut -d'|' -f2
 ```","echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0""|cut -d'|' -f2","echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0"" | cut -d'|' -f2"
@@ -1178,8 +1178,8 @@ sort -T /tmp -S""3g"" -uk1 < input_file > output_file
 sort -T /tmp -S ""3g"" -uk1 < input_file > output_file
 ```","sort -T $sorttmp -S ""3g"" -uk1 | egrep -v '^$' | egrep '\.com' < 1000s > 1000s.srtd","sort -T $sorttmp -S ""3g"" -uk1 | egrep -v '^$' | egrep '\.com' < 1000s > 1000s.srtd"
 1249695,man install,"$man install | grep yum
-$man install | grep dnf",Not Applicable,Not Applicable
-1298736,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+$man install | grep dnf",,
+1298736,,,,
 1297464,"mkdir test
 mv test test test","```bash
 mkdir test
@@ -1196,7 +1196,7 @@ sudo rm testfile # Run as root
 rm testfile # Run as non-root user for comparison
 ```","touch testfile
 chmod -w testfile
-rm testfile",Not Applicable
+rm testfile",
 1199679,"strace df -l -h
 strace df -l -h 2>&1 | grep stat","```bash
 strace df -l -h
@@ -1206,14 +1206,14 @@ Note that this command requires a system with network mounts (e.g., NFS) and `st
 strace df -l -h | grep stat
 ```",strace df -l -h,strace df -l -h | grep stat
 1196642,"gnome-terminal -- bash -c 'export TERM=xterm-256color; bash'
-xterm -bg white -e 'export TERM=xterm-256color; bash'",Not Applicable,Not Applicable,Not Applicable
+xterm -bg white -e 'export TERM=xterm-256color; bash'",,,
 1027279,"echo ""set -o noclobber"" >> ~/.bashrc
 source ~/.bashrc
 /etc/profile.d/colorls.csh","```bash
 set noclobber
 mktemp /tmp/.colorlsXXX
 echo ""test"" > /tmp/.colorlsXXX
-```",Not Applicable,Not Applicable
+```",,
 1270480,"cat > input.txt <<EOF
 b
 c
@@ -1235,11 +1235,11 @@ echo ""Hello World"" > file2.txt
 
 # Run the command to reproduce the bug on coreutils 8.22-15 and 8.23-10
 find . -type f -exec md5sum {} \; | sort -k 1
-```",Not Applicable,Not Applicable
+```",,
 920806,"sudo exportfs -o rw,sync /export/vol1 client_IP
 sudo mount -t nfs server_IP:/export/vol1 /mnt/vol1
-df",Not Applicable,Not Applicable,Not Applicable
-1243572,"date +%F --date=""00:00:00 +3 days""",Not Applicable,Not Applicable,Not Applicable
+df",,,
+1243572,"date +%F --date=""00:00:00 +3 days""",,,
 1135583,"rpm -q coreutils
 ls -Z foo
 ls -lZ foo","```bash
@@ -1253,15 +1253,15 @@ echo ""checksum_value Fedora-Server-DVD-x86_64-23.iso"" >> testSUM
 echo ""checksum_value Fedora-Server-netinst-x86_64-23.iso"" >> testSUM
 echo ""checksum_value Fedora-Workstation-netinst-x86_64-23.iso"" >> testSUM
 echo ""checksum_value Fedora-Live-Workstation-x86_64-23-10.iso"" >> testSUM
-sha256sum -c testSUM",Not Applicable
+sha256sum -c testSUM",
 1235873,"echo -e ""version-1.2.10\nversion-1.2.2\nversion-1.2.3\nversion-1.10.1\nversion-1.2.20"" > sortbug.txt
 cat sortbug.txt
 sort -rV sortbug.txt","dd if=/dev/zero of=/dev/null& 
 pid=$! 
-kill -USR1 $pid; sleep 1; kill $pid",Not Applicable,Not Applicable
+kill -USR1 $pid; sleep 1; kill $pid",,
 1146185,"printf 'a b!x\na-b-c!x\n' | LANG=en_US.utf8 ltrace -e strcoll sort -s --debug -k1,1 -t!","```bash
 echo -e ""a\nb\nc\nd\ne\n                      : e\nf\ng\nh"" | sort
-```",Not Applicable,Not Applicable
+```",,
 1169027,"rpm -ql --queryformat '[%{FILELANGS}\t%{FILENAMES}\n]' coreutils | grep LC_TIME | head -5  
 rpm -qf /usr/share/locale/af  
 rpm -qf /usr/share/locale/af/LC_MESSAGES  
@@ -1286,7 +1286,7 @@ mount | grep nas
 
 # Run the 'df' command to check disk usage (this should only show one volume)
 df | grep nas
-```",Not Applicable,Not Applicable
+```",,
 1177515,"cp -vrup /home/* /room/wdbook1/nfs/Public/backup/verlaiine/home >> /var/log/lastbackup  
 cat /var/log/lastbackup","date +%F --date=""00:00:00 +3 days""","date +%F --date=""00:00:00 +3 days""","date +%F --date=""00:00:00 +3 days"""
 1207314,"echo > :
@@ -1310,7 +1310,7 @@ dnf upgrade coreutils
 # Run ls -Z and ls -lZ again after upgrading
 ls -Z foo
 ls -lZ foo
-```",Not Applicable,"rpm -q coreutils
+```",,"rpm -q coreutils
 touch foo
 ls -Z foo
 ls -lZ foo"
@@ -1371,12 +1371,12 @@ mkdir ~/test ; cd ~
 cp -av /mnt/* ~/test","rpm -ql --queryformat '[%{FILELANGS}\t%{FILENAMES}\n]' coreutils | grep LC_TIME | head -5
 rpm -qf /usr/share/locale/af
 rpm -qf /usr/share/locale/af/LC_MESSAGES
-rpm -qf /usr/share/locale/af/LC_TIME",Not Applicable,Not Applicable
+rpm -qf /usr/share/locale/af/LC_TIME",,
 430821,"echo -e ""F-A\nFB\nF-C"" > a.txt
-sort a.txt",Not Applicable,Not Applicable,Not Applicable
+sort a.txt",,,
 284881,"export LC_COLLATE=en_US.UTF-8
 export LC_NUMERIC=en_US.UTF-8
-sort -n -t, -k1 <<'EOF'",Not Applicable,Not Applicable,Not Applicable
+sort -n -t, -k1 <<'EOF'",,,
 428494,"echo -e ""  leading space\n_leading underscore\nnormal line\n another space"" > file.txt  
 sort file.txt","```bash
 TIME_STYLE=locale LC_ALL=en_US.UTF-8 ls -l / | head -n 3
@@ -1574,49 +1574,49 @@ However, based on the available information and common practices, here are some 
 
 By following these steps, you should be able to narrow down and potentially identify the cause of core dumps when running `/bin/sleep`. If the problem persists after exhausting these options, more specific debugging or hardware testing may be required."
 230950,"mkdir /tmp/logs  
-cp /tmp/syslog /tmp/logs/",sleep 100000,Not Applicable,Not Applicable
+cp /tmp/syslog /tmp/logs/",sleep 100000,,
 246567,"ln -s ../../etc/hosts /home/user
 cd /home/user
 /bin/ls --color=always | grep hosts","mktemp -t /tmp/.colorlsXXX 
-bash -c 'echo > $TMP'",Not Applicable,Not Applicable
+bash -c 'echo > $TMP'",,
 358701,"cd /path/to/nfs-mounted-directory
 ls file1
 cp -av file1 file2
-cp -av file1 file2",sleep 100,Not Applicable,Not Applicable
+cp -av file1 file2",sleep 100,,
 356311,"echo poo > a
 cat a
 cp -a a b
 echo $?
 cat b
-ls -l b",sleep 100,Not Applicable,Not Applicable
-340291,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+ls -l b",sleep 100,,
+340291,,,,
 313401,"date --help
 man date
 info date","sleep 100 
 
-Note: The provided information does not guarantee that this command will reproduce the bug, as the crash might be related to other factors such as system load, resource constraints, or specific timing issues. However, based on the given cmdline (""cmdline: sleep 100""), this is a possible test case.",Not Applicable,Not Applicable
-305341,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-299121,Not Applicable,sleep 100,Not Applicable,Not Applicable
+Note: The provided information does not guarantee that this command will reproduce the bug, as the crash might be related to other factors such as system load, resource constraints, or specific timing issues. However, based on the given cmdline (""cmdline: sleep 100""), this is a possible test case.",,
+305341,,,,
+299121,,sleep 100,,
 280331,"cd /partition
 rm -f toto*
 date > toto1
 cp -i -a toto1 toto2
 cp -i -a toto1 toto2
-ls -l toto*",sleep 100,Not Applicable,Not Applicable
-251800,Not Applicable,sleep 1000000,Not Applicable,Not Applicable
+ls -l toto*",sleep 100,,
+251800,,sleep 1000000,,
 251653,"mkdir -p a/b/c
 chmod 0 a
-rm -rf a",sleep 1000000,Not Applicable,Not Applicable
+rm -rf a",sleep 1000000,,
 250089,"cd /tmp
 mkdir -p du_test/unreadable
 du -a -b du_test
 chmod 000 du_test/unreadable
-du -b -a du_test",sleep 1000,Not Applicable,Not Applicable
-249421,Not Applicable,sleep 1000,Not Applicable,Not Applicable
+du -b -a du_test",sleep 1000,,
+249421,,sleep 1000,,
 248591,"touch file1
 mkdir dir && touch dir/file2
 touch -t 202301010000 file1 && touch file2
-cp -iu file1 dir/",sleep 1000,Not Applicable,Not Applicable
+cp -iu file1 dir/",sleep 1000,,
 232652,"echo 'int main(){return 0;}' > u.c
 gcc -o u u.c
-runcon -t unconfined_t /usr/sbin/prelink -N ./u",sleep 1000,Not Applicable,Not Applicable
+runcon -t unconfined_t /usr/sbin/prelink -N ./u",sleep 1000,,

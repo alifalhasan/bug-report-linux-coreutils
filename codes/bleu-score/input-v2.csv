@@ -6,7 +6,7 @@ who am i"
 printf """"a-xyz\nabc-xyz\n"""" | sort -V","```bash
 printf ""a-xyz\nabc-xyz\n"" | sort -V
 ```","printf ""a-xyz\nabc-xyz\n"" | sort -V","printf ""a-xyz\nabc-xyz\n"" | sort -V"
-2311888,Not Applicable,sleep 100,Not Applicable,sleep 100
+2311888,,sleep 100,,sleep 100
 2296201,"fold badfile
 echo $?","```bash
 fold badfile; echo ""$?""
@@ -15,23 +15,23 @@ echo ""$?""","```bash
 fold badfile
 echo ""$?""
 ```"
-1349579,Not Applicable,"```
-ls --color=Not Applicable
-```",Not Applicable,Not Applicable
+1349579,,"```
+ls --color=
+```",,
 492369,"chmod 4755 filename
 ls -l filename
 chmod 0755 filename
 ls -l filename","```bash
 chmod 4755 file; chmod 0755 file; ls -l file
-```",Not Applicable,Not Applicable
-2265756,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-1346074,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+```",,
+2265756,,,,
+1346074,,,,
 2269948,"/usr/bin/date --date ""1976-05-30""","/usr/bin/date --date ""1976-05-30"" 
 /usr/bin/date --date ""30 May 1976""","/usr/bin/date --date ""1976-05-30""","/usr/bin/date --date ""1976-05-30"""
 2126206,"uname -i
 uname -p","uname -i 
 uname -p","uname -i  
-uname -p",Not Applicable
+uname -p",
 2261852,uname --processor,uname --processor,uname --processor,uname --processor
 2258913,"{ printf '%131070s\n' ''; printf 'x\n'; printf '%131071s\n' ''; } > in  
 split -C 131072 ---io=131072 in","```bash
@@ -41,21 +41,21 @@ split -C 131072 ---io=131072 in","```bash
 { printf '%131070s\n' ''; printf 'x\n'; printf '%131071s\n' ''; } > in
 split -C 131072 ---io=131072 in
 ```"
-2248503,uname -i,uname -i,Not Applicable,uname -i
-2160675,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+2248503,uname -i,uname -i,,uname -i
+2160675,,,,
 2236321,"cp -v -u <source> <destination>
-mv -v -u <source> <destination>",cp -u -v file1 file2; cp -i -v file1 file2,Not Applicable,"```bash
+mv -v -u <source> <destination>",cp -u -v file1 file2; cp -i -v file1 file2,,"```bash
 cp -u -v source_file destination_file
 mv -u -v source_file destination_file
 ```"
-2236739,Not Applicable,sleep 50,Not Applicable,sleep 50
+2236739,,sleep 50,,sleep 50
 2208048,"rpm -q coreutils
-uname -i",uname -m,Not Applicable,Not Applicable
+uname -i",uname -m,,
 2203350,uname -p,`uname -p`,uname -p,uname -p
 2189656,uname -p,uname -p,uname -p,uname -p
 2188689,uname -i,"uname -i 
 
-This command is used to print the hardware platform name (also known as the machine hardware name). The bug report indicates that running this command on Fedora 37 returns ""aarch64"" while on Fedora 38 it returns ""unknown"". To reproduce the bug, simply run this command on both versions of Fedora and compare the output.","Not Applicable
+This command is used to print the hardware platform name (also known as the machine hardware name). The bug report indicates that running this command on Fedora 37 returns ""aarch64"" while on Fedora 38 it returns ""unknown"". To reproduce the bug, simply run this command on both versions of Fedora and compare the output.","
 
 The report indicates that the issue is reproducible always but does not provide a specific command or test case beyond the `uname -i` invocation which simply reflects the observed symptom rather than a step to independently trigger or diagnose the bug. The discrepancy appears related to differences between Fedora 37 and 38, particularly with versions of coreutils, but without additional context on how these environments were set up or other environmental factors that might influence `uname -i` output, no precise test case beyond simply running `uname -i` can be identified as a means to reproduce the bug independently.",uname -i
 1646701,sudo dnf install AdobeReader_enu-9.5.5-1.i486,"```bash
@@ -64,15 +64,15 @@ dnf install AdobeReader_enu-9.5.5-1.i486
 or 
 ```bash
 yum install AdobeReader_enu-9.5.5-1.i486
-```",Not Applicable,Not Applicable
-2175057,Not Applicable,Not Applicable,Not Applicable,"sleep infinity  
+```",,
+2175057,,,,"sleep infinity  
 kill -SIGABRT $(pgrep sleep)"
-2172323,sleep 500,sleep 500,Not Applicable,sleep 500
+2172323,sleep 500,sleep 500,,sleep 500
 2162873,"uname -p
 arch
-cat /proc/cpuinfo",uname -p,"Not Applicable
+cat /proc/cpuinfo",uname -p,"
 
-The provided information does not contain specific instructions or commands that can be used to reproduce a coreutils bug. The discrepancy between `uname -p` and `arch` is noted, but no direct relation to a bug in coreutils is clearly established with a reproducible test case or command.",Not Applicable
+The provided information does not contain specific instructions or commands that can be used to reproduce a coreutils bug. The discrepancy between `uname -p` and `arch` is noted, but no direct relation to a bug in coreutils is clearly established with a reproducible test case or command.",
 1830619,"LC_TIME=""en_US.UTF-8""  
 date  
 date +%c","```bash
@@ -81,28 +81,28 @@ LC_TIME=""en_US.UTF-8"" date +%c
 ```","export LC_TIME=""en_US.UTF-8""; date +%c","```bash
 LC_TIME=""en_US.UTF-8"" date +%c
 ```"
-2150513,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-2138908,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+2150513,,,,
+2138908,,,,
 2112870,printf '\f'  | unexpand,"```bash
 printf '\f' | unexpand
 ```",printf '\f' | unexpand,"```sh
 printf '\f' | unexpand
 ```"
-548834,uname -i,uname -i,Not Applicable,Not Applicable
+548834,uname -i,uname -i,,
 2112593,"mkdir ~/.dir_colors
 cp /etc/DIR_COLORS ~/.dir_colors
 gnome-terminal","```bash
 mkdir ~/.dir_colors
 cp /etc/DIR_COLORS ~/.dir_colors
 gnome-terminal
-```","Not Applicable
+```","
 
 The steps provided in the ""Steps to Reproduce"" section contain an error that does not align with the expected outcome for reproducing the described issue. Specifically, Step 1 suggests making a directory named `.dir_colors`, which will inevitably cause `cat` or any other command expecting a file input to fail when trying to process `.dir_colors` as if it were a file, leading to the error message mentioned in the bug description.
 
-To actually reproduce the intended behavior (creating a customizable color scheme for `ls`) and avoid the described issue, one would not create a directory but rather a file named `.dir_colors`. Since the task is specifically about identifying commands or test cases that match the provided steps (even if erroneous), ""Not Applicable"" is returned as the exact command sequence given leads to an incorrect setup unrelated to the intended customization of `ls` colors via a file.","mkdir ~/.dir_colors  
+To actually reproduce the intended behavior (creating a customizable color scheme for `ls`) and avoid the described issue, one would not create a directory but rather a file named `.dir_colors`. Since the task is specifically about identifying commands or test cases that match the provided steps (even if erroneous), """" is returned as the exact command sequence given leads to an incorrect setup unrelated to the intended customization of `ls` colors via a file.","mkdir ~/.dir_colors  
 cp /etc/DIR_COLORS ~/.dir_colors  
 gnome-terminal"
-2104212,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+2104212,,,,
 1993544,"echo абвАБВіїІЇ | tr -d абв
 echo ÄÖÜäöü | tr -d [:alpha:]
 echo ÄÖÜäöü | tr -d [[:alpha:]]","```bash
@@ -118,16 +118,16 @@ echo абвАБВіїІЇ | tr -d абв
 echo ÄÖÜäöü | tr -d [:alpha:]
 echo ÄÖÜäöü | tr -d [[:alpha:]]
 ```"
-2066546,Not Applicable,"```bash
+2066546,,"```bash
 sleep 500
-```",Not Applicable,sleep 500
+```",,sleep 500
 2035258,"sudo dnf install coreutils
 sudo /usr/bin/install","```bash
 sudo yum install -y coreutils
 sudo /usr/bin/install
-```","Not Applicable
+```","
 
-The provided information does not describe a typical software bug where a specific command or set of steps can be executed to consistently produce an error. Instead, it appears that there is confusion about finding the `install` program in the expected location (`/usr/bin/install`). The reported issue seems more like a setup or installation problem rather than a reproducible coreutils bug, as indicated by the mention of a ""carpet"" (likely meant to be ""file"" or ""item"") named `install` in `/usr/bin`. Without clear steps that would reproduce an error due to a software defect, we cannot provide a specific command or test case.",Not Applicable
+The provided information does not describe a typical software bug where a specific command or set of steps can be executed to consistently produce an error. Instead, it appears that there is confusion about finding the `install` program in the expected location (`/usr/bin/install`). The reported issue seems more like a setup or installation problem rather than a reproducible coreutils bug, as indicated by the mention of a ""carpet"" (likely meant to be ""file"" or ""item"") named `install` in `/usr/bin`. Without clear steps that would reproduce an error due to a software defect, we cannot provide a specific command or test case.",
 1831575,TZ=Europe/Berlin date -d '05/12/2020 11:00 CET',"```bash
 TZ=Europe/Berlin date -d '05/12/2020 11:00 CET'
 ```",TZ=Europe/Berlin date -d '05/12/2020 11:00 CET',TZ=Europe/Berlin date -d '05/12/2020 11:00 CET'
@@ -139,7 +139,7 @@ date +%a
 date +%^a
 date +#a
 date +%/a
-```","Not Applicable
+```","
 
 The provided steps in the ""Steps to Reproduce"" section do not align with the described issue since they use incorrect format specifiers that don't correspond to any valid strftime options for producing lowercase abbreviated day-of-week names directly. The reported problem focuses on the expectation of a lowercase modifier which is not currently supported and thus there isn’t a direct command sequence provided or available in coreutils as per standard usage to reproduce this specific issue related to the absence of a lower-case modifier feature.","```
 date +%a
@@ -157,7 +157,7 @@ filefrag -v a; filefrag -v b
 1913358,"xdg-document-portal.service is running, as it is the default
 execute df w/o for all file systems
 RC 1",df -h > /dev/null; echo $?,df -h > /dev/null; echo $?,df -h > /dev/null; echo $?
-1992341,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+1992341,,,,
 1960792,"rpmbuild -bb coreutils.spec 
 rpmbuild --rebuild coreutils-8.32-24.fc34.src.rpm","Based on the provided log output, it appears that the bug is related to the `ls` command's behavior when displaying colored output and performing stat system calls.
 
@@ -324,7 +324,7 @@ ll -a test"
 rpm -qa --queryformat ""%{NAME}-%{VERSION}\n"" automake autoconf m4 mingw64-* | column | sort
 ```","rpm -qa --queryformat ""%{NAME}-%{VERSION}\n"" automake autoconf m4 mingw64-* | column | sort
 
-Not Applicable
+
 
 The provided command demonstrates the issue described in the bug report but does not provide a specific test case or additional command that can be directly used to reproduce the exact problem with different inputs or under controlled conditions. The reported behavior is observed when executing this command, but no further reproducible test case is explicitly stated beyond this example usage.","```bash
 rpm -qa --queryformat ""%{NAME}-%{VERSION}\n"" automake autoconf m4 mingw64-* | column | sort
@@ -333,9 +333,9 @@ rpm -qa --queryformat ""%{NAME}-%{VERSION}\n"" automake autoconf m4 mingw64-* | 
 rpm -q --provides coreutils","```bash
 basename --version
 rpm -q --whatprovides /bin/basename
-```","Not Applicable
+```","
 
-The provided information does not include a specific bug or issue that needs to be reproduced; it only shows package version and file location details for `basename` as well as the provides list for `coreutils`. No concrete problem or symptom is described, so there are no commands or test cases given that would allow reproducing a bug.",Not Applicable
+The provided information does not include a specific bug or issue that needs to be reproduced; it only shows package version and file location details for `basename` as well as the provides list for `coreutils`. No concrete problem or symptom is described, so there are no commands or test cases given that would allow reproducing a bug.",
 1634200,"docker run -it --rm fedora:latest /bin/bash
 rpm -q coreutils-single
 ls -l /bin/basename
@@ -397,12 +397,12 @@ sort -n < Foo | uniq > Baz
 
 # Verify the results
 diff Bar Baz
-```","Not Applicable
+```","
 
-The provided bug report includes steps that outline how to observe the discrepancy but does not provide an explicit command or test case to directly trigger and reproduce the bug itself with a specific file content example. The steps are descriptive and instructive on how one could check for the issue given a suitable input file, Foo, but they do not give a concrete minimal example of input data that would definitively demonstrate the error in behavior.",Not Applicable
+The provided bug report includes steps that outline how to observe the discrepancy but does not provide an explicit command or test case to directly trigger and reproduce the bug itself with a specific file content example. The steps are descriptive and instructive on how one could check for the issue given a suitable input file, Foo, but they do not give a concrete minimal example of input data that would definitively demonstrate the error in behavior.",
 1914737,stat <file-or-directory>,"```bash
 stat /path/to/any/file/or/directory
-```","Not Applicable
+```","
 
 The provided bug report does not contain specific commands or test cases that could be used independently of the described setup (i.e., installing Fedora 33 GNOME and using its default filesystem) to directly reproduce the issue with the `stat` command output. The reproduction steps are tied to a particular installation scenario which cannot be condensed into standalone shell commands without this context.","```bash
 stat /path/to/file_or_directory
@@ -416,7 +416,7 @@ test -w /tmp/foo; echo $?","```bash
 mkdir -p /tmp/foo
 test -w /tmp/foo; echo $?
 ```"
-1783903,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+1783903,,,,
 1882187,"rpm -q bash coreutils
 file='AAA'$'\n''BBB'
 printf -- '%s' """"$file"""" | od -c
@@ -432,23 +432,23 @@ file='AAA'$'\n''BBB'
 cp -v /dev/null ""$file""
 md5sum ""$file""
 ```"
-467622,Not Applicable,"```
+467622,,"```
 nohup ./openmp_program &
 sleep 10
 # let ssh time out without logging out (ctrl-D)
-```",Not Applicable,Not Applicable
+```",,
 1870385,"date --date=""2019-03-10 01:23:45"" +""%s""
 date --date=""2019-03-10 02:23:45"" +""%s""
 date --date=""2019-03-10 03:23:45"" +""%s""
 TZ=UTC date --date=""2019-03-10 02:23:45"" +""%s""","```bash
 date --date=""2019-03-10 02:23:45"" +""%s""
 ```","date --date=""2019-03-10 02:23:45"" +""%s""","date --date=""2019-03-10 02:23:45"" +""%s"""
-1830318,Not Applicable,"```
+1830318,,"```
 ls /usr/libexec
-```","Not Applicable
+```","
 
 While the report gives a good description of the issue and how it can be somewhat mitigated by removing `/etc/DIR_COLORS.256color`, it doesn't provide explicit steps or commands that definitively reproduce the color inconsistency problem in a controlled manner for testing purposes. The provided information describes what happens under certain conditions but does not specify exact test cases to reproduce the bug reliably and independently of specific configurations beyond simply running `ls` in a directory with varied file types.",ls --color=always /usr/libexec
-1883685,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+1883685,,,,
 1877625,df -h,"`df -h` on a Btrfs filesystem with subvolumes for `/` and `/home`. 
 
 To reproduce:
@@ -467,11 +467,11 @@ mount -o subvol=@ /dev/sda3 /
 mkdir /home
 mount -o subvol=@home /dev/sda3 /home
 df -h
-```","Not Applicable
+```","
 
 The provided bug description does not include a specific command or test case that reproduces the issue beyond simply running `df -h`, which is more of an observation rather than a detailed reproduction scenario. The bug seems to describe an observed behavior with Btrfs file systems and df output but doesn't detail how to consistently reproduce it, aside from installing Fedora 33 on a system using Btrfs and observing the df output.",df -h
-1861108,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-1111722,Not Applicable,"To reproduce this bug, the following steps can be translated into a test case scenario rather than a single command, as it involves installing and booting different versions of Fedora in a specific configuration:
+1861108,,,,
+1111722,,"To reproduce this bug, the following steps can be translated into a test case scenario rather than a single command, as it involves installing and booting different versions of Fedora in a specific configuration:
 
 1. Install Fedora 20 using the Btrfs preset with a custom install, ensuring that free space is left on the disk.
 2. Download the Fedora-Live-Workstation-x86_64-rawhide-20140619.iso image.
@@ -480,12 +480,12 @@ The provided bug description does not include a specific command or test case th
 
 However, since the request is for a command or test case and given that reproducing this bug involves a series of complex setup steps rather than a single executable command, the closest approximation to a ""command"" would be a descriptive outline of these steps. But to adhere strictly to the requested format and recognizing that no simple command exists to replicate the complex setup and boot process described:
 
-Not Applicable",Not Applicable,Not Applicable
+",,
 1800597,"cd rpmbuild/BUILD/coreutils-8.31/single  
 make check","```bash
 make check
 sudo make check
-```","Not Applicable
+```","
 
 The provided bug report describes issues encountered during a `make check` and running the test suite as root, but it does not specify exact commands or test cases beyond these general actions that can be used to reproduce the failures directly. The failures are noted within specific tests (`env-S`, `tty`) but no isolated command is given to replicate them independently from the full test suite execution.",make check
 1739747,"date -d 1981-12-31  
@@ -493,7 +493,7 @@ date -d 1982-01-01","```bash
 TZ='Asia/Singapore' date -d '1982-01-01'
 ```","date -d 1982-01-01
 
-Not Applicable
+
 
 # The first command is a reproducible case according to the steps provided.
 # However, since the environment (system set to UTC+8 in Singapore) is also critical and cannot be directly translated into a command, a fully automated test case isn't available without setting up that specific timezone context.",date -d 1982-01-01
@@ -518,17 +518,17 @@ sudo docker build -t test-image .
 
 # Run the Docker container and execute the ls command
 sudo docker run -it --rm test-image ls /
-```","Not Applicable
+```","
 
 The provided bug report does not contain specific commands that can be directly run to reproduce the issue without additional context such as building a Docker image with the specified `Dockerfile`. While steps are given, they require intermediate outputs (like the image ID) and thus do not constitute a direct command or test case.","```bash
 sudo docker build -t coreutils-bug-repro -f Dockerfile .
 sudo docker run -it --rm coreutils-bug-repro ls /
 ```"
-1728986,Not Applicable,"```bash
+1728986,,"```bash
 ln -s non_existent_file link_name; ls -l link_name
-```","Not Applicable
+```","
 
-The provided bug description does not include specific commands or test cases that can be executed to reproduce the issue. The description explains the behavior and its effects but lacks details on how exactly to recreate it with commands involving `ls -l` and broken symbolic links.",Not Applicable
+The provided bug description does not include specific commands or test cases that can be executed to reproduce the issue. The description explains the behavior and its effects but lacks details on how exactly to recreate it with commands involving `ls -l` and broken symbolic links.",
 1713901,"env LANG=en_EN date
 env LANG=en_US date","```bash
 env LANG=en_EN date
@@ -536,13 +536,13 @@ env LANG=en_US date
 ```","env LANG=en_EN date  
 env LANG=en_US date","env LANG=en_EN date  
 env LANG=en_US date"
-1688740,Not Applicable,"```bash
+1688740,,"```bash
 man coreutils; coreutils --help
-```",Not Applicable,"man command_name
+```",,"man command_name
 
 Replace `command_name` with the specific command whose man page is affected by the patch, such as `cat`, `cp`, etc., depending on which command's man page was modified in the patch. However, without knowing the exact command, we cannot provide a precise command to reproduce the bug. If no specific command was mentioned, it would be:
 
-Not Applicable"
+"
 1705229,sort -V sort_test.txt,"```bash
 sort -V sort_test.txt
 ```
@@ -600,33 +600,33 @@ strace -Tttfvs 4096 df -l
 LC_NUMERIC=de_DE.UTF-8 /usr/bin/printf %f 1.2 
 LC_NUMERIC=de_DE.UTF-8 printf %f 1,2 
 LC_NUMERIC=de_DE.UTF-8 /usr/bin/printf %f 1,2",LC_NUMERIC=de_DE.UTF-8 printf %f 1.2,LC_NUMERIC=de_DE.UTF-8 printf %f 1.2
-1649774,man install,"man install && curl -s -o /dev/null -w ""%{http_code}"" https://www.gnu.org/software/coreutils/install",Not Applicable,man install
+1649774,man install,"man install && curl -s -o /dev/null -w ""%{http_code}"" https://www.gnu.org/software/coreutils/install",,man install
 199066,"su root -c ""command""","```bash
 su -c 'command' 
 su root -c 'command'
-```","Not Applicable
+```","
 
-The provided bug description discusses a modification to the behavior of `su` for running commands as root and introduces a new command-line option `-C`. However, it does not provide specific commands or test cases that can be used to reproduce a particular issue or bug. The description is more about the rationale behind the code changes rather than describing symptoms of a reproducible problem. Therefore, based on the information given, there are no explicit commands or test cases provided for reproducing a bug.",Not Applicable
-1635899,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-1637531,Not Applicable,"ls -w 1 
+The provided bug description discusses a modification to the behavior of `su` for running commands as root and introduces a new command-line option `-C`. However, it does not provide specific commands or test cases that can be used to reproduce a particular issue or bug. The description is more about the rationale behind the code changes rather than describing symptoms of a reproducible problem. Therefore, based on the information given, there are no explicit commands or test cases provided for reproducing a bug.",
+1635899,,,,
+1637531,,"ls -w 1 
 (or)
-ls | cat -t",Not Applicable,ls
+ls | cat -t",,ls
 1611211,./man-page-day.sh coreutils,"```bash
 wget https://pagure.io/ManualPageScan/raw/master/f/man-page-day.sh
 chmod +x man-page-day.sh
 ./man-page-day.sh coreutils
-```",Not Applicable,Not Applicable
-1598518,Not Applicable,"```
+```",,
+1598518,,"```
 touch file1.txt
 mkdir dir1
 ./coreutils/src/renameat2 file1.txt dir1/
-```",Not Applicable,Not Applicable
+```",,
 1596183,LANG=C df -P,"```
 LANG=C df -P
 lsblk -b
-```","Not Applicable
+```","
 
-The provided information does not give a clear and direct command or test case that can be used to reproduce the discrepancy between `df` and `lsblk`. While there is a comparison made between outputs of `df -P` and `lsblk -b`, no specific steps or commands are given that definitively reproduce the bug aside from running those two commands separately, which does not fully encapsulate the issue as described.",Not Applicable
+The provided information does not give a clear and direct command or test case that can be used to reproduce the discrepancy between `df` and `lsblk`. While there is a comparison made between outputs of `df -P` and `lsblk -b`, no specific steps or commands are given that definitively reproduce the bug aside from running those two commands separately, which does not fully encapsulate the issue as described.",
 1303456,"dd if=/dev/fedora/root of=/dev/fedora23/root
 dd if=/dev/fedora/home of=/dev/fedora23/home
 
@@ -655,9 +655,9 @@ mount /dev/fedora23/root /mnt/rootn
 mount /dev/fedora23/home /mnt/homen
 du -h /mnt/rootn | tail -1
 du -h /mnt/homen | tail -1
-```","Not Applicable
+```","
 
-The provided bug report does not contain a specific command or test case that can directly reproduce the issue described. The steps outlined are general instructions and do not provide an exact sequence of commands that could be run in a controlled environment to consistently replicate the behavior. Therefore, based on the information given, it is not possible to write down a precise set of commands to reproduce this bug.",Not Applicable
+The provided bug report does not contain a specific command or test case that can directly reproduce the issue described. The steps outlined are general instructions and do not provide an exact sequence of commands that could be run in a controlled environment to consistently replicate the behavior. Therefore, based on the information given, it is not possible to write down a precise set of commands to reproduce this bug.",
 1594812,ls -l /var/lib/libvirt/pictures/,"```bash
 LC_ALL=fi_FI ls -l /var/lib/libvirt/pictures/
 ```","export LC_ALL=fi_FI.UTF-8  
@@ -668,7 +668,7 @@ ls -l /var/lib/libvirt/pictures/
 ls -l `find /usr/bin -maxdepth 1 -type l -print` | grep waterfox","```bash
 ls -l /usr/bin | grep waterfox
 ls -l $(find /usr/bin -maxdepth 1 -type l -print) | grep waterfox
-```","Not Applicable
+```","
 
 The provided description illustrates a discrepancy between two different command sequences but does not offer an exact reproducible scenario that one can directly use to consistently reproduce the issue on any system due to dependencies on specific file and directory structures (e.g., presence of `/usr/bin/waterfox` symlink). The commands rely on a particular setup which might not be universal.","```bash
 ls -l /usr/bin | grep waterfox
@@ -676,10 +676,10 @@ ls -l $(find /usr/bin -maxdepth 1 -type l) | grep waterfox
 ```"
 1591002,whoami; id; id hrw; sudo id hrw,"```bash
 id; id $USER
-```","Not Applicable
+```","
 
-The provided bug report does not contain a specific command or test case that can directly reproduce the issue related to Linux coreutils. The reported problem seems to be about group access discrepancies after logging out and back into an X11 session, which might involve system configuration issues rather than a direct bug in coreutils itself. Thus, no precise command from the report can be used as a test case for reproducing this bug.",Not Applicable
-1537070,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+The provided bug report does not contain a specific command or test case that can directly reproduce the issue related to Linux coreutils. The reported problem seems to be about group access discrepancies after logging out and back into an X11 session, which might involve system configuration issues rather than a direct bug in coreutils itself. Thus, no precise command from the report can be used as a test case for reproducing this bug.",
+1537070,,,,
 1577872,"LC_ALL=ca_ES.utf8 ls -l
 date ""+%OB""","```
 LC_ALL=ca_ES.utf8 ls -l
@@ -687,12 +687,12 @@ date ""+%OB""
 ```","LC_ALL=ca_ES.utf8 ls -l
 date ""+%OB""","LC_ALL=ca_ES.utf8 ls -l  
 date ""+%OB"""
-1582165,Not Applicable,"```
+1582165,,"```
 df -h
 man df
-```","Not Applicable
+```","
 
-The provided Bug Description consists of observations and enhancement requests rather than a specific bug with reproducible steps or commands. The issues mentioned are related to accuracy preferences, documentation improvements, display conventions, and unit representation which do not require specific commands to be reproduced but rather changes in implementation or documentation.",Not Applicable
+The provided Bug Description consists of observations and enhancement requests rather than a specific bug with reproducible steps or commands. The issues mentioned are related to accuracy preferences, documentation improvements, display conventions, and unit representation which do not require specific commands to be reproduced but rather changes in implementation or documentation.",
 453709,"/bin/ls -i /
 /bin/ls -i -color=auto","/bin/ls -i / 
 /bin/ls -i --color /","/bin/ls -i /
@@ -711,8 +711,8 @@ Then, inside GDB:
 break parse_datetime2
 run
 ```
-This will attempt to install the `coreutils` debug info package and then run `date` under GDB with a breakpoint at the `parse_datetime2` function. The bug should be reproducible when trying to list the source code for the `parse-datetime.y` file, which is missing from the installed debug info package.",Not Applicable,Not Applicable
-1532285,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+This will attempt to install the `coreutils` debug info package and then run `date` under GDB with a breakpoint at the `parse_datetime2` function. The bug should be reproducible when trying to list the source code for the `parse-datetime.y` file, which is missing from the installed debug info package.",,
+1532285,,,,
 1259942,"base64 /dev/urandom | head -n 10000 > 10000.txt
 valgrind sort 10000.txt > /dev/null
 valgrind sort -M 10000.txt > /dev/null","```bash
@@ -739,7 +739,7 @@ ls -l /run/media/yk/FEDORA-WS-L/install.sh
 
 # Check if the script can be executed using bash command
 bash /run/media/yk/FEDORA-WS-L/install.sh
-```","Not Applicable
+```","
 
 The provided bug description indicates that the issue occurs on a specific filesystem (VFAT) located on an external USB drive. Since it involves hardware and a particular file system setup, there isn’t a simple command line example that can be executed to reproduce this exact scenario in all environments without access to a VFAT formatted USB drive. Therefore, based solely on the information given, a precise set of commands or test case for reproducing the bug cannot be provided.","```bash
 chmod +x install.sh
@@ -803,7 +803,7 @@ chmod +/-x file.txt
 chmod +/-X file.txt
 chmod +/-s file.txt
 chmod +/-t file.txt
-```","Not Applicable
+```","
 
 The provided description indicates that there are certain combinations of `chmod` options which should produce an error but do not. However, it does not specify any exact commands or test cases that definitively reproduce the issue as described. The examples given (`# chmod o- </file>`, `# chmod + </file>`, `# chmod ugao- </file>`) are more illustrative and don't form a concrete reproducible case with expected outputs. Therefore, based on the given information, we cannot provide an exact command or test case to reproduce the bug.","```
 chmod o- /path/to/file
@@ -860,12 +860,12 @@ echo $'ba\r\ncd\nfe\r\n' > test.txt; wc -l test.txt
 ```","echo -ne ""ba\rcd\nfe\r\n"" > test.txt ; wc -l test.txt","```bash
 echo -e 'ab\rcd\nfe\r' > test.txt && wc -l test.txt
 ```"
-1446266,Not Applicable,sleep 1000,Not Applicable,sleep 1000
-1360903,Not Applicable,"```bash
+1446266,,sleep 1000,,sleep 1000
+1360903,,"```bash
 prctl --no-new-privs --pid $$; runcon -t svirt_lxc_net_t /bin/sh
-```",Not Applicable,Not Applicable
-1482445,ptx reproducer_file,ptx reproducer_file,ptx reproducer_file,Not Applicable
-1483938,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+```",,
+1482445,ptx reproducer_file,ptx reproducer_file,ptx reproducer_file,
+1483938,,,,
 1470769,"cd coreutils-8.25/src
 cp chroot.c chroot.c.orig
 sed -i 's/execvp (argv\[0\], argv);/errno = EIO;  \/* execvp (argv[0], argv); *\//g' chroot.c","```bash
@@ -889,13 +889,13 @@ Then run `chroot` with this modified code to reproduce the bug:
 
 ```bash
 ./chroot /mnt/sysimage /bin/true
-```","Not Applicable
+```","
 
-The provided information suggests that the bug is reproducible through deliberate error injection into the source code of `chroot.c`, rather than by a specific command or test case that can be executed in a standard environment without modifying the source code. The modification involves setting `errno` to `EIO` manually before what would normally be the call to `execvp()`. Since no direct commands or test cases are provided for reproducing this issue outside of such source code modifications, the answer is ""Not Applicable"".",Not Applicable
+The provided information suggests that the bug is reproducible through deliberate error injection into the source code of `chroot.c`, rather than by a specific command or test case that can be executed in a standard environment without modifying the source code. The modification involves setting `errno` to `EIO` manually before what would normally be the call to `execvp()`. Since no direct commands or test cases are provided for reproducing this issue outside of such source code modifications, the answer is """".",
 1024730,"mount /dev/mpath1 /tmp/test/
 umount /mnt
 mount /dev/mpath2 /tmp/test/
-df",Not Applicable,Not Applicable,Not Applicable
+df",,,
 1465935,"mv file1 file2 /path/to/same/folder/
 curl https://fedoramagazine.org/verify-fedora-iso-file/
 (Follow the instructions until the sha256sum command is mentioned)","```bash
@@ -910,9 +910,9 @@ To fully replicate the steps as described:
 3. Open a terminal, navigate to that directory using `cd /path/to/directory`.
 4. Run `sha256sum <name_of_iso_file>.iso` (replace `<name_of_iso_file>.iso` with the actual filename).
 
-This should attempt to compute the SHA-256 checksum of the ISO file. If the bug is present, it might output ""No such file or directory"" despite the file being correctly located in the current working directory.",Not Applicable,Not Applicable
-1463384,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-1457214,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+This should attempt to compute the SHA-256 checksum of the ISO file. If the bug is present, it might output ""No such file or directory"" despite the file being correctly located in the current working directory.",,
+1463384,,,,
+1457214,,,,
 1283760,"tail -F scratchdir/tests.log
 rm -rf scratchdir && mkdir scratchdir","```bash
 mkdir scratchdir
@@ -929,7 +929,7 @@ mkdir scratchdir
 touch scratchdir/tests.log
 echo ""New content"" > scratchdir/tests.log
 tail --disable-inotify -F scratchdir/tests.log
-```","Not Applicable
+```","
 
 The provided bug description outlines the issue but does not provide a specific sequence of commands or test case that can be directly executed to reproduce the problem. The description explains what happens in two different scenarios (with and without inotify) but doesn't give exact steps for creating `scratchdir`, its contents, or how it ceases to exist and is recreated. Therefore, based on the given information, we cannot provide a precise command or test case to reproduce the bug.","```bash
 tail -F scratchdir/tests.log
@@ -938,20 +938,20 @@ rm -rf scratchdir && mkdir scratchdir && touch scratchdir/tests.log && echo ""Te
 ```
 
 This test case will help you reproduce the issue where `tail` with inotify support does not show the contents of a newly created file after its directory has been deleted and recreated."
-1444802,dnf install coreutils-single,dnf install coreutils-single,"Not Applicable
+1444802,dnf install coreutils-single,dnf install coreutils-single,"
 
 The provided bug description indicates a package management issue rather than a specific command that causes an unexpected behavior in coreutils itself. The problem described revolves around how DNF2 handles package dependencies and obsoletes, leading to the installation of `coreutils` instead of `coreutils-single`. This situation doesn’t arise from running particular commands but from the configuration and rules set within the package manager (DNF2) regarding package priorities and obsoletion. Thus, there isn't a specific command or test case provided for reproducing this bug beyond what’s described in ""Steps to Reproduce"", which is more about attempting an installation rather than executing a command that triggers unexpected behavior from coreutils directly.","```bash
 dnf install coreutils-single
 ```"
 1446494,"sudo yum install coreutils
 sudo yum install coreutils-single-8.27-3.fc27.x86_64
-sudo yum install coreutils",Not Applicable,Not Applicable,Not Applicable
+sudo yum install coreutils",,,
 1361694,ls,"```bash
 mkdir reproducing_dir
 cd reproducing_dir
 touch ""file with space""
 ls
-```","Not Applicable
+```","
 
 The provided bug report describes a change in behavior of the `ls` command where it now outputs single quotes around filenames with spaces. While the report gives instructions on how to observe this behavior, it does not provide an exact command or test case that can be directly executed to reproduce the issue in a standardized manner. The instruction suggests running `ls` in a directory containing a file with a space in its name but does not specify the exact filenames or steps needed for a precise reproduction scenario.","```bash
 ls 'file with spaces'
@@ -985,10 +985,10 @@ echo -- -n","```bash
 echo -n
 echo -- -n
 ```",echo -- -n,echo -- -n
-953194,sleep 1000,sleep 1000,Not Applicable,sleep 1000
-1320681,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+953194,sleep 1000,sleep 1000,,sleep 1000
+1320681,,,,
 1396064,who,who,who,who
-1392210,sudo dnf upgrade coreutils-common,dnf update coreutils-common,Not Applicable,Not Applicable
+1392210,sudo dnf upgrade coreutils-common,dnf update coreutils-common,,
 1339135,"sudo semanage fcontext -a -t user_home_t ""/tmp/foobar(/.*)?""
 touch foo
 install -D foo /tmp/foobar/foo
@@ -1062,18 +1062,18 @@ LANG=C expand -t4 file_tabs > file_expand
    - Create bind mounts from /Volumes/dune subdirectories to other locations on the system (e.g., /usr/local/sftp-homes/flow/cms, /home/builduser, /tmp, /var/tmp).
 4. Run the command: `/usr/bin/df -hT --exclude-type=tmpfs --exclude-type=devtmpfs`
 
-This setup and command should potentially reproduce the bug where ""df"" shows a random bind mount instead of the actual mount point for certain file systems.",Not Applicable,/usr/bin/df -hT --exclude-type=tmpfs --exclude-type=devtmpfs
-1312864,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+This setup and command should potentially reproduce the bug where ""df"" shows a random bind mount instead of the actual mount point for certain file systems.",,/usr/bin/df -hT --exclude-type=tmpfs --exclude-type=devtmpfs
+1312864,,,,
 901517,"sort -n ./ethercodes.dat > ./sorted_ethercodes.dat
 diff -up ./ethercodes.dat.orig ./sorted_ethercodes.dat","```bash
 sort -n -t: -k1,1 -k2,2 -k3,3 ./ethercodes.dat
 sort -n ./ethercodes.dat
-```",Not Applicable,Not Applicable
+```",,
 1376801,man echo,"```
 man echo
 info echo
-```",Not Applicable,Not Applicable
-1374678,"echo ""./Invoice.m4""; echo ""./Invoice.java""; echo ""./InvoiceLine.m4""; echo ""./InvoiceLine.java"" | sort","(echo ""./Invoice.m4""; echo ""./Invoice.java""; echo ""./InvoiceLine.m4""; echo ""./InvoiceLine.java"") | sort","Not Applicable
+```",,
+1374678,"echo ""./Invoice.m4""; echo ""./Invoice.java""; echo ""./InvoiceLine.m4""; echo ""./InvoiceLine.java"" | sort","(echo ""./Invoice.m4""; echo ""./Invoice.java""; echo ""./InvoiceLine.m4""; echo ""./InvoiceLine.java"") | sort","
 
 The provided information includes a command that is meant to demonstrate the issue, but the report does not clearly separate the reproducing steps from the actual results and expected results sections. The command given:
 
@@ -1081,37 +1081,37 @@ The provided information includes a command that is meant to demonstrate the iss
 (echo ""./Invoice.m4""; echo ""./Invoice.java""; echo ""./InvoiceLine.m4""; echo ""./InvoiceLine.java"") | sort 
 ```
 
-is indeed the test case to reproduce the issue, but since it's not explicitly stated as a separate reproducible step in the ""Steps to Reproduce"" section and is instead mixed with results discussion, I followed your instruction strictly which requires a clearly delineated test case or command from that section. Hence, based on the structure of the provided bug report and given instructions, the answer should be Not Applicable. However, for clarity, the test case would be:
+is indeed the test case to reproduce the issue, but since it's not explicitly stated as a separate reproducible step in the ""Steps to Reproduce"" section and is instead mixed with results discussion, I followed your instruction strictly which requires a clearly delineated test case or command from that section. Hence, based on the structure of the provided bug report and given instructions, the answer should be . However, for clarity, the test case would be:
 
 ```bash
 (echo ""./Invoice.m4""; echo ""./Invoice.java""; echo ""./InvoiceLine.m4""; echo ""./InvoiceLine.java"") | sort 
 ```","(echo ""./Invoice.m4""; echo ""./Invoice.java""; echo ""./InvoiceLine.m4""; echo ""./InvoiceLine.java"") | sort"
-1347746,ls -l /dev/disk/by-uuid,Not Applicable,Not Applicable,Not Applicable
+1347746,ls -l /dev/disk/by-uuid,,,
 1370362,ls -l /dev/disk/by-xxxx,"```
 ls -l /dev/disk/by-uuid
 ls -l /dev/disk/by-label
-```",Not Applicable,Not Applicable
+```",,
 1349701,ls 'My Documents',"```bash
 ls /hdd/VirtualBox\ VMs -d
 ```",ls /hdd/VirtualBox\ VMs -d,"```bash
 ls /hdd/VirtualBox\ VMs -d
 ```"
 1358888,"uname -v
-man uname",uname -v,Not Applicable,uname -v
+man uname",uname -v,,uname -v
 1285623,"mount | grep ds  
 /usr/bin/df","```bash
 mount -t nfs4 ds:/volume1/syntegra /syntegra
 mount -t nfs4 ds:/volume1/misty /home/user/misty
 df
-```",Not Applicable,Not Applicable
-1354078,dnf --installroot=/tmp --releasever=24 install coreutils,dnf --installroot=/tmp --releasever=24 install coreutils,"Not Applicable
+```",,
+1354078,dnf --installroot=/tmp --releasever=24 install coreutils,dnf --installroot=/tmp --releasever=24 install coreutils,"
 
-The bug report describes an issue with installing coreutils using `dnf`, but it does not provide a specific command or test case that can be used to reproduce the error in a consistent manner. The problem seems related to a scriptlet failing during installation, which may depend on the environment and specific conditions of the Fedora live system at the time of reporting. Without more details or a precise way to replicate the environmental context, no direct commands for reproduction are available from the given information.",Not Applicable
+The bug report describes an issue with installing coreutils using `dnf`, but it does not provide a specific command or test case that can be used to reproduce the error in a consistent manner. The problem seems related to a scriptlet failing during installation, which may depend on the environment and specific conditions of the Fedora live system at the time of reporting. Without more details or a precise way to replicate the environmental context, no direct commands for reproduction are available from the given information.",
 1352691,"> ""File with spaces.txt""
 ls","```bash
 touch ""File with spaces.txt""
 ls
-```","Not Applicable
+```","
 
 The provided steps are not actual shell commands that can be run to reproduce the behavior; they seem more like a misunderstanding of how files with spaces are represented in terminal output. The step `> ""File with spaces.txt""` is intended to create an empty file named `""File with spaces.txt""`, but this will actually result in a filename with quotes due to the way it’s written, which isn’t the usual way to test for quoted filenames in terminal output.
 
@@ -1119,16 +1119,16 @@ A proper command sequence would be:
 ```
 touch 'File with spaces.txt'
 ls
-```",Not Applicable
+```",
 1348043,"dnf --installroot /tmp/hoge --releasever=25 --disablerepo=* \
 --enablerepo=rawhide install coreutils","```bash
 dnf --installroot /tmp/hoge --releasever=25 --disablerepo=* --enablerepo=rawhide install coreutils
-```","Not Applicable
+```","
 
 The provided steps in the ""Steps to Reproduce"" section are incomplete and do not provide a clear sequence of actions beyond step 1. While step 1 suggests running the provided command, it does not clearly state that this command should fail as expected or specify how the outcome differs from what is anticipated, leading to ambiguity on whether the exact behavior described in the ""Actual results"" versus ""Expected results"" can be observed consistently using just that information. Therefore, a precise and complete test case cannot be extracted solely based on the given description.","```bash
 dnf --installroot /tmp/hoge --releasever=25 --disablerepo=* --enablerepo=rawhide install coreutils
 ```"
-1335320,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+1335320,,,,
 1303795,"cd /
 df *
 df /*
@@ -1136,8 +1136,8 @@ df bin lib lib64 sbin
 cd /
 df --totals *
 df --totals /l*
-df --totals bin lib lib64 sbin",Not Applicable,Not Applicable,Not Applicable
-647786,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+df --totals bin lib lib64 sbin",,,
+647786,,,,
 440056,"cp --help
 man cp","```bash
 cp /etc/shadow /tmp/shadow-dpPR; ls -lZ /tmp/shadow-dpPR
@@ -1165,16 +1165,16 @@ stat dest","```bash
 cp --reflink=always source dest
 stat source
 stat dest
-```",Not Applicable,"```bash
+```",,"```bash
 cp --reflink=always source dest
 stat dest
 ```"
 981845,man rm,"```bash
 rm -I file1 file2 file3 file4
-```","Not Applicable
+```","
 
 The provided Bugzilla entry does not specify any concrete command or test case that can be executed to demonstrate the issue; it mainly describes a preference for how an option should work rather than providing steps to reproduce a specific malfunction in behavior. The ""Steps to Reproduce"" section is incomplete, listing only ""man rm"" as step 1 and having no substantive subsequent steps. Therefore, based on the information given, there are no explicit commands or test cases available to reproduce the described issue.",rm -I a b c d
-1250113,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+1250113,,,,
 890223,du -sh 6e56p56v.default/,"```bash
 du -sh -sh 6e56p56v.default/
 ```",du -sh -sh 6e56p56v.default/,du -sh -sh 6e56p56v.default/
@@ -1182,8 +1182,8 @@ du -sh -sh 6e56p56v.default/
 ls","```bash
 mkdir 'Test Dir'
 ls
-```",mkdir Test\ Dir; ls,Not Applicable
-1323163,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+```",mkdir Test\ Dir; ls,
+1323163,,,,
 1319594,"export LANG=zh_CN.UTF-8
 ls -lh","```
 LC_ALL=zh_CN.UTF-8 ls -lh
@@ -1200,9 +1200,9 @@ od -S file.txt
 od -S=10 file.bin
 od -w file.txt
 od -w=10 file.txt
-```","Not Applicable
+```","
 
-The provided bug description discusses issues with documentation clarity and behavior of options but does not specify exact commands or test cases needed to reproduce any functional bugs directly. The concerns are primarily about how the `-S` and `-w` options are documented, rather than a failure in functionality that can be reproduced with specific commands.",Not Applicable
+The provided bug description discusses issues with documentation clarity and behavior of options but does not specify exact commands or test cases needed to reproduce any functional bugs directly. The concerns are primarily about how the `-S` and `-w` options are documented, rather than a failure in functionality that can be reproduced with specific commands.",
 1314722,"echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0"" | cut -d'|' -f2","```bash
 echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0""|cut -d'|' -f2
 ```","echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0""|cut -d'|' -f2","echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0""|cut -d'|' -f2"
@@ -1212,7 +1212,7 @@ echo exit | script -c ""strace -f bash 2>&1"" /dev/stdout | less
 cd /usr/share/man/man3; echo exit | script -c ""strace -f bash 2>&1"" /dev/stdout | less
 ```","cd /usr/share/man/man3; echo exit | script -c ""strace -f bash 2>&1"" /dev/stdout | less
 
-Not Applicable of the steps provided directly pinpoint a coreutils command causing the issue but rather describe how to observe the unnecessary directory scan during shell startup. The given step will reproduce the observed behavior where unnecessary scanning occurs, indicating the presence of the bug.","```bash
+ of the steps provided directly pinpoint a coreutils command causing the issue but rather describe how to observe the unnecessary directory scan during shell startup. The given step will reproduce the observed behavior where unnecessary scanning occurs, indicating the presence of the bug.","```bash
 cd /usr/share/man/man3 && echo exit | script -c ""strace -f bash 2>&1"" /dev/stdout | less
 ```"
 1306393,"echo >test.txt
@@ -1230,15 +1230,15 @@ echo 'a_shorter_field::foo' > test; cut -d':' -f 3 test
 cut -d':' -f 3 test
 
 echo 'a_shorter_field::foo' > test
-cut -d':' -f 3 test",Not Applicable
+cut -d':' -f 3 test",
 1304071,"sort -T $sorttmp -S""3g"" -uk1 | egrep -v '^$' | egrep '\.com' < 1000s > 1000s.srtd
 sort -T $sorttmp -S ""3g"" -uk1 | egrep -v '^$' | egrep '\.com' < 1000s > 1000s.srtd","```bash
 sort -T /tmp -S""3g"" -uk1 < input.txt
 sort -T /tmp -S ""3g"" -uk1 < input.txt
 ```","sort -T $sorttmp -S ""3g"" -uk1 | egrep -v '^$' | egrep '\.com' < 1000s > 1000s.srtd","sort -T $sorttmp -S ""3g"" -uk1 < 1000s > 1000s.srtd"
 1249695,man install,"man install | grep yum 
-man install | grep dnf",Not Applicable,man install
-1298736,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+man install | grep dnf",,man install
+1298736,,,,
 1297464,"mkdir test
 mv test test test","```bash
 mkdir test
@@ -1253,27 +1253,27 @@ rm testfile","```bash
 touch testfile; 
 chmod 0444 testfile; 
 sudo rm testfile
-```","Not Applicable
+```","
 
 The steps provided in the bug report are descriptions of how to set up a scenario and what happens, but they do not directly state a command that would be used to test for the bug specifically as requested. The scenario setup is:
 1. `touch testfile`
 2. `chmod -w testfile`
 3. `rm testfile`
 
-However, these steps are more explanatory in nature and describe both how to set up the environment and what behavior occurs based on user permissions. Since there isn't a single command or explicit test case given that isolates the bug for direct reproduction (beyond setting up the scenario), ""Not Applicable"" is provided as per instruction if no specific reproducible command or test case exists.",Not Applicable
+However, these steps are more explanatory in nature and describe both how to set up the environment and what behavior occurs based on user permissions. Since there isn't a single command or explicit test case given that isolates the bug for direct reproduction (beyond setting up the scenario), """" is provided as per instruction if no specific reproducible command or test case exists.",
 1199679,"strace df -l -h
 strace df -l -h 2>&1 | grep stat",strace df -l -h,strace df -l -h,strace df -l -h | grep stat\(
 1196642,"gnome-terminal -- bash -c 'export TERM=xterm-256color; bash'
 xterm -bg white -e 'export TERM=xterm-256color; bash'","```
 LS_COLORS=$(/etc/profile.d/dir_colors.256color.sh) ls -l --color=always
-```",Not Applicable,Not Applicable
+```",,
 1027279,"echo ""set -o noclobber"" >> ~/.bashrc
 source ~/.bashrc
 /etc/profile.d/colorls.csh","```bash
 set -o noclobber
 mktemp /tmp/.colorlsXXX
 echo ""test"" > /tmp/.colorlsXXX
-```","Not Applicable
+```","
 
 The provided Bug Description does not include specific commands or a test case that can be directly executed to reproduce the bug. The issue revolves around modifications in script behavior due to shell settings and script interactions, but no explicit command sequence is given for reproduction.","To reproduce the bug, you can use the following command sequence:
 
@@ -1300,13 +1300,13 @@ diff -ruN old.txt new.txt > diff.txt
 cat diff.txt","```bash
 find . -type f -exec md5sum {} \; | sort
 ```
-Note: To fully reproduce the bug, you would need to create a directory with at least two files having the same checksum and then run this command on machines with coreutils 8.22-15 and 8.23-10 respectively, comparing the outputs for differences.","Not Applicable
+Note: To fully reproduce the bug, you would need to create a directory with at least two files having the same checksum and then run this command on machines with coreutils 8.22-15 and 8.23-10 respectively, comparing the outputs for differences.","
 
 The provided bug description does not specify exact input files or additional details that would allow someone to reproduce the issue reliably. While a command is given (`find . -type f -exec md5sum {} \; | sort`), without knowing the specific file contents and structure of the directories, it's not possible to precisely recreate the scenario where two different versions of coreutils produce different outputs for identical input data.",find . -type f -exec md5sum {} \; | sort
 920806,"sudo exportfs -o rw,sync /export/vol1 client_IP
 sudo mount -t nfs server_IP:/export/vol1 /mnt/vol1
-df",Not Applicable,Not Applicable,Not Applicable
-1243572,"date +%F --date=""00:00:00 +3 days""",Not Applicable,Not Applicable,Not Applicable
+df",,,
+1243572,"date +%F --date=""00:00:00 +3 days""",,,
 1135583,"rpm -q coreutils
 ls -Z foo
 ls -lZ foo","```bash
@@ -1336,19 +1336,19 @@ echo ""sha256_hash_5 missingfile2"" >> CHECKSUM
 touch filename1
 touch filename2
 touch filename3
-```",Not Applicable,sha256sum -c *SUM
+```",,sha256sum -c *SUM
 1235873,"echo -e ""version-1.2.10\nversion-1.2.2\nversion-1.2.3\nversion-1.10.1\nversion-1.2.20"" > sortbug.txt
 cat sortbug.txt
 sort -rV sortbug.txt","```
 dd if=/dev/zero of=/dev/null& pid=$!; kill -USR1 $pid; sleep 1; kill $pid
-```",Not Applicable,Not Applicable
+```",,
 1146185,"printf 'a b!x\na-b-c!x\n' | LANG=en_US.utf8 ltrace -e strcoll sort -s --debug -k1,1 -t!","```
 sort -k 1 old.txt > sorted_old.txt
 sort -k 1 new.txt > sorted_new.txt
 diff -ruN sorted_old.txt sorted_new.txt > diff.txt
-```","Not Applicable
+```","
 
-The provided bug report does not specify exact commands or a precise test case that would allow one to directly reproduce the issue. The developer mentions differences observed between two versions of coreutils through attached files (`old.txt` and `new.txt`) but doesn't provide an explicit command for reproducing the erroneous behavior with the sort utility itself.",Not Applicable
+The provided bug report does not specify exact commands or a precise test case that would allow one to directly reproduce the issue. The developer mentions differences observed between two versions of coreutils through attached files (`old.txt` and `new.txt`) but doesn't provide an explicit command for reproducing the erroneous behavior with the sort utility itself.",
 1169027,"rpm -ql --queryformat '[%{FILELANGS}\t%{FILENAMES}\n]' coreutils | grep LC_TIME | head -5  
 rpm -qf /usr/share/locale/af  
 rpm -qf /usr/share/locale/af/LC_MESSAGES  
@@ -1364,9 +1364,9 @@ mount nas.example.com:/Backups /mnt/Backups -t nfs
 
 # Run 'df'
 df | grep nas
-```","Not Applicable
+```","
 
-The provided description outlines a sequence of steps but does not offer a specific and direct command or test case that can be executed independently to reproduce the issue. The reproducibility requires setting up an NFS server with multiple exports, mounting these on a client system, and then observing the behavior with `df`, which is not a self-contained test case within the scope of coreutils alone but involves external configurations (NFS setup).",Not Applicable
+The provided description outlines a sequence of steps but does not offer a specific and direct command or test case that can be executed independently to reproduce the issue. The reproducibility requires setting up an NFS server with multiple exports, mounting these on a client system, and then observing the behavior with `df`, which is not a self-contained test case within the scope of coreutils alone but involves external configurations (NFS setup).",
 1177515,"cp -vrup /home/* /room/wdbook1/nfs/Public/backup/verlaiine/home >> /var/log/lastbackup  
 cat /var/log/lastbackup","date +%F --date=""00:00:00 +3 days""","date +%F --date=""00:00:00 +3 days""","date +%F --date=""00:00:00 +3 days"""
 1207314,"echo > :
@@ -1416,17 +1416,17 @@ rpm -ql --queryformat '[%{FILELANGS}\t%{FILENAMES}\n]' coreutils | grep LC_TIME 
 rpm -qf /usr/share/locale/af
 rpm -qf /usr/share/locale/af/LC_MESSAGES
 rpm -qf /usr/share/locale/af/LC_TIME
-```","Not Applicable
+```","
 
 The provided steps are more about identifying the ownership issue rather than reproducing a functional bug in coreutils or filesystem packages. The reported issue is related to package management and directory ownership, not a functional error that can be reproduced with specific commands or input data.","```bash
 rpm -ql --queryformat '[%{FILELANGS}\t%{FILENAMES}\n]' coreutils | grep LC_TIME | head -5
 rpm -qf /usr/share/locale/af/LC_TIME
 ```"
 430821,"echo -e ""F-A\nFB\nF-C"" > a.txt
-sort a.txt",Not Applicable,Not Applicable,Not Applicable
+sort a.txt",,,
 284881,"export LC_COLLATE=en_US.UTF-8
 export LC_NUMERIC=en_US.UTF-8
-sort -n -t, -k1 <<'EOF'",Not Applicable,Not Applicable,Not Applicable
+sort -n -t, -k1 <<'EOF'",,,
 428494,"echo -e ""  leading space\n_leading underscore\nnormal line\n another space"" > file.txt  
 sort file.txt","```bash
 TIME_STYLE=locale LC_ALL=en_US.UTF-8 ls -l / | head -n 3
@@ -1440,7 +1440,7 @@ echo abc | tr [:lower:] [:upper:]
 rm \:
 ```","echo > :
 echo abc | tr [:lower:] [:upper:]
-rm \:",Not Applicable
+rm \:",
 232458,LC_ALL=hu_HU.UTF-8 dd if=/dev/zero of=/dev/null bs=4M count=1024,"To reproduce the bug described, we need to analyze the provided information carefully. The details include environment variables, memory maps, and log messages indicating that a core dump was saved for the `/bin/sleep` command on multiple occasions.
 
 Given this context, it seems like the issue might be related to how the `sleep` command is executing or being terminated, possibly due to a signal or an unexpected condition. Here are some steps and commands that could potentially reproduce the bug:
@@ -1618,54 +1618,54 @@ tail -f /var/log/messages
 
 By performing these steps, you should be able to reproduce the bug and gather more information about what is causing the `sleep` command to crash. If you can reliably reproduce this issue, consider reporting it to the appropriate maintainers with detailed logs and system specifications."
 230950,"mkdir /tmp/logs  
-cp /tmp/syslog /tmp/logs/",sleep 100000,Not Applicable,sleep 100000
+cp /tmp/syslog /tmp/logs/",sleep 100000,,sleep 100000
 246567,"ln -s ../../etc/hosts /home/user
 cd /home/user
-/bin/ls --color=always | grep hosts",mktemp -t /tmp/.colorlsXXX; bash -c 'echo > $TMP',Not Applicable,Not Applicable
+/bin/ls --color=always | grep hosts",mktemp -t /tmp/.colorlsXXX; bash -c 'echo > $TMP',,
 358701,"cd /path/to/nfs-mounted-directory
 ls file1
 cp -av file1 file2
-cp -av file1 file2",sleep 100,"Not Applicable
+cp -av file1 file2",sleep 100,"
 
-The provided information indicates that the `/bin/sleep` command was involved in a segmentation fault (SIGSEGV), but it does not provide enough context or specific conditions under which this occurred to formulate a precise command or test case for reproducing the issue. The reported `cmdline: sleep 100` suggests that simply running `sleep 100` led to the crash, however, without additional details on the system state (e.g., environment variables, memory state), no specific and reliable test case can be definitively provided based solely on this information.",Not Applicable
+The provided information indicates that the `/bin/sleep` command was involved in a segmentation fault (SIGSEGV), but it does not provide enough context or specific conditions under which this occurred to formulate a precise command or test case for reproducing the issue. The reported `cmdline: sleep 100` suggests that simply running `sleep 100` led to the crash, however, without additional details on the system state (e.g., environment variables, memory state), no specific and reliable test case can be definitively provided based solely on this information.",
 356311,"echo poo > a
 cat a
 cp -a a b
 echo $?
 cat b
-ls -l b",sleep 100,"Not Applicable
+ls -l b",sleep 100,"
 
-The provided information indicates that a segmentation fault occurred in the `sleep` command from coreutils when running `sleep 100`. However, there are no additional details or specific conditions (such as environment variables, library versions, etc.) listed that might be necessary to reproduce this error. Since segmentation faults can often depend on very specific contexts or conditions beyond just the basic usage of a command, and given that no such context is provided here, it's not possible to definitively state a set of commands or test cases that would reliably reproduce the bug.",Not Applicable
-340291,Not Applicable,Not Applicable,Not Applicable,Not Applicable
+The provided information indicates that a segmentation fault occurred in the `sleep` command from coreutils when running `sleep 100`. However, there are no additional details or specific conditions (such as environment variables, library versions, etc.) listed that might be necessary to reproduce this error. Since segmentation faults can often depend on very specific contexts or conditions beyond just the basic usage of a command, and given that no such context is provided here, it's not possible to definitively state a set of commands or test cases that would reliably reproduce the bug.",
+340291,,,,
 313401,"date --help
 man date
-info date",sleep 100,Not Applicable,Not Applicable
-305341,Not Applicable,Not Applicable,Not Applicable,Not Applicable
-299121,Not Applicable,"```
+info date",sleep 100,,
+305341,,,,
+299121,,"```
 sleep 100
-```",Not Applicable,Not Applicable
+```",,
 280331,"cd /partition
 rm -f toto*
 date > toto1
 cp -i -a toto1 toto2
 cp -i -a toto1 toto2
-ls -l toto*",sleep 100,"Not Applicable
+ls -l toto*",sleep 100,"
 
-The report indicates that a segmentation fault occurred while running `sleep 100`, but it does not provide additional context suggesting that this is consistently reproducible or under specific conditions beyond what was reported. Without further details on how this issue can be reliably reproduced, we cannot provide an exact command or test case to reproduce the bug.",Not Applicable
-251800,Not Applicable,sleep 1000000,Not Applicable,sleep 1000000
+The report indicates that a segmentation fault occurred while running `sleep 100`, but it does not provide additional context suggesting that this is consistently reproducible or under specific conditions beyond what was reported. Without further details on how this issue can be reliably reproduced, we cannot provide an exact command or test case to reproduce the bug.",
+251800,,sleep 1000000,,sleep 1000000
 251653,"mkdir -p a/b/c
 chmod 0 a
-rm -rf a",sleep 1000000,Not Applicable,Not Applicable
+rm -rf a",sleep 1000000,,
 250089,"cd /tmp
 mkdir -p du_test/unreadable
 du -a -b du_test
 chmod 000 du_test/unreadable
-du -b -a du_test",sleep 1000,Not Applicable,Not Applicable
-249421,Not Applicable,sleep 1000,Not Applicable,Not Applicable
+du -b -a du_test",sleep 1000,,
+249421,,sleep 1000,,
 248591,"touch file1
 mkdir dir && touch dir/file2
 touch -t 202301010000 file1 && touch file2
-cp -iu file1 dir/",sleep 1000,Not Applicable,Not Applicable
+cp -iu file1 dir/",sleep 1000,,
 232652,"echo 'int main(){return 0;}' > u.c
 gcc -o u u.c
-runcon -t unconfined_t /usr/sbin/prelink -N ./u",sleep 1000,Not Applicable,Not Applicable
+runcon -t unconfined_t /usr/sbin/prelink -N ./u",sleep 1000,,
