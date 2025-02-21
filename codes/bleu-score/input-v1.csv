@@ -7,9 +7,21 @@ printf """"a-xyz\nabc-xyz\n"""" | sort -V","```bash
 printf ""a-xyz\nabc-xyz\n"" | sort
 printf ""a-xyz\nabc-xyz\n"" | sort -V
 ```","printf ""a-xyz\nabc-xyz\n"" | sort -V","printf ""a-xyz\nabc-xyz\n"" | sort -V"
+2325167,,"nproc
+sched_getaffinity -p $$ > /dev/null && echo ""Expected failure didn't occur"" || true 
+getconf _NPROCESSORS_ONLN 
+(While the first two commands are more about demonstrating system calls and behavior, a definitive reproducing test case would likely involve writing a C program that uses sched_getaffinity with varying sizes of CPU sets to demonstrate the issue. However, based on provided information, we focus on nproc as the primary command related to the bug description.)",,
 2311888,,,,
+2307847,,"dnf install cockpit
+cockpit-session --login
+who","sudo dnf install cockpit
+systemctl start cockpit
+systemctl enable cockpit.socket
+who","Install cockpit, login to a session
+run `who`"
 2296201,"fold badfile
-echo $?","```bash
+echo $?
+","```bash
 fold badfile
 echo ""$?""
 ```","fold badfile
@@ -19,7 +31,8 @@ echo ""$?"""
 492369,"chmod 4755 filename
 ls -l filename
 chmod 0755 filename
-ls -l filename","```bash
+ls -l filename
+","```bash
 touch file
 chmod 4755 file
 ls -l file
@@ -46,10 +59,25 @@ split -C 131072 ---output=io=131072 in
 ```","{ printf '%131070s\n' ''; printf 'x\n'; printf '%131071s\n' ''; } > in
 split -C 131072 ---io=131072 in","{ printf '%131070s\n' ''; printf 'x\n'; printf '%131071s\n' ''; } > in
 split -C 131072 --io=131072 in"
+2256513,,"rpm -q coreutils
+rpm -ql coreutils | grep /bin/ln
+dnf install gskssl64",,
 2248503,uname -i,uname -i,,
 2160675,,,,
+1121021,,"```bash
+sshfs user@remotehost:/path/to/remote/location /home/user/local/mount/point
+sudo df
+df
+```
+Note: Replace `user`, `remotehost`, `/path/to/remote/location`, and `/home/user/local/mount/point` with actual values.","sshfs user@remote:/path /home/user/mountpoint
+sudo df
+df","sshfs user@remotehost:/path/to/remote /home/user/someremoteloc  
+df  
+sudo df  
+umount /home/user/someremoteloc"
 2236321,"cp -v -u <source> <destination>
-mv -v -u <source> <destination>","cp -u -v file1 file2
+mv -v -u <source> <destination>
+","cp -u -v file1 file2
 mv -i -v file3 file4 
 cp -u -v --debug file1 file2
 mv -i -v --debug file3 file4",,
@@ -65,7 +93,7 @@ dnf install AdobeReader_enu-9.5.5-1.i486
 ```
 Note: The exact command might vary depending on the package manager used (e.g., `yum` instead of `dnf`). However, based on the provided information, this should be sufficient to reproduce the issue related to the missing `/bin/basename` and `libidn.so.11`.",,
 2175057,,,,
-2172323,sleep 500,sleep 500,,sleep 500
+2172323,,sleep 500,,sleep 500
 2162873,"uname -p
 arch
 cat /proc/cpuinfo",uname -p,,
@@ -79,6 +107,32 @@ date
 date +%c",
 2150513,,,,
 2138908,,,,
+2124510,,"```bash
+docker run -it --rm registry.fedoraproject.org/fedora:37 /bin/bash
+```
+Then inside the container:
+```bash
+echo ""if [ -w ""/root"" ] ; then echo 'Success!' ; fi"" > test.sh
+bash test.sh
+```
+And compare with:
+```bash
+docker run -it --rm registry.fedoraproject.org/fedora:37 /bin/bash
+```
+is not applicable here as we are testing on aarch64, so we use 
+```bash
+qemu-aarch64-static -L /usr/aarch64-linux-gnu /bin/bash
+```
+Then inside the container:
+```bash
+echo ""if [ -w ""/root"" ] ; then echo 'Success!' ; fi"" > test.sh
+bash test.sh
+```","write a test.sh with content and execute
+```
+if [ -w ""/root"" ] ; then echo 'Success!' ; fi
+```","```bash
+if [ -w ""/root"" ] ; then echo 'Success!' ; fi
+```"
 2112870,printf '\f'  | unexpand,printf '\f' | unexpand,printf '\f' | unexpand,printf '\f' | unexpand
 548834,uname -i,uname -i,,
 2112593,"mkdir ~/.dir_colors
@@ -92,7 +146,7 @@ cp /etc/DIR_COLORS ~/.dir_colors
 gnome-terminal","mkdir ~/.dir_colors
 cp /etc/DIR_COLORS ~/.dir_colors
 gnome-terminal"
-2104212,,," of the provided information directly describes a specific command or test case that reproduces a particular bug. Instead, the text primarily discusses the upcoming removal of i686 Java packages from Fedora and requests package maintainers to adapt their packages accordingly.
+2104212,,,"None of the provided information directly describes a specific command or test case that reproduces a particular bug. Instead, the text primarily discusses the upcoming removal of i686 Java packages from Fedora and requests package maintainers to adapt their packages accordingly.
 
 The main points conveyed are:
 1. The plan to drop i686 support for Java.
@@ -105,7 +159,7 @@ Therefore, the response is:
 
 **No specific commands or test cases required to reproduce a bug. The issue involves adapting the package configuration to handle exclusion of Java-specific features on the i686 architecture as per the guidelines provided in the message.**
 
-If you need further assistance with how to adapt your package configuration specifically, please provide more details about your package and its current setup.","
+If you need further assistance with how to adapt your package configuration specifically, please provide more details about your package and its current setup.","None
 
 The provided bug description does not detail any specific issue that could be reproduced through a command or a test case. The report is more of an advisory for package maintainers about the removal of i686 Java packages in Fedora 37 and instructions on how to adapt their packages accordingly.
 
@@ -145,6 +199,9 @@ date +%/a","date +%a
 date +%^a  
 date +#a  
 date +%/a"
+963134,,"echo -e ""Hello \u4f60\u597d"" | fmt -w 10
+echo -e ""Hello \u4f60\u597d"" | fmt -w 10 | wc -L","echo -e ""\xe6\x97\xa5\xe6\x9c\xac\xe8\xaa\x9e"" | fmt -w 10","echo -e ""你好\n世界"" | fmt -w 10
+echo -e ""a\U0001F600b"" | fmt -w 5"
 1956080,"cp --reflink=never a b
 filefrag -v a; filefrag -v b","```bash
 cp --reflink=never a b
@@ -159,6 +216,13 @@ execute df w/o for all file systems
 RC 1",df -h > /dev/null; echo $?,"systemctl --user start xdg-document-portal.service
 df -h > /dev/null; echo $?",df -h > /dev/null; echo $?
 1992341,,,,
+1982273,,"```bash
+dnf update coreutils coreutils-common policycoreutils policycoreutils-python-utils python3-policycoreutils
+su
+uname
+cat
+dnf install coreutils coreutils-single
+```",,
 1960792,"rpmbuild -bb coreutils.spec 
 rpmbuild --rebuild coreutils-8.32-24.fc34.src.rpm","To reproduce the bug described in the output of the `tests/ls/stat-free-color.sh` script from the coreutils package, you would need to follow these steps based on the information provided:
 
@@ -305,7 +369,8 @@ This will execute all tests, including `stat-free-color.sh`. However, if you are
 touch test/file
 ll -a test
 chmod 0640 test
-ll -a test","```bash
+ll -a test
+","```bash
 mkdir test
 touch test/file
 ll -a test
@@ -314,7 +379,7 @@ ll -a test
 ```","mkdir test                    
 touch test/file
 chmod 0640 test 
-ll -a test","mkdir test  
+ll -a test     ","mkdir test  
 touch test/file  
 ll -a test  
 chmod 0640 test  
@@ -323,7 +388,8 @@ ll -a test"
 rpm -qa --queryformat ""%{NAME}-%{VERSION}\n"" automake autoconf m4 mingw64-* | column | sort
 ```","rpm -qa --queryformat ""%{NAME}-%{VERSION}\n"" automake autoconf m4 mingw64-* | column | sort",
 1944688,"rpm -qf `which basename`
-rpm -q --provides coreutils",,,
+rpm -q --provides coreutils
+",,,
 1634200,"docker run -it --rm fedora:latest /bin/bash
 rpm -q coreutils-single
 ls -l /bin/basename
@@ -341,9 +407,67 @@ ls -l /bin/basename
 rpm -q --whatprovides /bin/basename
 dnf repoquery --whatprovides /bin/basename",
 1921427,stat -f '<file/folder from exFAT drive>',"mkfs.exfat /dev/sdX (replace /dev/sdX with your actual device)
-stat -f '/mount/point/of/exfat/drive' (replace /mount/point/of/exfat/drive with actual mount point)","
+stat -f '/mount/point/of/exfat/drive' (replace /mount/point/of/exfat/drive with actual mount point)","None
 
 The provided information indicates that a specific setup is necessary to reproduce the bug (i.e., connecting an exFAT drive), which cannot be represented simply by shell commands alone without the physical media or virtual equivalent being specified. Therefore, a complete and precise command-line-only reproduction isn't feasible based on the given description.",stat -f '/run/media/aurora/LABEL/iiiiiii.txt'
+1921249,,"```bash
+mkdir test_dir
+cd test_dir
+ln -s non_existent_file symlink
+chmod 755 .
+ls -Zd .
+```",,
+1921246,,"To reproduce the bug, you can use the following command:
+
+```bash
+dd if=/dev/urandom of=input.txt bs=1024 count=256
+split -n 2/3 --numeric-suffixes input.txt output_
+cat output_00 output_01 | md5sum
+dd if=/dev/urandom of=input.txt bs=1024 count=256
+split -n 2/3 input.txt output_
+cat output_00 output_01 | md5sum
+```
+
+Note that the first `md5sum` should be different from the second `md5sum`, indicating data corruption.
+
+Alternatively, a simpler test case:
+
+```bash
+dd if=/dev/urandom of=input.txt bs=1024 count=130
+split --number=l/2 input.txt output_
+cat output_00 output_01 | md5sum
+md5sum input.txt
+```
+
+The two `md5sum` outputs should be different, indicating data corruption. 
+
+Please note that running these commands requires the `dd`, `split`, and `md5sum` utilities to be installed on your system. Also, the actual output files (`output_00` and `output_01`) may vary based on the specific version of `split` being used. 
+
+However, considering the original description which specifically mentions ""split --number=K/N"", a test case could also be:
+
+```bash
+dd if=/dev/urandom of=input.txt bs=1024 count=130
+split --number=1/2 input.txt output_
+cat output_0 output_1 | md5sum
+md5sum input.txt
+```
+
+The two `md5sum` outputs should match, but due to the bug, they might not. 
+
+To simplify:
+
+```bash
+dd if=/dev/urandom of=input.txt bs=1024 count=130
+split --number=1/2 input.txt output_
+cmp input.txt <(cat output_0 output_1)
+```
+
+If the `cmp` command reports any differences, it indicates data corruption due to the bug.","split -n l/2 bigfile part_
+cat part_* > merged_file
+diff bigfile merged_file",
+1811038,,"mknod -m 666 /dev/random c 1 8 
+
+Note: The command should be run in an environment where /dev/random is already present, as it's a character special file that cannot be created using mknod if it doesn't exist. Also, the exact error message may vary depending on the system and permissions.",,
 959597,"info date
 info who","info date
 (info command, then follow link ""*Note Specifying the Time Zone with `TZ': (libc)TZ Variable"")","info date
@@ -429,6 +553,10 @@ date --date=""2019-03-10 03:23:45"" +""%s""
 TZ=UTC date --date=""2019-03-10 02:23:45"" +""%s""
 ```","date --date=""2019-03-10 02:23:45"" +""%s""","TZ=PDT date --date=""2019-03-10 02:23:45"" +""%s"""
 1830318,,ls --color /usr/libexec,,
+1884264,,"```bash
+ls --color=auto
+cat /etc/DIR_COLORS.256color
+```",,
 1883685,,,,
 1877625,df -h,"To reproduce the bug, you would need a system with Btrfs and a specific disk layout where `/dev/sda3` is mounted on both `/` and `/home`. The exact steps might involve:
 
@@ -511,7 +639,7 @@ date -d 'month ago'",date -d 'month ago'
 FROM fedora:30  
 RUN dnf -y update coreutils
 sudo docker build -t test-image .  
-sudo docker run -it --rm test-image ls /","```bash
+sudo docker run -it --rm test-image ls /  ","```bash
 cat > Dockerfile <<EOF
 FROM fedora:30
 RUN dnf -y update coreutils
@@ -532,6 +660,10 @@ sudo docker build -t my-fedora-coreutils .
 sudo docker run -it --rm my-fedora-coreutils ls /"
 1728986,,"ln -s non_existent_file existing_link
 ls -l existing_link",,
+1444774,,"```bash
+TZ=$(printf 'A%.0s' {1..10000}) date
+```","export TZ=$(python -c 'print ""A"" * 10000')
+date +%T",
 1713901,"env LANG=en_EN date
 env LANG=en_US date","env LANG=en_EN date
 env LANG=en_US date","env LANG=en_EN date
@@ -556,6 +688,225 @@ samba-4.10.2-1.1.fc30.x86_64
 EOF
 
 sort -V sort_test.txt"
+1674156,,"To reproduce this bug, you'll need to run a combination of commands that will allow you to:
+
+1.  **Observe the issue with `du`**: The first step is to confirm that `du` (or any other command that's supposed to count or process files in a directory) indeed stops counting at a certain file.
+2.  **Verify file existence and permissions**: Use `ls -la` to verify that all files, including the last one correctly handled by `du`, exist and have proper permissions.
+3.  **Run `stat` on affected files**: Since `stat` did not see any irregularity, you should run it on several files around the point where `du` stops counting to ensure there are no unusual file attributes or issues.
+
+Here's how you can set up these test cases:
+
+### Test Case 1: Observe the issue with `du`
+
+```bash
+# Run du on the directory in question
+du -a /mailacct/imapbox/Maildir//.Archives.2018/cur/
+```
+
+This should demonstrate that `du` stops counting files at a certain point.
+
+### Test Case 2: Verify file existence and permissions
+
+```bash
+# List all files with detailed information
+ls -la /mailacct/imapbox/Maildir//.Archives.2018/cur/
+
+# Specifically look for the last correctly handled file and its neighbors
+ls -la /mailacct/imapbox/Maildir//.Archives.2018/cur/* | grep -B2 ""1549609568.M246447P12677.xxx.my-system.de,S=658661,W=667579:2,Sa""
+```
+
+This will show you the files around the point where `du` stops, helping to identify if there's something unique about them.
+
+### Test Case 3: Run `stat` on affected files
+
+```bash
+# Run stat on several files around the stopping point
+stat /mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246447P12677.xxx.my-system.de,S=658661,W=667579:2,Sa
+stat /mailacct/imapbox/Maildir//.Archives.2018/cur/* | grep -B2 ""1549609568.M246447P12677.xxx.my-system.de,S=658661,W=667579:2,Sa""
+```
+
+However, the `stat` command with `grep` as shown won't directly work because `stat` doesn't accept multiple files in this context when combined with `grep`. Instead, you can manually run `stat` on several files around the problematic area:
+
+```bash
+# Example for running stat on specific files
+stat /mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246447P12677.xxx.my-system.de,S=658661,W=667579:2,Sa
+stat /mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246448P12677.xxx.my-system.de,S=... # Adjust the filename as needed
+```
+
+### Additional Tests
+
+-   **Filesystem check**: While you've mentioned that `fs` checks are planned, it's crucial to rule out filesystem issues even if other commands like `ls` work correctly.
+-   **Permissions and ownership**: Ensure that permissions and ownership of files around the stopping point are consistent with those before it.
+-   **File names and formats**: Check for any unusual file naming conventions or characters that might cause issues with how `du` processes file names.
+
+By systematically running these commands and analyzing their outputs, you should be able to isolate the cause of why `du` stops counting files at a certain point.","Based on the provided information, the issue seems to be related to how certain tools (specifically `du` in this case) are handling a directory structure, while others (`ls`) are not exhibiting any issues. The key points suggest:
+
+1. The tool `du` is unable to count files correctly.
+2. The `stat` command does not report irregularities on the files.
+3. All affected files appear to have valid entries when listed with `ls`.
+
+To help reproduce and diagnose this issue, you would need to perform several tests. Here are some commands and test cases that can be used:
+
+### 1. List Files
+Ensure all files are properly listed:
+```sh
+ls -la /mailacct/imapbox/Maildir/.Archives.2018/cur/
+```
+
+### 2. Stat Each File
+Check the metadata of each file to ensure no hidden irregularities:
+```sh
+for f in /mailacct/imapbox/Maildir/.Archives.2018/cur/*; do stat ""$f""; done
+```
+
+### 3. Use `du` on Different Levels
+Compare how `du` behaves at different directory levels:
+```sh
+# Check the entire directory
+du -ah /mailacct/imapbox/Maildir/.Archives.2018
+
+# Check specific subdirectory
+du -ah /mailacct/imapbox/Maildir/.Archives.2018/cur/
+```
+
+### 4. Use `find` to Verify File Existence and Counting
+Use the `find` command to ensure all files are being recognized:
+```sh
+# List all files in the directory
+find /mailacct/imapbox/Maildir/.Archives.2018/cur/
+
+# Count the number of files directly in this directory (excluding subdirectories)
+find /mailacct/imapbox/Maildir/.Archives.2018/cur/ -maxdepth 1 -type f | wc -l
+```
+
+### 5. Compare File Sizes and Counts
+Compare file sizes and counts using different tools:
+```sh
+# Get total size of all files in the directory
+du -c /mailacct/imapbox/Maildir/.Archives.2018/cur/* | grep ""total$""
+
+# List individual file sizes (for verification)
+ls -l --block-size=K /mailacct/imapbox/Maildir/.Archives.2018/cur/
+```
+
+### 6. Check for Symbolic Links and Hardlinks
+Ensure there are no symbolic links or hardlinks causing issues:
+```sh
+# List symbolic links in the directory (if any)
+find /mailacct/imapbox/Maildir/.Archives.2018/cur/ -type l
+
+# List all files including their inode numbers for duplicate checks
+ls -li /mailacct/imapbox/Maildir/.Archives.2018/cur/
+```
+
+### 7. Check the Filesystem Integrity
+Even though you mentioned it might not be a filesystem issue, running fsck is always a good precaution:
+```sh
+# Ensure the filesystem is mounted read-only or unmounted before checking
+fsck /dev/<your_device>
+```
+
+By performing these tests and comparing outputs from different commands, you can pinpoint the cause of why `du` is failing to count files correctly while other tools like `ls` are not showing any issues. This will help in reproducing the bug and further diagnosing it.","To help diagnose and potentially reproduce this issue, you'll want to perform a series of checks and tests that will help narrow down what might be causing `newfstatat` to stop counting files at a certain point.
+
+### Steps to Reproduce the Bug
+
+1. **Check Filesystem Consistency:**
+   - Run a filesystem check on the volume:
+     ```bash
+     sudo fsck /dev/sdXn  # Replace sdXn with your partition identifier.
+     ```
+
+2. **Verify File Permissions and Ownership:**
+   - Check the permissions and ownership of the files in the directory:
+     ```bash
+     ls -lZ /mailacct/imapbox/Maildir/.Archives.2018/cur/
+     ```
+   
+3. **Use `stat` to Inspect Files Individually:**
+   - Use `stat` on each file individually to see if there's a problem with one of the files:
+     ```bash
+     for f in /mailacct/imapbox/Maildir/.Archives.2018/cur/*; do 
+         stat ""$f"" || echo ""Error with $f"";
+     done
+     ```
+
+4. **Check File Descriptors and Limits:**
+   - Verify that there are no file descriptor limits being hit:
+     ```bash
+     ulimit -n
+     ```
+   
+5. **Test `newfstatat` Directly (If Possible):**
+   - If you have access to a C compiler, write a simple program using `newfstatat` and see if it reproduces the issue.
+     ```c
+     #include <stdio.h>
+     #include <stdlib.h>
+     #include <string.h>
+     #include <sys/stat.h>
+     #include <fcntl.h>
+
+     int main() {
+         DIR *dir;
+         struct dirent *entry;
+         char path[1024];
+         struct stat st;
+
+         dir = opendir(""/mailacct/imapbox/Maildir/.Archives.2018/cur/"");
+         if (dir == NULL) {
+             perror(""opendir"");
+             return EXIT_FAILURE;
+         }
+
+         while ((entry = readdir(dir)) != NULL) {
+             snprintf(path, sizeof(path), ""/mailacct/imapbox/Maildir/.Archives.2018/cur/%s"", entry->d_name);
+             if (newfstatat(AT_FDCWD, path, &st, 0) == -1) {
+                 perror(""newfstatat"");
+                 continue;
+             }
+             printf(""%s: %ld\n"", entry->d_name, st.st_size);
+         }
+
+         closedir(dir);
+         return EXIT_SUCCESS;
+     }
+     ```
+   - Compile and run the program:
+     ```bash
+     gcc -o test_newfstatat test_newfstatat.c
+     ./test_newfstatat
+     ```
+
+6. **Check for Large Files:**
+   - Sometimes, very large files can cause issues; ensure there aren't any unusually large files in the directory.
+     ```bash
+     find /mailacct/imapbox/Maildir/.Archives.2018/cur/ -type f -size +500M -print
+     ```
+
+7. **Check for Corrupted Files:**
+   - Use tools like `file` to check if any files are corrupted:
+     ```bash
+     for f in /mailacct/imapbox/Maildir/.Archives.2018/cur/*; do 
+         file ""$f"";
+     done | grep -v ""ASCII text\|data""
+     ```
+
+### Additional Checks
+
+- **Check Logs:**
+  - Look at system logs for any clues:
+    ```bash
+    sudo journalctl -xe
+    ```
+  
+- **Use `strace`:**
+  - Run the command (or script) with `strace` to see if there are any errors or unusual behavior when it stops counting files.
+    ```bash
+    strace newfstatat /mailacct/imapbox/Maildir/.Archives.2018/cur/
+    ```
+
+### Conclusion
+
+By following these steps, you should be able to gather more information about what might be causing `newfstatat` to stop counting files in the directory. If none of these steps reveal a problem, it may be worth considering if there are any specific interactions with other processes or system settings that could be affecting behavior."
 1511951,"echo ""/srv/exports/test001 192.168.122.0/24(ro,root_squash)"" >> /etc/exports
 echo ""/srv/exports/test002 192.168.122.0/24(ro,root_squash)"" >> /etc/exports
 echo ""/srv/exports/test003 192.168.122.0/24(ro,root_squash)"" >> /etc/exports
@@ -580,7 +931,8 @@ cd
 
 systemctl stop nfs
 
-strace -Tttfvs 4096 df -l","```bash
+strace -Tttfvs 4096 df -l
+","```bash
 # Create NFS server and export directories
 echo ""/srv/exports/test001 192.168.122.0/24(ro,root_squash)"" >> /etc/exports
 echo ""/srv/exports/test002 192.168.122.0/24(ro,root_squash)"" >> /etc/exports
@@ -617,7 +969,7 @@ systemctl restart autofs
 cd /mnt/test/test004
 cd
 systemctl stop nfs
-strace -Tttfvs 4096 df -l","
+strace -Tttfvs 4096 df -l","None
 
 The provided bug description includes a set of steps that would be necessary to configure and test the issue in a real environment, but it does not provide a direct command or test case to reproduce the bug without setting up an NFS server, configuring autofs maps, and other preparatory actions. Therefore, we cannot provide a single command or test case to directly reproduce the bug as described."
 1634045,LC_NUMERIC=de_DE.UTF-8 printf %f 1.2,"```bash
@@ -630,7 +982,7 @@ LC_NUMERIC=de_DE.UTF-8 /usr/bin/printf %f 1,2
 wget https://www.gnu.org/software/coreutils/install || echo ""404 error""",man install,
 199066,"su root -c ""command""",,,
 1635899,,,,
-1637531,,,,
+1637531,ls,,,
 1611211,./man-page-day.sh coreutils,,,
 1598518,,,,
 1596183,LANG=C df -P,"```bash
@@ -671,10 +1023,11 @@ mount /dev/fedora23/home /mnt/homen
 
 du -h /mnt/rootn | tail -1
 du -h /mnt/homen | tail -1
-```","
+```","None
 
 The provided information indicates a discrepancy between the data copied using `dd` and the actual space used on the filesystems as reported by `df`. However, there is no specific coreutils command that can be isolated from this scenario to directly reproduce the described issue. The commands given are part of a broader process involving RAID setup and LVM partition management which cannot be simply reduced to a single or set of coreutils commands for reproduction purposes without additional context or environment specifics.",
-1594812,ls -l /var/lib/libvirt/pictures/,"```bash
+1594812,"ls -l /var/lib/libvirt/pictures/
+","```bash
 export LANG=fi_FI
 ls -l /var/lib/libvirt/pictures/
 ```",ls -l /var/lib/libvirt/pictures/,ls -l /var/lib/libvirt/pictures/
@@ -687,9 +1040,9 @@ ls -l /usr/bin | grep waterfox
 ls -l `find /usr/bin -maxdepth 1 -type l -print` | grep waterfox
 ```","ls -l /usr/bin | grep waterfox
 ls -l `find /usr/bin -maxdepth 1 -type l -print` | grep waterfox",
-1591002,whoami; id; id hrw; sudo id hrw,whoami; id; id hrw; sudo id hrw,"
+1591002,whoami; id; id hrw; sudo id hrw,whoami; id; id hrw; sudo id hrw,"None
 
-The bug described involves an issue with group access not being correctly recognized after logging in, which affects the `pulseaudio` service and possibly other applications. The problem seems related to how the user's group memberships are handled upon login rather than an issue directly reproducible through coreutils commands alone. Since the provided description does not offer a specific command or test case that can reproduce this exact behavior with just `coreutils`, the response is """".",
+The bug described involves an issue with group access not being correctly recognized after logging in, which affects the `pulseaudio` service and possibly other applications. The problem seems related to how the user's group memberships are handled upon login rather than an issue directly reproducible through coreutils commands alone. Since the provided description does not offer a specific command or test case that can reproduce this exact behavior with just `coreutils`, the response is ""None"".",
 1537070,,,,
 1577872,"LC_ALL=ca_ES.utf8 ls -l
 date ""+%OB""","```bash
@@ -707,6 +1060,27 @@ cd /
 /bin/ls -i --color","/bin/ls -i /
 /bin/ls -i --color=auto","/bin/ls -i /
 /bin/ls -i --color=auto /"
+1564541,,"```bash
+crontab -e
+```
+Add the following line:
+```bash
+@reboot        nice run-parts /root/cron.reboot
+```
+Create a file in `/root/cron.reboot/` (e.g., `000_test.sh`) with the following contents:
+```bash
+#!/bin/bash
+set -x
+cd /root
+date ""+%X""
+sleep 5
+date ""+%X""
+```
+Make the script executable:
+```bash
+chmod +x /root/cron.reboot/000_test.sh
+```
+Reboot the system and review the mail from the reboot cron job.",,
 1555079,"sudo dnf debuginfo-install coreutils
 rpm -ql coreutils-debugsource-8.27-20.fc27.x86_64 | grep date
 rpm -ql coreutils-debuginfo-8.27-20.fc27.x86_64 | grep date
@@ -714,6 +1088,16 @@ rpm -qlp coreutils-debuginfo-8.22-18.el7.x86_64.rpm | grep date","sudo dnf debug
 gdb --args date
 break parse_datetime2 
 run",,
+1544392,,"```bash
+mkdir source
+for i in {1..40000}; do
+  mkdir source/$i
+  touch source/$i/file
+  ln -s /etc/passwd source/$i/symlink
+done
+cp -r source target &
+du -hs target
+```",,
 1532285,,,,
 1259942,"base64 /dev/urandom | head -n 10000 > 10000.txt
 valgrind sort 10000.txt > /dev/null
@@ -725,7 +1109,8 @@ valgrind sort -M 10000.txt > /dev/null","base64 /dev/urandom | head -n 10000 > 1
 valgrind sort -M 10000.txt > /dev/null"
 1527074,"chmod +x install.sh
 ls -l install.sh
-mount | grep /dev/sdb1","```bash
+mount | grep /dev/sdb1
+","```bash
 # Create a sample .sh file on an external USB drive formatted with VFAT
 echo ""echo 'Hello World'"" > /run/media/yk/FEDORA-WS-L/install.sh
 
@@ -743,7 +1128,7 @@ ls -l /run/media/yk/FEDORA-WS-L/install.sh
 
 # Alternatively, try executing with bash
 bash /run/media/yk/FEDORA-WS-L/install.sh
-```","
+```","None
 
 The provided information indicates a scenario where execute permissions are not applied to a `.sh` file when it is located on an external USB drive formatted with VFAT, but there isn't a specific command sequence given that would allow us to directly reproduce this issue in any environment without access to the exact conditions (such as having an identical VFAT-formatted USB drive and the specific version of bash). The commands provided are descriptive of the problem encountered rather than prescriptive steps for reproducing it.","touch install.sh  
 chmod +x install.sh  
@@ -795,7 +1180,8 @@ Replace `/file` with an actual file path for testing.",
 1499625,"mkdir old new
 ln -s old foo
 ln -sf new foo
-ls -l foo","```bash
+ls -l foo
+","```bash
 mkdir old new
 ln -s old foo
 ln -sf new foo
@@ -811,7 +1197,8 @@ ls -l foo"
 ln -s foo baz
 ls -ld foo bar baz
 ls -l foo bar
-ln -s -f bar baz","```bash
+ln -s -f bar baz
+","```bash
 mkdir foo bar
 ln -s foo baz
 ls -ld foo bar baz
@@ -844,9 +1231,32 @@ wc -l test.txt"
 1360903,,,,
 1482445,ptx reproducer_file,ptx reproducer_file,,
 1483938,,,,
+1365933,,"```bash
+mkdir -p /tmp/bugdir
+while true; do touch /tmp/bugdir/file$(date +%s); done &
+ls /tmp/bugdir
+```
+Then, in another terminal:
+```bash
+kill -s SIGINT <pid_of_ls_process>
+```
+Replace `<pid_of_ls_process>` with the actual process ID of the `ls` command.
+
+Note: The above commands may not exactly reproduce the bug as it seems to be related to a network filesystem issue. However, they attempt to simulate a similar scenario by creating a directory with rapidly changing contents and then trying to list its files while sending a SIGINT signal to the `ls` process.
+
+Alternatively, if you have access to an AFS (Andrew File System) network filesystem, you can try:
+```bash
+ls /afs/user/dhowells
+```
+Then, in another terminal:
+```bash
+kill -s SIGINT <pid_of_ls_process>
+```
+Again, replace `<pid_of_ls_process>` with the actual process ID of the `ls` command.",,
 1470769,"cd coreutils-8.25/src
 cp chroot.c chroot.c.orig
-sed -i 's/execvp (argv\[0\], argv);/errno = EIO;  \/* execvp (argv[0], argv); *\//g' chroot.c","```c
+sed -i 's/execvp (argv\[0\], argv);/errno = EIO;  \/* execvp (argv[0], argv); *\//g' chroot.c
+","```c
 // Modify the chroot.c file as follows:
 --- coreutils-8.25/src/chroot.c.orig	2017-07-13 07:43:21.915621653 -0700
 +++ coreutils-8.25/src/chroot.c	2017-07-13 07:44:41.806713319 -0700
@@ -949,7 +1359,8 @@ echo -- -e
 echo -- -E
 echo -- --help",echo -- -n,"echo -n  
 echo -- -n"
-953194,sleep 1000,sleep 1000,,
+953194,"sleep 1000
+",sleep 1000,,
 1320681,,,,
 1396064,who,who,who,
 1392210,sudo dnf upgrade coreutils-common,dnf update coreutils-common,,
@@ -961,7 +1372,8 @@ ls -Z /tmp/foobar/foo
 rm -rf /tmp/foobar
 install -d /tmp/foobar
 ls -Zd /tmp/foobar
-restorecon -v /tmp/foobar","```bash
+restorecon -v /tmp/foobar
+","```bash
 sudo semanage fcontext -a -t user_home_t ""/tmp/foobar(/.*)?""
 touch foo
 install -D foo /tmp/foobar/foo
@@ -991,7 +1403,7 @@ LANG=C unexpand -t4 file_spaces > file_unexpand
 gedit file_spaces file_unexpand
 nano file_tabs
 LANG=C expand -t4 file_tabs > file_expand
-gedit file_tabs file_expand","```bash
+gedit file_tabs file_expand ","```bash
 echo $'\xef\xbb\xbfé   à   ç' > file_spaces
 echo $'\xef\xbb\xbfé   à   ç' >> file_spaces
 LANG=C unexpand -t4 file_spaces > file_unexpand
@@ -1052,7 +1464,8 @@ ls -l /dev/disk/by-label"
 man uname","uname -v 
 man uname",,uname -v
 1285623,"mount | grep ds  
-/usr/bin/df","```bash
+/usr/bin/df
+","```bash
 mkdir -p /volume1/syntegra /volume1/misty /volume1/video
 mount -t nfs4 ds:/volume1/syntegra /syntegra
 mount -t nfs4 ds:/volume1/misty /home/egreshko/misty
@@ -1061,7 +1474,8 @@ df
 ```",,
 1354078,dnf --installroot=/tmp --releasever=24 install coreutils,dnf --installroot=/tmp --releasever=24 install coreutils,,
 1352691,"> ""File with spaces.txt""
-ls","touch ""File with spaces.txt""
+ls
+","touch ""File with spaces.txt""
 ls","touch ""File with spaces.txt""
 ls","touch ""File with spaces.txt""
 ls"
@@ -1075,7 +1489,8 @@ df bin lib lib64 sbin
 cd /
 df --totals *
 df --totals /l*
-df --totals bin lib lib64 sbin","Since this is a feature request rather than a traditional bug with incorrect behavior, there isn't a specific command that will ""reproduce"" the issue in terms of demonstrating an error. The request is for the addition of functionality (an option for strict ordering) similar to what exists in `sort`. However, based on the description provided and the aim to highlight the lack of an option for strict ordering in `df` compared to `sort`, we can focus on commands that demonstrate the current behavior of `df` without such an option:
+df --totals bin lib lib64 sbin
+","Since this is a feature request rather than a traditional bug with incorrect behavior, there isn't a specific command that will ""reproduce"" the issue in terms of demonstrating an error. The request is for the addition of functionality (an option for strict ordering) similar to what exists in `sort`. However, based on the description provided and the aim to highlight the lack of an option for strict ordering in `df` compared to `sort`, we can focus on commands that demonstrate the current behavior of `df` without such an option:
 
 ```bash
 cd /
@@ -1116,16 +1531,28 @@ stat dest
 ```","touch source; echo ""data"" > source; dd if=/dev/zero of=source bs=1K count=172253; cp --reflink=always source dest; stat dest",
 981845,man rm,"rm -i file1 file2 file3 file4
 rm -I file1 file2 file3 file4",,
+1055290,,"```bash
+nohup sleep 5 &
+pgrep -f ""sleep 5""
+```",,
 1250113,,,,
 890223,du -sh 6e56p56v.default/,du -sh -sh 6e56p56v.default/,du -sh -sh 6e56p56v.default/,du -sh 6e56p56v.default/
 1334898,"mkdir Test\ Dir
-ls","mkdir ""Test Dir""
+ls
+","mkdir ""Test Dir""
 ls","mkdir 'Test Dir'
 ls","mkdir 'Test Dir'
 ls"
+1149761,,"```bash
+mkdir /tmp-ro
+mount -o ro /dev/null /tmp-ro
+TMP=/tmp-ro
+mktemp --tmpdir=$TMP
+```",,
 1323163,,,,
 1319594,"export LANG=zh_CN.UTF-8
-ls -lh","```bash
+ls -lh
+","```bash
 LANG=en_US.UTF-8 ls -lh
 LANG=zh_CN.UTF-8 ls -lh
 ```","export LANG=zh_CN.UTF-8
@@ -1139,7 +1566,8 @@ od -S=10 /bin/ls
 od -w file.txt
 od -w=10 file.txt
 od -w=10 /bin/ls",,
-1314722,"echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0"" | cut -d'|' -f2","```bash
+1314722,"echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0"" | cut -d'|' -f2
+","```bash
 echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0""|cut -d'|' -f2
 ```","echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0""|cut -d'|' -f2","echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0"" | cut -d'|' -f2"
 586029,"cd /usr/share/man/man3
@@ -1177,7 +1605,8 @@ sort -T $sorttmp -S ""3g"" -uk1 | egrep -v '^$' | egrep '\.com' < 1000s > 1000s.
 sort -T /tmp -S""3g"" -uk1 < input_file > output_file
 sort -T /tmp -S ""3g"" -uk1 < input_file > output_file
 ```","sort -T $sorttmp -S ""3g"" -uk1 | egrep -v '^$' | egrep '\.com' < 1000s > 1000s.srtd","sort -T $sorttmp -S ""3g"" -uk1 | egrep -v '^$' | egrep '\.com' < 1000s > 1000s.srtd"
-1249695,man install,"$man install | grep yum
+1249695,"man install
+","$man install | grep yum
 $man install | grep dnf",,
 1298736,,,,
 1297464,"mkdir test
@@ -1189,7 +1618,8 @@ mv test test test","mkdir test
 mv test test test"
 1013171,"touch testfile
 chmod -w testfile
-rm testfile","```bash
+rm testfile
+","```bash
 touch testfile
 chmod 444 testfile # Make the file read-only (write-protected)
 sudo rm testfile # Run as root
@@ -1229,43 +1659,11 @@ sort input.txt > old.txt # using coreutils 8.23-9
 sort input.txt > new.txt # using coreutils 8.23-11
 diff -ruN old.txt new.txt > diff.txt
 cat diff.txt","```bash
-# Create test files with identical checksums
-echo ""Hello World"" > file1.txt
-echo ""Hello World"" > file2.txt
-
-# Run the command to reproduce the bug on coreutils 8.22-15 and 8.23-10
-find . -type f -exec md5sum {} \; | sort -k 1
+echo -e ""a\nb\nc\nd\ne\n                      : e\nf\ng\nh"" | sort
 ```",,
 920806,"sudo exportfs -o rw,sync /export/vol1 client_IP
 sudo mount -t nfs server_IP:/export/vol1 /mnt/vol1
-df",,,
-1243572,"date +%F --date=""00:00:00 +3 days""",,,
-1135583,"rpm -q coreutils
-ls -Z foo
-ls -lZ foo","```bash
-echo ""Fedora-Live-KDE-x86_64-23-10.iso  sha256"" > checksum.txt
-echo ""Fedora-Live-MATE_Compiz-x86_64-23-10.iso  sha256"" >> checksum.txt
-touch Fedora-Live-KDE-x86_64-23-10.iso
-sha256sum -c checksum.txt
-```","touch Fedora-Live-KDE-x86_64-23-10.iso Fedora-Server-DVD-x86_64-23.iso Fedora-Server-netinst-x86_64-23.iso Fedora-Workstation-netinst-x86_64-23.iso Fedora-Live-Workstation-x86_64-23-10.iso
-echo ""checksum_value Fedora-Live-KDE-x86_64-23-10.iso"" > testSUM
-echo ""checksum_value Fedora-Server-DVD-x86_64-23.iso"" >> testSUM
-echo ""checksum_value Fedora-Server-netinst-x86_64-23.iso"" >> testSUM
-echo ""checksum_value Fedora-Workstation-netinst-x86_64-23.iso"" >> testSUM
-echo ""checksum_value Fedora-Live-Workstation-x86_64-23-10.iso"" >> testSUM
-sha256sum -c testSUM",
-1235873,"echo -e ""version-1.2.10\nversion-1.2.2\nversion-1.2.3\nversion-1.10.1\nversion-1.2.20"" > sortbug.txt
-cat sortbug.txt
-sort -rV sortbug.txt","dd if=/dev/zero of=/dev/null& 
-pid=$! 
-kill -USR1 $pid; sleep 1; kill $pid",,
-1146185,"printf 'a b!x\na-b-c!x\n' | LANG=en_US.utf8 ltrace -e strcoll sort -s --debug -k1,1 -t!","```bash
-echo -e ""a\nb\nc\nd\ne\n                      : e\nf\ng\nh"" | sort
-```",,
-1169027,"rpm -ql --queryformat '[%{FILELANGS}\t%{FILENAMES}\n]' coreutils | grep LC_TIME | head -5  
-rpm -qf /usr/share/locale/af  
-rpm -qf /usr/share/locale/af/LC_MESSAGES  
-rpm -qf /usr/share/locale/af/LC_TIME","```bash
+df","```bash
 # Create NFS shares on a remote server (e.g., nas.example.com)
 # Assuming the NFS server is already set up and exporting the following shares:
 # /Photos
@@ -1287,11 +1685,11 @@ mount | grep nas
 # Run the 'df' command to check disk usage (this should only show one volume)
 df | grep nas
 ```",,
-1177515,"cp -vrup /home/* /room/wdbook1/nfs/Public/backup/verlaiine/home >> /var/log/lastbackup  
-cat /var/log/lastbackup","date +%F --date=""00:00:00 +3 days""","date +%F --date=""00:00:00 +3 days""","date +%F --date=""00:00:00 +3 days"""
-1207314,"echo > :
-echo abc | tr '[:lower:]' '[:upper:]'
-rm \:","```bash
+1243572,"date +%F --date=""00:00:00 +3 days""
+","date +%F --date=""00:00:00 +3 days""","date +%F --date=""00:00:00 +3 days""","date +%F --date=""00:00:00 +3 days"""
+1135583,"rpm -q coreutils
+ls -Z foo
+ls -lZ foo","```bash
 # Create a file named foo
 touch foo
 
@@ -1314,7 +1712,9 @@ ls -lZ foo
 touch foo
 ls -Z foo
 ls -lZ foo"
-239501,ls /,"```bash
+1235873,"echo -e ""version-1.2.10\nversion-1.2.2\nversion-1.2.3\nversion-1.10.1\nversion-1.2.20"" > sortbug.txt
+cat sortbug.txt
+sort -rV sortbug.txt","```bash
 cat > sortbug.txt <<EOF
 NetworkManager-1.0.0-5.fc22
 NetworkManager-0.9.10.0-8.git20140704.fc22
@@ -1358,265 +1758,332 @@ NetworkManager-0.9.10.0-6.git20140704.fc22
 NetworkManager-0.9.10.0-12.git20140704.fc22
 EOF
 sort -rV sortbug.txt",sort -rV sortbug.txt
-243588,"cd /var
-ln -sf beta tmp/alpha
-echo ""blah"" > tmp/alpha
-rm tmp/beta
-echo ""blah"" > file
-cp file tmp/alpha","```bash
+1146185,"printf 'a b!x\na-b-c!x\n' | LANG=en_US.utf8 ltrace -e strcoll sort -s --debug -k1,1 -t!
+","```bash
 printf 'a b!x\na-b-c!x\n' | LANG=en_US.utf8 ltrace -e strcoll sort -s --debug -k1,1 -t!
 ```","printf 'a b!x\na-b-c!x\n' | LANG=en_US.utf8 sort -s --debug -k1,1 -t!","printf 'a b!x\na-b-c!x\n' | LANG=en_US.utf8 sort -s --debug -k1,1 -t!"
-228304,"mount -o loop dvdimage.iso /mnt
-mkdir ~/test ; cd ~
-cp -av /mnt/* ~/test","rpm -ql --queryformat '[%{FILELANGS}\t%{FILENAMES}\n]' coreutils | grep LC_TIME | head -5
+1169027,"rpm -ql --queryformat '[%{FILELANGS}\t%{FILENAMES}\n]' coreutils | grep LC_TIME | head -5  
+rpm -qf /usr/share/locale/af  
+rpm -qf /usr/share/locale/af/LC_MESSAGES  
+rpm -qf /usr/share/locale/af/LC_TIME  
+","rpm -ql --queryformat '[%{FILELANGS}\t%{FILENAMES}\n]' coreutils | grep LC_TIME | head -5
 rpm -qf /usr/share/locale/af
 rpm -qf /usr/share/locale/af/LC_MESSAGES
 rpm -qf /usr/share/locale/af/LC_TIME",,
-430821,"echo -e ""F-A\nFB\nF-C"" > a.txt
-sort a.txt",,,
-284881,"export LC_COLLATE=en_US.UTF-8
-export LC_NUMERIC=en_US.UTF-8
-sort -n -t, -k1 <<'EOF'",,,
-428494,"echo -e ""  leading space\n_leading underscore\nnormal line\n another space"" > file.txt  
-sort file.txt","```bash
-TIME_STYLE=locale LC_ALL=en_US.UTF-8 ls -l / | head -n 3
-TIME_STYLE=locale LC_ALL=fi_FI.UTF-8 ls -l / | head -n 3
-```","TIME_STYLE=locale LC_ALL=en_US.UTF-8 ls -l / | head -n 3
-TIME_STYLE=locale LC_ALL=fi_FI.UTF-8 ls -l / | head -n 3","TIME_STYLE=locale LC_ALL=en_US.UTF-8 ls -l / | head -n 3
-TIME_STYLE=locale LC_ALL=fi_FI.UTF-8 ls -l / | head -n 3"
-428679,"echo -e ""a\na\n a\n_a\nA\naa\nZ\n_Z"" > test.txt
-sort test.txt","echo > :
+1177515,"cp -vrup /home/* /room/wdbook1/nfs/Public/backup/verlaiine/home >> /var/log/lastbackup  
+cat /var/log/lastbackup  
+","```bash
+cp -vrup /home/* /room/wdbook1/nfs/Public/backup/verlaine/home >> /var/log/lastbackup &
+cat /var/log/lastbackup
+```","sudo cp -vrup /home/* /room/wdbook1/nfs/Public/backup/verlaiine/home >> /var/log/lastbackup
+sudo cat /var/log/lastbackup",
+1207314,"echo > :
+echo abc | tr '[:lower:]' '[:upper:]'
+rm \:","echo > :
 echo abc | tr [:lower:] [:upper:]
 rm :)","echo > :
 echo abc | tr [:lower:] [:upper:]
 rm \:","echo > :
 echo abc | tr [:lower:] [:upper:]
 rm \:"
-232458,LC_ALL=hu_HU.UTF-8 dd if=/dev/zero of=/dev/null bs=4M count=1024,"To attempt to reproduce this bug based on the provided information, we need to analyze the content of the bug report:
-
-1. **Executable and Libraries**: The report mentions `/bin/sleep`, `/lib/ld-2.14.so`, and `/lib/libc-2.14.so`. This suggests that the issue might be related to how these executables or libraries interact with each other or with the system.
-
-2. **Environment Variables**: Several environment variables are listed, which could influence the behavior of the system or applications. Notably, `LANG=sk_SK.UTF-8` and `PATH=/usr/lib/ccache:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/home/mtoman/bin` might be relevant if the issue is related to locale settings or executable paths.
-
-3. **Maps**: The memory maps section shows how different parts of executables and libraries are mapped into the process's address space. This could hint at issues with dynamic linking, library versions, or memory management.
-
-4. **Var Log Messages**: These messages indicate that `abrt` (Automatic Bug Reporting Tool) has saved core dumps for processes running `/bin/sleep`. The fact that there are multiple saves suggests a recurring crash.
-
-Given these details, here are some steps to attempt reproducing the bug:
-
-### Step 1: Replicate Environment
-
-- Set the `LANG` environment variable to `sk_SK.UTF-8`.
-- Ensure your `PATH` includes the directories listed in the report. This might require installing certain packages or modifying your system's configuration.
-
-```bash
-export LANG=sk_SK.UTF-8
-export PATH=/usr/lib/ccache:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/home/mtoman/bin
+239501,"ls /
+",ls /,,
+243588,"cd /var
+ln -sf beta tmp/alpha
+echo ""blah"" > tmp/alpha
+rm tmp/beta
+echo ""blah"" > file
+cp file tmp/alpha
+","```bash
+cd /var
+ln -sf beta tmp/alpha
+echo ""blah"" > tmp/alpha 
+rm tmp/beta
+echo ""blah"" > file
+cp file tmp/alpha
+```","cd /var  
+ln -sf beta tmp/alpha  
+echo ""blah"" > tmp/alpha  
+rm tmp/beta  
+echo ""blah"" > file  
+cp file tmp/alpha","cd /var  
+ln -sf beta tmp/alpha  
+echo ""blah"" > tmp/alpha  
+rm tmp/beta  
+echo ""blah"" > file  
+cp file tmp/alpha"
+228304,"mount -o loop dvdimage.iso /mnt
+mkdir ~/test ; cd ~
+cp -av /mnt/* ~/test
+","```bash
+mkdir ~/dvdimage.iso
+fallocate -l 1G ~/dvdimage.iso
+mkisofs -o ~/dvdimage.iso ~/empty_dir
+mount -o loop ~/dvdimage.iso /mnt
+mkdir ~/test
+cp -av /mnt/* ~/test
+```","mount -o loop dvdimage.iso /mnt
+mkdir ~/test ; cd ~/test
+cp -av /mnt/* ./","mount -o loop dvdimage.iso /mnt
+mkdir ~/test
+cp -av /mnt/* ~/test"
+368721,,,,
+430821,"echo -e ""F-A\nFB\nF-C"" > a.txt
+sort a.txt
+","```bash
+echo -e ""F-A\nFB\nF-C"" > a.txt
+sort a.txt
+```","echo -e ""F-A\nFB\nF-C"" > a.txt
+sort a.txt","echo -e ""F-A\nFB\nF-C"" > a.txt
+sort a.txt"
+284881,"export LC_COLLATE=en_US.UTF-8
+export LC_NUMERIC=en_US.UTF-8
+sort -n -t, -k1 <<'EOF'","```bash
+LC_ALL=en_US.UTF-8 sort -n -t, -k1 <<'EOF'
+2101,:4AgE3<G4RNDP`
+21012,:A0QIX6AI10gMP
+2101,2IJIETPY=g<10@
+21012,V8:AACI4TD925@
+21014,:1MG<hEb@AIhU`
+2101,4H@38`5ELC66M`
+2101,4h>HM812P4820P
+21014,V8:AACI4TD925@
+2101,5AHBVEQW@dUGE@
+EOF
+```","sort -n -t, -k1 <<'EOF'
+2101,:4AgE3<G4RNDP`
+21012,:A0QIX6AI10gMP
+2101,2IJIETPY=g<10@
+21012,V8:AACI4TD925@
+21014,:1MG<hEb@AIhU`
+2101,4H@38`5ELC66M`
+2101,4h>HM812P4820P
+21014,V8:AACI4TD925@
+2101,5AHBVEQW@dUGE@
+EOF","sort -n -t, -k1 <<'EOF'
+2101,:4AgE3<G4RNDP`
+21012,:A0QIX6AI10gMP
+2101,2IJIETPY=g<10@
+21012,V8:AACI4TD925@
+21014,:1MG<hEb@AIhU`
+2101,4H@38`5ELC66M`
+2101,4h>HM812P4820P
+21014,V8:AACI4TD925@
+2101,5AHBVEQW@dUGE@
+EOF"
+428494,"echo -e ""  leading space\n_leading underscore\nnormal line\n another space"" > file.txt  
+sort file.txt  
+","```bash
+echo ""_line1"" > file
+echo "" line2"" >> file
+echo ""line3"" >> file
+sort file
+```","echo "" _third"" > file.txt; echo "" second"" >> file.txt; echo ""first"" >> file.txt; sort file.txt","echo ""   line1"" > testfile.txt
+echo ""_line2"" >> testfile.txt
+echo ""line3"" >> testfile.txt
+sort testfile.txt"
+428679,"echo -e ""a\na\n a\n_a\nA\naa\nZ\n_Z"" > test.txt
+sort test.txt","```bash
+echo -e ""a\n a\n  a\n_a\nA\naa\nZ\n_Z"" | sort
 ```
 
-### Step 2: Execute `/bin/sleep` with Various Arguments
+This command will reproduce the bug by sorting the input strings and producing the actual results described in the bug report, which differ from the expected results. The `echo` command generates the test input, and the `sort` command applies the default sorting behavior that is the subject of the bug report.","echo -e ""a\n a\n  a\n_a\nA\naa\nZ\n_Z"" | sort
 
-Since the core dumps are of `/bin/sleep`, try running it with different arguments to see if you can reproduce a crash:
-
-```bash
-/bin/sleep 10 # Try various durations
-```
-
-Monitor your system logs (e.g., `/var/log/messages` or using `journalctl`) for any error messages related to the process crashing.
-
-### Step 3: Investigate Library Versions
-
-Ensure that the versions of `ld-2.14.so` and `libc-2.14.so` on your system match those mentioned in the report (if they are indeed significant). You can check library versions with commands like:
-
-```bash
-ldd /lib/ld-2.14.so
-ldd /lib/libc-2.14.so
-```
-
-### Step 4: Consider Locale and Encoding Issues
-
-Given that `LANG` is set to `sk_SK.UTF-8`, there might be locale-specific issues at play. Try running `/bin/sleep` in different locales or encoding environments:
-
-```bash
-LC_ALL=C /bin/sleep 10 # Try with a different locale setting
-```
-
-### Step 5: Analyze System Configuration
-
-Compare your system's configuration files, especially those related to `abrt`, `gdm`, and `dbus`, as these are mentioned in the environment variables section. Ensure that they match or are similar to the configurations on the system where the bug was reported.
-
-### Conclusion
-
-Without more specific details about what triggers the crash (e.g., a particular sequence of commands, specific input, etc.), reproducing this bug may require some trial and error. The steps above provide a general approach based on the information given in the bug report. If the issue is highly system-specific or depends on transient conditions, it might be challenging to reproduce exactly.","Based on the provided information, it seems that there are unexpected core dumps occurring with the `/bin/sleep` command. Here's how you might approach identifying and reproducing the issue:
-
-### Steps to Reproduce the Bug
-
-1. **Run `sleep` Command in Different Environments:**
-   - Try running the `sleep` command under different conditions (e.g., with various arguments, background/foreground execution).
-     ```bash
-     sleep 5
-     sleep 5 &
-     ```
-
-2. **Check for System-Wide Issues:**
-   - Ensure that there are no system-wide issues like memory corruption or hardware faults.
-     ```bash
-     dmesg | grep -i error
-     free -m
-     ```
-
-3. **Run the `sleep` Command with Core Dump Collection:**
-   - Use a tool to capture core dumps when running `sleep`.
-     ```bash
-     ulimit -c unlimited
-     sleep 10
-     ```
-   - This will allow you to see if a core dump occurs and inspect it.
-
-4. **Check the Environment Variables:**
-   - Verify that no environment variables are interfering with the execution of `sleep`.
-     ```bash
-     printenv | grep SLEEP
-     ```
-
-5. **Inspect `/var/log/abrt`:**
-   - Look at the details in the saved core dump files to see if they provide any clues.
-     ```bash
-     ls /var/spool/abrt/
-     cd /var/spool/abrt/ccpp-2011-06-26-20\:09\:47-3859.new/
-     gdb /bin/sleep coredump
-     ```
-   - Use `gdb` to analyze the core dump and see where it crashed.
-
-### Example Test Cases
-
-1. **Basic Sleep:**
-   ```bash
-   sleep 10
-   ```
-
-2. **Sleep in Background:**
-   ```bash
-   sleep 10 &
-   ```
-
-3. **With Different Arguments:**
-   ```bash
-   sleep 10 5 6 # This should give an error, but it's worth testing.
-   ```
-
-4. **Run with Core Dump Enabled:**
-   ```bash
-   ulimit -c unlimited
-   sleep 5
-   ```
-
-### Expected Outcomes
-
-- The `sleep` command should run without producing a core dump under normal circumstances.
-- If there is an issue, the core dump and debug information from `gdb` might provide insight into what's going wrong.
-
-By running these commands in various configurations, you can narrow down whether specific conditions are triggering the core dumps.","The information provided does not specify any particular issue with `/bin/sleep` itself; rather, it seems to suggest that core dumps are being generated for some reason when running `sleep`. This could be due to a variety of problems, including system instability, memory corruption in another part of the system affecting `sleep`, or an issue with the way ABRT (Automatic Bug Reporting Tool) is handling these processes.
-
-However, based on the available information and common practices, here are some steps you might consider taking to identify the root cause:
-
-1. **Check System Stability**:
-   - Run stability tests like memtest86+ to check for RAM issues.
-   - Monitor system logs (`/var/log/messages`, `/var/log/syslog`) for any other unusual entries or warnings.
-
-2. **Verify ABRT Configuration**:
-   - Ensure that ABRT is correctly configured on the system.
-   - Check ABRT's log files (often found in `/var/log/abrt` or similar) for more detailed information about why core dumps are being generated.
-
-3. **Test with Minimal Environment**:
-   - Run `sleep` in a minimal environment to see if it still produces core dumps. You can do this by using a chroot jail with only the necessary system files.
-   - Command: 
-     ```bash
-     sudo mkdir /tmp/miniroot
-     sudo cp --parents $(ldd /bin/sleep | grep '=>' | awk '{print $3}') /tmp/miniroot/
-     sudo cp /bin/sleep /tmp/miniroot/bin/
-     sudo chroot /tmp/miniroot sleep 100000 &
-     ```
-   - Monitor for any issues.
-
-4. **Check for Hardware Issues**:
-   - Run hardware diagnostics provided by the system or hardware vendor.
-   - Check the SMART status of disks if applicable.
-
-5. **Update System and Packages**:
-   - Ensure that all packages are up-to-date, including `glibc`, `kernel`, and other critical libraries.
-   - Command: 
-     ```bash
-     sudo yum update  # On RedHat/CentOS systems
-     sudo apt-get update && sudo apt-get upgrade  # On Debian/Ubuntu systems
-     ```
-
-6. **Reproduce in a Controlled Environment**:
-   - Use virtualization to create a controlled environment that mirrors the production setup.
-   - Command (using VirtualBox as an example):
-     ```bash
-     VBoxManage createvm --name ""TestVM"" --register
-     VBoxManage modifyvm ""TestVM"" --memory 1024 --acpi on --boot1 dvd
-     VBoxManage storagectl ""TestVM"" --name ""SATA Controller"" --add sata --controller IntelAhci
-     VBoxManage createhd --filename ./TestVM.vdi --size 8000 --format VDI
-     VBoxManage storageattach ""TestVM"" --storagectl ""SATA Controller"" --port 0 --device 0 --type hdd --medium ./TestVM.vdi
-     VBoxManage startvm ""TestVM""
-     ```
-   - Install necessary packages and test `sleep` inside the VM.
-
-7. **Analyze Core Dumps**:
-   - Use tools like gdb to analyze core dumps for more insights.
-   - Command (replace `/path/to/coredump` with the actual path):
-     ```bash
-     gdb /bin/sleep /path/to/coredump
-     ```
-   - Once in gdb, you can use commands like `bt` (backtrace) to see where the crash occurred.
-
-By following these steps, you should be able to narrow down and potentially identify the cause of core dumps when running `/bin/sleep`. If the problem persists after exhausting these options, more specific debugging or hardware testing may be required."
+None",
+232458,LC_ALL=hu_HU.UTF-8 dd if=/dev/zero of=/dev/null bs=4M count=1024,"```bash
+LC_ALL=hu_HU.UTF-8 dd if=/dev/zero of=/dev/null bs=4M count=1024
+```",LC_ALL=hu_HU.UTF-8 dd if=/dev/zero of=/dev/null bs=4M count=1024,LC_ALL=hu_HU.UTF-8 dd if=/dev/zero of=/dev/null bs=4M count=1024
 230950,"mkdir /tmp/logs  
-cp /tmp/syslog /tmp/logs/",sleep 100000,,
+cp /tmp/syslog /tmp/logs/
+","```bash
+mkdir /tmp/logs
+cp /tmp/syslog /tmp/logs/
+```","mkdir /tmp/logs
+cp /tmp/syslog /tmp/logs/","mkdir /tmp/logs  
+cp /tmp/syslog /tmp/logs/"
 246567,"ln -s ../../etc/hosts /home/user
 cd /home/user
-/bin/ls --color=always | grep hosts","mktemp -t /tmp/.colorlsXXX 
-bash -c 'echo > $TMP'",,
+/bin/ls --color=always | grep hosts
+","```bash
+ln -s ../../etc/hosts user
+cd /home
+/bin/ls --color=always | grep hosts
+```","touch /home/user/hosts -d '../../etc/hosts'
+cd /home/user
+/bin/ls --color=always | grep hosts","mkdir -p /home/user
+ln -s ../../etc/hosts /home/user/hosts
+cd /home/user
+/bin/ls --color=always | grep hosts"
+411181,,"stat --format=%C /bin/ls 
+ls -Z /bin/ls",stat --format=%C /bin/ls,stat --format=%C /bin/ls
+404511,,"ln -s non-existent-file broken-symlink
+ls --color=always broken-symlink",,
 358701,"cd /path/to/nfs-mounted-directory
 ls file1
 cp -av file1 file2
-cp -av file1 file2",sleep 100,,
+cp -av file1 file2","mkdir nfs_dir
+touch nfs_dir/file1
+echo ""Hello World"" > nfs_dir/file1
+cp -av nfs_dir/file1 nfs_dir/file2
+cp -av nfs_dir/file1 nfs_dir/file2
+ls -l nfs_dir/file2","touch file1
+echo ""some content"" > file1
+cp -av file1 file2
+cp -av file1 file2",
 356311,"echo poo > a
 cat a
 cp -a a b
 echo $?
 cat b
-ls -l b",sleep 100,,
-340291,,,,
+ls -l b
+","```bash
+mkdir /tmp/test
+mount -t nfs localhost:/tmp/test /mnt
+echo ""use_nfs_home_dirs = on"" > /etc/selinux/config
+setenforce 1
+cd /mnt
+echo poo > a
+cat a
+cp -a a b
+echo $?
+cat b
+ls -l b
+```","echo poo > a
+cat a
+cp -a a b
+echo $?
+cat b
+ls -l b","touch a  
+echo poo > a  
+cp -a a b  
+ls -l b"
+340291,,"```bash
+if test -n ""$@""; then 
+   echo -n 1
+else 
+   echo -n 2
+fi
+if test ""$@""; then 
+   echo -n 3
+else 
+   echo -n 4
+fi
+echo
+```","None
+
+The provided bug report does not include explicit commands to reproduce the issue but instead refers to running an attached script which isn't included in the text given here. Without the actual content of that script, we cannot provide a precise command or test case for reproducing the bug. Therefore, based on the information available, the answer is None.","```bash
+if test -n ""$@""; then echo -n 1; else echo -n 2; fi; if test ""$@""; then echo -n 3; else echo -n 4; fi; echo
+```"
 313401,"date --help
 man date
-info date","sleep 100 
-
-Note: The provided information does not guarantee that this command will reproduce the bug, as the crash might be related to other factors such as system load, resource constraints, or specific timing issues. However, based on the given cmdline (""cmdline: sleep 100""), this is a possible test case.",,
-305341,,,,
-299121,,sleep 100,,
+info date","date --help | grep iso
+man date | grep iso
+info date | search --iso
+date --iso=sec 
+(date --help; man date; info date) | grep iso","date --help
+man date
+info date
+grep --iso <(date --help)
+grep --iso <(man date)
+grep --iso <(info date)","date --help | grep iso
+man date | grep iso
+info date | grep iso"
+305341,,"```bash
+umask 0007
+mkdir testdir
+ls -ld testdir
+chmod 2770 testdir
+ls -ld testdir
+chmod 770 testdir
+ls -ld testdir
+```","umask 0007
+mkdir testdir
+chmod 2770 testdir
+chmod 770 testdir
+ls -ld testdir","mkdir testdir  
+chmod 2770 testdir  
+ls -ld testdir  
+chmod 770 testdir  
+ls -ld testdir"
+299121,,"foo=
+/usr/bin/[ -n $[foo} ] && echo true",,"foo=
+/usr/bin/[ -n $[foo} ] && echo true"
 280331,"cd /partition
 rm -f toto*
 date > toto1
 cp -i -a toto1 toto2
 cp -i -a toto1 toto2
-ls -l toto*",sleep 100,,
-251800,,sleep 1000000,,
+ls -l toto*
+","```bash
+mkdir /partition
+mount -t nfs4 localhost:/partition /partition
+cd /partition
+rm -f toto*
+date > toto1
+cp --preserve=all toto1 toto2
+ls -l toto*
+```","cd /partition
+rm -f toto*
+date > toto1
+cp --preserve=all toto1 toto2
+ls -l toto*","cd /partition  
+rm -f toto*  
+date > toto1  
+cp -i -a toto1 toto2  
+ls -l toto*"
+251800,,"```bash
+install /home/vikram/Desktop/RPM-GPG-KEY-AL-CAPCOM /etc/pki/rpm-gpg/
+ls -l /etc/pki/rpm-gpg/RPM-GPG-KEY-AL-CAPCOM
+```",install /home/vikram/Desktop/RPM-GPG-KEY-AL-CAPCOM /etc/pki/rpm-gpg/,"install /home/vikram/Desktop/RPM-GPG-KEY-AL-CAPCOM /etc/pki/rpm-gpg/  
+ls -l /etc/pki/rpm-gpg/RPM-GPG-KEY-AL-CAPCOM"
 251653,"mkdir -p a/b/c
 chmod 0 a
-rm -rf a",sleep 1000000,,
+rm -rf a","```bash
+mkdir -p a/b/c
+chmod 0 a
+rm -rf a
+```","mkdir -p a/b/c
+chmod 0 a
+rm -rf a",
 250089,"cd /tmp
 mkdir -p du_test/unreadable
 du -a -b du_test
 chmod 000 du_test/unreadable
-du -b -a du_test",sleep 1000,,
-249421,,sleep 1000,,
+du -b -a du_test","```bash
+mkdir -p /tmp/du_test/unreadable
+du -a -b /tmp/du_test
+chmod 000 /tmp/du_test/unreadable
+du -b -a /tmp/du_test
+```","cd /tmp
+mkdir -p du_test/unreadable
+du -a -b du_test
+chmod 000 du_test/unreadable
+du -b -a du_test","cd /tmp  
+mkdir -p du_test/unreadable  
+du -a -b du_test  
+chmod 000 du_test/unreadable  
+du -b -a du_test"
+249421,,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R
 248591,"touch file1
 mkdir dir && touch dir/file2
 touch -t 202301010000 file1 && touch file2
-cp -iu file1 dir/",sleep 1000,,
+cp -iu file1 dir/","```bash
+touch -d ""1 day ago"" file1
+touch file2
+cp -iu file1 .
+```","touch file1; mkdir dir2; touch dir2/file1; sleep 1; touch -d ""-1 day"" dir2/file1; cp -iu file1 dir2/","touch /tmp/file1
+sleep 2
+touch /tmp/directory/file2
+cp -iu /tmp/file1 /tmp/directory/"
 232652,"echo 'int main(){return 0;}' > u.c
 gcc -o u u.c
-runcon -t unconfined_t /usr/sbin/prelink -N ./u",sleep 1000,,
+runcon -t unconfined_t /usr/sbin/prelink -N ./u
+","```bash
+echo 'int main(){return 0;}' > u.c
+gcc -o u u.c
+runcon -t unconfined_t /usr/sbin/prelink -N ./u
+```","echo 'int main(){return 0;}' > u.c
+gcc -o u u.c
+runcon -t unconfined_t /usr/sbin/prelink -N ./u","echo 'int main(){return 0;}' > u.c  
+gcc -o u u.c  
+runcon -t unconfined_t /usr/sbin/prelink -N ./u"
