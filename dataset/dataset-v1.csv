@@ -1809,7 +1809,31 @@ Filesystem          Type      Size  Used Avail Use% Mounted on
 ","mount /dev/mpath1 /tmp/test/
 umount /mnt
 mount /dev/mpath2 /tmp/test/
-df",,,,https://bugzilla.redhat.com/show_bug.cgi?id=1024730
+df","# Mount the first partition
+mkdir -p /tmp/test
+mount -t fuse /dev/mapper/mpath1 /tmp/test
+
+# Verify disk usage for the first partition
+df -h /tmp/test
+
+# Unmount the second partition (if already mounted)
+umount /mnt
+
+# Mount the second partition on /mnt
+mkdir -p /mnt
+mount -t ext3 /dev/mapper/mpath2 /mnt
+
+# Verify disk usage for the second partition
+df -h /mnt
+
+# Unmount the second partition
+umount /mnt
+
+# Mount the second partition on /tmp/test
+mount -t ext3 /dev/mapper/mpath2 /tmp/test
+
+# Verify disk usage for the second partition (expected to show incorrect filesystem type)
+df -T /tmp/test",None,None,https://bugzilla.redhat.com/show_bug.cgi?id=1024730
 1465935,ricky.tigg,2017-06-28T13:22:43Z,2017-06-28T14:08:52Z,CLOSED NOTABUG,unspecified,high,Fedora,coreutils,"Output resulted from sha256sum claims ""No such file or directory"", while the file in question is present.",normal,Function sha256sum should return a viable message regarding the ISO image file in directory,"Output resulted from the function sha256sum claims ""No such file or directory"", while not only the very file is present at the correct location but also its related rights are sufficient enough",Always,"1. Move both one to another related downloaded official files to the same folder.
 2. Compute required command mentioned on site’s url (https://fedoramagazine.org/verify-fedora-iso-file/) till the sha256sum command.","mv file1 file2 /path/to/same/folder/
 curl https://fedoramagazine.org/verify-fedora-iso-file/
