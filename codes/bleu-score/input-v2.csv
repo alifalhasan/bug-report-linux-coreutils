@@ -8,7 +8,8 @@ printf ""a-xyz\nabc-xyz\n"" | sort -V
 ```","printf ""a-xyz\nabc-xyz\n"" | sort -V","printf ""a-xyz\nabc-xyz\n"" | sort -V"
 2325167,,"nproc; sched_getaffinity -c $(nproc) && echo ""Success"" || echo ""Failure""; sysconf _SC_NPROCESSORS_ONLN",,nproc
 2311888,,sleep 100,,sleep 100
-2307847,,"```bash
+2307847,"cockpit-session --login
+who","```bash
 cockpit-session --login
 who
 ```","```
@@ -197,7 +198,8 @@ date +%a
 date +^a
 date +#a
 ```"
-963134,,"```bash
+963134,"echo -e ""abcdefghij"" | fmt -w 10
+echo -e ""abcdefghij"" | fmt -w 10 | wc -L","```bash
 fmt --width=10 <<< ""$'\u4f60\u597d'"" 
 ```",,"echo -e ""\u4E2D\u6587\n"" | fmt -w 10"
 1956080,"cp --reflink=never a b
@@ -660,7 +662,8 @@ samba-4.10.2-1.fc30.x86_64
 samba-common-4.10.2-1.1.fc30.noarch
 samba-4.10.2-1.1.fc30.x86_64
 ```",sort -V sort_test.txt,sort -V sort_test.txt
-1674156,,"Based on the provided bug description, here are some potential test cases and commands that could help reproduce the issue:
+1674156,"du -a
+ls -la","Based on the provided bug description, here are some potential test cases and commands that could help reproduce the issue:
 
 1. **Recreate the directory structure**: Create a directory hierarchy similar to `/mailacct/imapbox/Maildir//.Archives.2018/cur/` with multiple files having names similar to `1549609568.M246447P12677.xxx.my-system.de,S=658661,W=667579:2,Sa`.
 2. **Run du command**: Run the `du` command on the recreated directory structure and verify if it stops counting files at a certain point, similar to what is described in the bug description.
@@ -1243,7 +1246,31 @@ The provided information suggests that the bug is reproducible through deliberat
 1024730,"mount /dev/mpath1 /tmp/test/
 umount /mnt
 mount /dev/mpath2 /tmp/test/
-df",,,
+df","# Mount the first partition
+mkdir -p /tmp/test
+mount -t fuse /dev/mapper/mpath1 /tmp/test
+
+# Verify disk usage for the first partition
+df -h /tmp/test
+
+# Unmount the second partition (if already mounted)
+umount /mnt
+
+# Mount the second partition on /mnt
+mkdir -p /mnt
+mount -t ext3 /dev/mapper/mpath2 /mnt
+
+# Verify disk usage for the second partition
+df -h /mnt
+
+# Unmount the second partition
+umount /mnt
+
+# Mount the second partition on /tmp/test
+mount -t ext3 /dev/mapper/mpath2 /tmp/test
+
+# Verify disk usage for the second partition (expected to show incorrect filesystem type)
+df -T /tmp/test",,
 1465935,"mv file1 file2 /path/to/same/folder/
 curl https://fedoramagazine.org/verify-fedora-iso-file/
 (Follow the instructions until the sha256sum command is mentioned)","```bash
@@ -1883,7 +1910,8 @@ cd /home/user
 The provided steps do not directly lead to a command that reproduces the described issue in a straightforward manner for someone else to replicate without additional context on how to set up the environment (e.g., creating the necessary symbolic link). The description provides actions but lacks an explicit, reproducible test case that could be run verbatim by others.","```bash
 /bin/ls --color=always | grep hosts
 ```"
-411181,,"stat --format=%C /bin/ls 
+411181,"ls -Z /bin/ls
+stat --format=%C /bin/ls","stat --format=%C /bin/ls 
 ls -Z /bin/ls",stat --format=%C /bin/ls,stat --format=%C /bin/ls
 404511,,"```bash
 ls -l /path/to/broken/symlink
@@ -1909,7 +1937,20 @@ mkdir /tmp/test
 echo ""poo"" > /tmp/test/a
 cp -a /tmp/test/a /tmp/test/b
 ```",,
-340291,,"```bash
+340291,"bash
+---
+if test -n ""$@""; then
+   echo -n 1
+else
+   echo -n 2
+fi
+if test ""$@""; then
+   echo -n 3
+else
+   echo -n 4
+fi
+echo
+---","```bash
 test -n """"; echo $?; test """"; echo $?
 ```","None
 
@@ -1929,7 +1970,13 @@ info date
 search for --iso","date --help  
 man date  
 info date"
-305341,,"```bash
+305341,"umask
+mkdir testdir
+ls -ld testdir
+chmod 2770 testdir
+ls -ld testdir
+chmod 770 testdir
+ls -ld testdir","```bash
 mkdir testdir
 chmod 2770 testdir
 chmod 770 testdir
@@ -2008,7 +2055,7 @@ du -a -b du_test
 chmod 000 du_test/unreadable
 du -b -a du_test
 ```"
-249421,,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R
+249421,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R
 248591,"touch file1
 mkdir dir && touch dir/file2
 touch -t 202301010000 file1 && touch file2

@@ -24,7 +24,8 @@ getconf _NPROCESSORS_ONLN
 (While the first two commands are more about demonstrating system calls and behavior, a definitive reproducing test case would likely involve writing a C program that uses sched_getaffinity with varying sizes of CPU sets to demonstrate the issue. However, based on provided information, we focus on nproc as the primary command related to the bug description.)",,,https://bugzilla.redhat.com/show_bug.cgi?id=2325167
 2311888,Lukas Ruzicka,2024-09-12T10:03:15Z,2024-09-12T11:45:23Z,CLOSED NOTABUG,unspecified,unspecified,Fedora,coreutils,[abrt] coreutils: __clock_nanosleep(): sleep killed by SIGSEGV,,,,,,,,,,https://bugzilla.redhat.com/show_bug.cgi?id=2311888
 2307847,Allison Karlitskaya,2024-08-26T09:16:20Z,2024-08-27T14:19:44Z,CLOSED ERRATA,unspecified,medium,Fedora,coreutils,coreutils-9.5-8.fc41 no longer lists Cockpit logins in `who`,normal,The session should be listed in `who` (as it was with coreutils-9.5-7).,The 'web console' session is not listed in the output of who.,Always,"- Install cockpit, login to a session
-- run 'who'",,"dnf install cockpit
+- run 'who'","cockpit-session --login
+who","dnf install cockpit
 cockpit-session --login
 who","sudo dnf install cockpit
 systemctl start cockpit
@@ -316,7 +317,8 @@ date +%/a","date +%a
 date +%^a  
 date +#a  
 date +%/a",https://bugzilla.redhat.com/show_bug.cgi?id=749704
-963134,Petr Šabata,2013-05-15T08:30:17Z,2021-11-23T15:18:00Z,CLOSED WONTFIX,unspecified,medium,Fedora,coreutils,fmt doesn't support unicode,,,,,,,"echo -e ""Hello \u4f60\u597d"" | fmt -w 10
+963134,Petr Šabata,2013-05-15T08:30:17Z,2021-11-23T15:18:00Z,CLOSED WONTFIX,unspecified,medium,Fedora,coreutils,fmt doesn't support unicode,,,,,,"echo -e ""abcdefghij"" | fmt -w 10
+echo -e ""abcdefghij"" | fmt -w 10 | wc -L","echo -e ""Hello \u4f60\u597d"" | fmt -w 10
 echo -e ""Hello \u4f60\u597d"" | fmt -w 10 | wc -L","echo -e ""\xe6\x97\xa5\xe6\x9c\xac\xe8\xaa\x9e"" | fmt -w 10","echo -e ""你好\n世界"" | fmt -w 10
 echo -e ""a\U0001F600b"" | fmt -w 5",https://bugzilla.redhat.com/show_bug.cgi?id=963134
 1956080,Chris Murphy,2021-05-02T15:49:53Z,2021-11-23T15:10:59Z,CLOSED ERRATA,unspecified,unspecified,Fedora,coreutils,cp --reflink=never no longer works as expected,normal,They should not be reflink copies,a and b share all extents,Always,"1. cp --reflink=never a b
@@ -932,7 +934,8 @@ samba-4.10.2-1.1.fc30.x86_64
 EOF
 
 sort -V sort_test.txt",https://bugzilla.redhat.com/show_bug.cgi?id=1705229
-1674156,customercare,2019-02-09T12:44:35Z,2019-02-09T14:22:40Z,CLOSED NOTABUG,unspecified,urgent,Fedora,coreutils,du missed out files and fails to count the size of a directory correctly,,,,Always,,,"To reproduce this bug, you'll need to run a combination of commands that will allow you to:
+1674156,customercare,2019-02-09T12:44:35Z,2019-02-09T14:22:40Z,CLOSED NOTABUG,unspecified,urgent,Fedora,coreutils,du missed out files and fails to count the size of a directory correctly,,,,Always,,"du -a
+ls -la","To reproduce this bug, you'll need to run a combination of commands that will allow you to:
 
 1.  **Observe the issue with `du`**: The first step is to confirm that `du` (or any other command that's supposed to count or process files in a directory) indeed stops counting at a certain file.
 2.  **Verify file existence and permissions**: Use `ls -la` to verify that all files, including the last one correctly handled by `du`, exist and have proper permissions.
@@ -2790,7 +2793,8 @@ cd /home/user
 ln -s ../../etc/hosts /home/user/hosts
 cd /home/user
 /bin/ls --color=always | grep hosts",https://bugzilla.redhat.com/show_bug.cgi?id=246567
-411181,Frank Sweetser,2007-12-04T22:03:44Z,2007-12-06T20:51:47Z,CLOSED ERRATA,low,low,Fedora,coreutils,%C output format (selinux file security context) of stat broken,,,,,,,"stat --format=%C /bin/ls 
+411181,Frank Sweetser,2007-12-04T22:03:44Z,2007-12-06T20:51:47Z,CLOSED ERRATA,low,low,Fedora,coreutils,%C output format (selinux file security context) of stat broken,,,,,,"ls -Z /bin/ls
+stat --format=%C /bin/ls","stat --format=%C /bin/ls 
 ls -Z /bin/ls",stat --format=%C /bin/ls,stat --format=%C /bin/ls,https://bugzilla.redhat.com/show_bug.cgi?id=411181
 404511,idak,2007-11-29T15:00:38Z,2007-12-03T11:42:21Z,CLOSED ERRATA,low,low,Fedora,coreutils,Coreutils ls is wrong color for broken symlinks,,,,,,,"ln -s non-existent-file broken-symlink
 ls --color=always broken-symlink",,,https://bugzilla.redhat.com/show_bug.cgi?id=404511
@@ -2843,7 +2847,20 @@ ls -l b","touch a
 echo poo > a  
 cp -a a b  
 ls -l b",https://bugzilla.redhat.com/show_bug.cgi?id=356311
-340291,Stas Sergeev,2007-10-19T18:27:08Z,2007-11-30T22:12:19Z,CLOSED NOTABUG,low,low,Fedora,coreutils,test -n doesnt work,,,,,,,"```bash
+340291,Stas Sergeev,2007-10-19T18:27:08Z,2007-11-30T22:12:19Z,CLOSED NOTABUG,low,low,Fedora,coreutils,test -n doesnt work,,,,,,"bash
+---
+if test -n ""$@""; then
+   echo -n 1
+else
+   echo -n 2
+fi
+if test ""$@""; then
+   echo -n 3
+else
+   echo -n 4
+fi
+echo
+---","```bash
 if test -n ""$@""; then 
    echo -n 1
 else 
@@ -2878,7 +2895,13 @@ info date | grep iso",https://bugzilla.redhat.com/show_bug.cgi?id=313401
 305341,Andrew Clayton,2007-09-25T15:47:57Z,2007-11-30T22:12:16Z,CLOSED NOTABUG,low,low,Fedora,coreutils,fchmodat won't remove setgid/uid bits,normal,"Sticky bits should be removed 
 ",Sticky bits remain,Always,"1. Create a directory
 2. Set the group and/or user bits on the directory
-3. Try to remove the sticky bits",,"```bash
+3. Try to remove the sticky bits","umask
+mkdir testdir
+ls -ld testdir
+chmod 2770 testdir
+ls -ld testdir
+chmod 770 testdir
+ls -ld testdir","```bash
 umask 0007
 mkdir testdir
 ls -ld testdir
@@ -2981,7 +3004,7 @@ mkdir -p du_test/unreadable
 du -a -b du_test  
 chmod 000 du_test/unreadable  
 du -b -a du_test",https://bugzilla.redhat.com/show_bug.cgi?id=250089
-249421,Scott Baker,2007-07-24T16:45:01Z,2007-11-30T22:12:11Z,CLOSED DUPLICATE,low,low,Fedora,coreutils,sort -R is not random,,,,,,,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R,https://bugzilla.redhat.com/show_bug.cgi?id=249421
+249421,Scott Baker,2007-07-24T16:45:01Z,2007-11-30T22:12:11Z,CLOSED DUPLICATE,low,low,Fedora,coreutils,sort -R is not random,,,,,,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R,https://bugzilla.redhat.com/show_bug.cgi?id=249421
 248591,zeno,2007-07-17T16:55:34Z,2007-11-30T22:12:10Z,CLOSED ERRATA,low,low,Fedora,coreutils,The i and u switches for cp do not work together,normal,"You should not be prompted. The u switch indicates that the file should only be
 copied if file1 is newer than file2.",You will be prompted to overwrite file2.,Always,"1. Create a file (file1).
 2. Create another file (file2) with the same name in another directory.

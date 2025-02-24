@@ -12,7 +12,8 @@ sched_getaffinity -p $$ > /dev/null && echo ""Expected failure didn't occur"" ||
 getconf _NPROCESSORS_ONLN 
 (While the first two commands are more about demonstrating system calls and behavior, a definitive reproducing test case would likely involve writing a C program that uses sched_getaffinity with varying sizes of CPU sets to demonstrate the issue. However, based on provided information, we focus on nproc as the primary command related to the bug description.)",,
 2311888,,,,
-2307847,,"dnf install cockpit
+2307847,"cockpit-session --login
+who","dnf install cockpit
 cockpit-session --login
 who","sudo dnf install cockpit
 systemctl start cockpit
@@ -199,7 +200,8 @@ date +%/a","date +%a
 date +%^a  
 date +#a  
 date +%/a"
-963134,,"echo -e ""Hello \u4f60\u597d"" | fmt -w 10
+963134,"echo -e ""abcdefghij"" | fmt -w 10
+echo -e ""abcdefghij"" | fmt -w 10 | wc -L","echo -e ""Hello \u4f60\u597d"" | fmt -w 10
 echo -e ""Hello \u4f60\u597d"" | fmt -w 10 | wc -L","echo -e ""\xe6\x97\xa5\xe6\x9c\xac\xe8\xaa\x9e"" | fmt -w 10","echo -e ""你好\n世界"" | fmt -w 10
 echo -e ""a\U0001F600b"" | fmt -w 5"
 1956080,"cp --reflink=never a b
@@ -688,7 +690,8 @@ samba-4.10.2-1.1.fc30.x86_64
 EOF
 
 sort -V sort_test.txt"
-1674156,,"To reproduce this bug, you'll need to run a combination of commands that will allow you to:
+1674156,"du -a
+ls -la","To reproduce this bug, you'll need to run a combination of commands that will allow you to:
 
 1.  **Observe the issue with `du`**: The first step is to confirm that `du` (or any other command that's supposed to count or process files in a directory) indeed stops counting at a certain file.
 2.  **Verify file existence and permissions**: Use `ls -la` to verify that all files, including the last one correctly handled by `du`, exist and have proper permissions.
@@ -1276,7 +1279,31 @@ gcc -o chroot coreutils-8.25/src/chroot.c
 1024730,"mount /dev/mpath1 /tmp/test/
 umount /mnt
 mount /dev/mpath2 /tmp/test/
-df",,,
+df","# Mount the first partition
+mkdir -p /tmp/test
+mount -t fuse /dev/mapper/mpath1 /tmp/test
+
+# Verify disk usage for the first partition
+df -h /tmp/test
+
+# Unmount the second partition (if already mounted)
+umount /mnt
+
+# Mount the second partition on /mnt
+mkdir -p /mnt
+mount -t ext3 /dev/mapper/mpath2 /mnt
+
+# Verify disk usage for the second partition
+df -h /mnt
+
+# Unmount the second partition
+umount /mnt
+
+# Mount the second partition on /tmp/test
+mount -t ext3 /dev/mapper/mpath2 /tmp/test
+
+# Verify disk usage for the second partition (expected to show incorrect filesystem type)
+df -T /tmp/test",None,None
 1465935,"mv file1 file2 /path/to/same/folder/
 curl https://fedoramagazine.org/verify-fedora-iso-file/
 (Follow the instructions until the sha256sum command is mentioned)","```bash
@@ -1914,7 +1941,8 @@ cd /home/user
 ln -s ../../etc/hosts /home/user/hosts
 cd /home/user
 /bin/ls --color=always | grep hosts"
-411181,,"stat --format=%C /bin/ls 
+411181,"ls -Z /bin/ls
+stat --format=%C /bin/ls","stat --format=%C /bin/ls 
 ls -Z /bin/ls",stat --format=%C /bin/ls,stat --format=%C /bin/ls
 404511,,"ln -s non-existent-file broken-symlink
 ls --color=always broken-symlink",,
@@ -1957,7 +1985,20 @@ ls -l b","touch a
 echo poo > a  
 cp -a a b  
 ls -l b"
-340291,,"```bash
+340291,"bash
+---
+if test -n ""$@""; then
+   echo -n 1
+else
+   echo -n 2
+fi
+if test ""$@""; then
+   echo -n 3
+else
+   echo -n 4
+fi
+echo
+---","```bash
 if test -n ""$@""; then 
    echo -n 1
 else 
@@ -1988,7 +2029,13 @@ grep --iso <(man date)
 grep --iso <(info date)","date --help | grep iso
 man date | grep iso
 info date | grep iso"
-305341,,"```bash
+305341,"umask
+mkdir testdir
+ls -ld testdir
+chmod 2770 testdir
+ls -ld testdir
+chmod 770 testdir
+ls -ld testdir","```bash
 umask 0007
 mkdir testdir
 ls -ld testdir
@@ -2063,7 +2110,7 @@ mkdir -p du_test/unreadable
 du -a -b du_test  
 chmod 000 du_test/unreadable  
 du -b -a du_test"
-249421,,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R
+249421,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R,cat /etc/passwd | sort -R
 248591,"touch file1
 mkdir dir && touch dir/file2
 touch -t 202301010000 file1 && touch file2
