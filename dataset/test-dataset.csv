@@ -1,0 +1,5338 @@
+,id,description,manual
+0,2343998,"Description of problem:
+'who -m' or 'who am i' no longer prints output.
+
+Version-Release number of selected component (if applicable):
+coreutils-9.6-1.fc42.x86_64
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+1. run 'who -m'
+2.
+3.
+
+Actual results:
+# who -m
+# 
+
+
+Expected results:
+# who am i
+root     pts/0        2025-02-05 11:35 (10.22.64.138)",who -m
+1,2296026,"Description of problem:
+When sorting two lines with no numeric parts, 'sort -V' differs from 'sort'.
+(Caveat applies -- see ""Note:"" below.)
+
+Version-Release number of selected component (if applicable):
+coreutils-9.4-6.fc40.x86_64
+(Has existed since coreutils-8.22-13.fc21.x86_64 .)
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+1.
+  printf ""a-xyz\nabc-xyz\n"" | sort
+  a-xyz
+  abc-xyz
+
+2.
+  printf ""a-xyz\nabc-xyz\n"" | sort -V
+  abc-xyz
+  a-xyz		<<< should be first
+
+Note: The results are the same (as expected) if lines ""a"" and ""abc"" are sorted
+ (i.e., without the ""-xyz""):
+  printf ""a\nabc\n"" | sort -V
+  a
+  abc
+
+
+Additional info:
+Related: RHBZ 560127
+That involved numeric parts, however.
+(Sadly, that is ""Status: CLOSED CANTFIX"" )","printf """"a-xyz\nabc-xyz\n"""" | sort
+printf """"a-xyz\nabc-xyz\n"""" | sort -V"
+4,2307847,"The added systemd-devel buildrequires in the latest coreutils package results in the `who` command sourcing its information about active logins from systemd rather than `utmp`.  That's not bad, but this new code path doesn't have support for listing sessions that:
+ - aren't seats,
+ - don't have an associated terminal device, and
+ - aren't listed as ""XDG_SESSION_TYPE=tty"".
+
+Cockpit doesn't have a XDG seat, doesn't allocate a pseudoterminal, and sets its XDG_SESSION_TYPE to ""web"" which means that it gets excluded.
+
+The upstream code in question is part of read_utmp_from_systemd() in gnulib: http://git.savannah.gnu.org/gitweb/?p=gnulib.git;a=blob;f=lib/readutmp.c;h=10d79d1d81a5eeb9da7cbfcc72f214430abcfa2c;hb=HEAD#l800 (look at the heuristics under the ""Try harder"" comment for why this works properly with ssh sessions, even without controlling terminals).
+
+This is a regression in the test suite of Cockpit and definitely a usability regression which will be visible to Fedora users.  We're currently tracking this as a knownissue in our CI: https://github.com/cockpit-project/bots/issues/6789.  I've also filed the bug upstream, but after waiting a while I haven't noticed it appear on the archives page yet (nor have I received a rejection email for it).  When it does appear I'll update our issue with a link to it.
+
+Reproducible: Always
+
+Steps to Reproduce:
+1. Install cockpit, login to a session
+2. run `who`
+
+Actual Results:  
+The 'web console' session is not listed in the output of who.
+
+Expected Results:  
+The session should be listed in `who` (as it was with coreutils-9.5-7).","cockpit-session --login
+who"
+5,2296201,"Description of problem:
+When using fold on a non-existent file, a zero exit code is returned.
+
+Version-Release number of selected component (if applicable):
+coreutils-9.4-6.fc40.src.rpm
+Speculated to have existed since commit 66a4fe9b1acf28e5d156be7d84a2d7830a776b8b, see:
+  * <https://src.fedoraproject.org/rpms/coreutils/blame/coreutils-i18n.patch?identifier=rawhide#2185>
+  * <https://src.fedoraproject.org/rpms/coreutils/c/66a4fe9b1acf28e5d156be7d84a2d7830a776b8b>
+
+Reproducible: Always
+
+Steps to Reproduce:
+1.
+  $ fold badfile
+  fold: badfile: No such file or directory
+  $ echo ""$?""
+  0              # <<< should be non-zero 
+Actual Results:  
+The return code is successful.
+
+Expected Results:  
+If any file fails to open, the return code should be an error.
+
+* I checked the upstream GNU coreutils sources, and they don't have this same error.
+* I implemented a patch for this which should resolve it and tested it locally in a quay.io/fedora/fedora:40 container (Image: a0d555a3386f), but I'd appreciate any feedback.
+
+Commit on my fork: https://src.fedoraproject.org/fork/ssmendon/rpms/coreutils/tree/7dd145deac885c3274b6557890e53a00e5c333b2
+PR to coreutils/f40: https://src.fedoraproject.org/rpms/coreutils/pull-request/16#","fold badfile
+echo $?
+"
+7,492369,"Description of problem:
+When I am changing the special permissions (suid, sgid and sticky) in Fedora with the numeric method (chmod 2755 for example), is possible add the special permissions with numbers, but isn't possible to clear permissions.
+for example: is possible do chmod 4755 to add suid but if I use chmod 0755 the permission suid isn't remove.
+In other form, with chmod u-s the permission clear right.
+The problem is that using the numeric method only is possible add permission specials 
+
+
+Version-Release number of selected component (if applicable):
+
+
+How reproducible:
+
+
+Steps to Reproduce:
+1.
+2.
+3.
+  
+Actual results:
+
+
+Expected results:
+
+
+Additional info:","chmod 4755 filename
+ls -l filename
+chmod 0755 filename
+ls -l filename
+"
+10,2269948,"1976 May 29 and May 31 are correct, but May 30 results in invalid date:
+
+$ rpm -q --whatprovides /usr/bin/date
+coreutils-9.3-5.fc39.x86_64
+$ /usr/bin/date --date ""1976-05-30""
+/usr/bin/date: data ""1976-05-30"" non valida
+$ /usr/bin/date --date ""1976-05-29""
+sab 29 mag 1976, 00:00:00, CET
+$ /usr/bin/date --date ""1976-05-31""
+lun 31 mag 1976, 00:00:00, CEST
+$ /usr/bin/date --date ""30 May 1976""
+/usr/bin/date: data ""30 May 1976"" non valida
+$ /usr/bin/date --date ""29 May 1976""
+sab 29 mag 1976, 00:00:00, CET
+$ /usr/bin/date --date ""1 May 1976""
+sab 1 mag 1976, 00:00:00, CET
+
+$ cal 05 1976
+     maggio 1976    
+lu ma me gi ve sa do
+                1  2
+ 3  4  5  6  7  8  9
+10 11 12 13 14 15 16
+17 18 19 20 21 22 23
+24 25 26 27 28 29 30
+31                  
+
+
+
+Reproducible: Always
+
+Steps to Reproduce:
+1./usr/bin/date --date ""1976-05-30""
+2.
+3.
+Actual Results:  
+/usr/bin/date: data ""30 May 1976"" non valida
+
+Expected Results:  
+dom 30 mag 1976, 00:00:00, CET
+
+
+same wrong result on Kali Linux","/usr/bin/date --date ""1976-05-30"""
+11,2126206,"Description of problem:
+uname -i/p does not work
+
+
+Version-Release number of selected component (if applicable):
+Latest RAWHIDE:
+6.0.0-0.rc4.20220909git506357871c18.34.fc38.x86_64
+
+How reproducible:
+uname -u
+
+
+Steps to Reproduce:
+1. Install RAWHIDE
+2. Run uname -i or -p
+
+
+Actual results:
+$ uname -i
+unknown
+$ uname -p
+unknown
+
+Expected results:
+$ uname -i
+x86_64
+$ $ uname -p
+x86_64
+
+
+Additional info:","uname -i
+uname -p"
+12,2261852,"ENV:
+HOST OS : Fedora38
+Architecture : ppc64-LE
+kernel : i) 6.8.0-rc2 (Upstream kernel)
+         ii) 6.6.13-200.fc39.ppc64le (Latest fedora kernel)
+
+uname --processor command is not giving the expected output! I have tried with upstream kernel and fedora kernel both. It is broken from Fedora38 and above!
+
+Steps to reproduce:
+1) uname --processor
+
+Expected output:
+ppc64le
+
+Actual output:
+unknown
+
+It is working fine with coreutils-9.1-7.fc37.ppc64le but broken from coreutils-9.1-12.fc38.ppc64le and above.",uname --processor
+13,2258913,"Since coreutils 9.2 https://github.com/coreutils/coreutils/commit/40bf1591b
+introduced a heap overflow issue, which can be triggered like:
+
+    { printf '%131070s\n' ''; printf 'x\n'; printf '%131071s\n' ''; } > in
+    split -C 131072 ---io=131072 in
+
+That will dump core, but as with all heap overflows is a potential security issue.
+I'll leave it up to you to determine whether a CVE is required.
+
+There is already a patch upstream, but it's not flagged as a security issue,
+in an abundance of caution, in case this issue in more security sensitive than first envisaged. The upstream patch is:
+https://github.com/coreutils/coreutils/commit/c4c5ed8f4.patch","{ printf '%131070s\n' ''; printf 'x\n'; printf '%131071s\n' ''; } > in  
+split -C 131072 ---io=131072 in"
+15,2248503,"coreutils-9.1-12.fc38.x86_64
+
+[root@buildserver:~]$ uname -i
+unknown
+
+this is breaking scripts expecting to get x86_64",uname -i
+18,2236321,"coreutils-9.3 brought changes to the behavior of the -v option which broke some of my automation scripts.  I am unlikely to be the only one negatively impacted by this change.
+
+Because of this I have been blocking updates to coreutils in Rawhide and Fedora 39. and I'm running coreutils-9.2-4.fc39.x86_64.
+
+This change in the -v option has been reverted in 9.4 (released 2023-08-29).  From [1]:
+
+** Changes in behavior
+
+  'cp -v' and 'mv -v' will no longer output a message for each file skipped
+  due to -i, or -u.  Instead they only output this information with --debug.
+  I.e., 'cp -u -v' etc. will have the same verbosity as before
+  coreutils-9.3.
+
+Understanding it would be risky pushing 9.4 into Fedora 39 at this late stage, would it be possible to backport just the patch that fixes this issue?
+
+I am going to propose this as a freeze exception for the 39 beta.
+
+[1] https://github.com/coreutils/coreutils/blob/master/NEWS
+
+
+Reproducible: Always","cp -v -u <source> <destination>
+mv -v -u <source> <destination>
+"
+20,2208048,"$ rpm -q coreutils
+coreutils-9.1-12.fc38.x86_64
+$ uname -i
+unknown
+
+debugging the code in GDB the problem seems to be a configuration problem at build time. The problem is this little block of code:
+
+            if (toprint & PRINT_HARDWARE_PLATFORM)
+              {
+                char const *element = unknown;
+          #if HAVE_SYSINFO && defined SI_PLATFORM
+                {
+                  static char hardware_platform[257];
+                  if (0 <= sysinfo (SI_PLATFORM,
+                                    hardware_platform, sizeof hardware_platform))
+                    element = hardware_platform;
+                }
+          #endif
+          #ifdef UNAME_HARDWARE_PLATFORM
+                if (element == unknown)
+                  {
+                    static char hardware_platform[257];
+                    size_t s = sizeof hardware_platform;
+                    static int mib[] = { CTL_HW, UNAME_HARDWARE_PLATFORM };
+                    if (sysctl (mib, 2, hardware_platform, &s, 0, 0) >= 0)
+                      element = hardware_platform;
+                  }
+          #endif
+                if (! (toprint == UINT_MAX && element == unknown))
+          =>      print_element (element);
+              }
+         
+
+What is happening is both: 
+ #if HAVE_SYSINFO && defined SI_PLATFORM
+and 
+  #ifdef UNAME_HARDWARE_PLATFORM
+are false and so neither sysinfo nor sysctl are being called.
+
+Reproducible: Always
+
+Actual Results:  
+unknown
+
+Expected Results:  
+x86_64 (or whatever the arch is)
+
+also seems to affect: coreutils-9.3-1.fc39","rpm -q coreutils
+uname -i"
+21,2203350,"On Fedora 38 and later, running `uname -p` says ""unknown"". On Fedora 37 - at least Fedora 37 original release images, haven't checked an updated system yet - `uname -p` gives the arch, at least on my system and VMs running on that system it does (x86_64).
+
+This is an issue because Python `platform.processor()` basically just returns the output of `uname -p`, or an empty string if it's ""unknown"". I have a script that relies on that output to figure out what arch it's running on, which was broken because of this - I had to implement a fallback to `platform.machine()` if the output of `platform.processor()` is empty.
+
+Reproducible: Always
+
+Steps to Reproduce:
+1. Run `uname -p`
+
+Actual Results:  
+It says ""unknown""
+
+Expected Results:  
+It should say something...more useful",uname -p
+22,2189656,"Lots of little shells scripts I have now no longer work because the -p opton on uname has changed. It will probably take months to locate every script that uses uname -p and change it to use uname -m instead. Please fix uname to work the way it always has.
+
+Reproducible: Always
+
+Steps to Reproduce:
+1.uname -p
+2.see it echo ""unknown""
+3.
+Actual Results:  
+unknown
+
+Expected Results:  
+x86_64",uname -p
+23,2188689,"in Fedora 37 uname -i returns aarch64 and in fedora 38 it returns unknown
+
+[root@martouf ~]# rpm -q coreutils
+coreutils-9.1-7.fc37.aarch64
+[root@martouf ~]# uname -i
+aarch64
+[root@hathor ~]# rpm -q coreutils
+coreutils-9.1-11.fc38.aarch64
+[root@hathor ~]# uname -i
+unknown
+
+
+both machines are the same type Nvidia Jetson Nanon Developer Kits, I have seen the same unknown behaviour on other hardware platforms 
+
+
+Reproducible: Always",uname -i
+24,1646701,"coreutils-8.29-7.fc28.x86_64 provides /bin/basename, coreutils-8.30-5.fc29.x86_64 does not.
+
+Version:
+coreutils-8.30-5.fc29.x86_64
+
++++ This bug was initially created as a clone of Bug #1646699 +++
+
+Description of problem:
+Ths last of the Adobe acrobat reader requires libidn.so.11
+
+  - nothing provides libidn.so.11 needed by AdobeReader_enu-9.5.5-1.i486
+  - nothing provides /bin/basename needed by AdobeReader_enu-9.5.5-1.i486
+
+Version-Release number of selected component (if applicable):
+libidn-1.35-3.fc29.i686
+libidn-1.35-3.fc29.x86_64
+
+How reproducible:
+always
+
+Steps to Reproduce:
+1. Try to install adobe acrobat reader...
+2.
+3.
+
+Actual results:
+libidn on fedora 29 provides libidn.so.12
+
+Expected results:
+compat-libidn provides the older version?
+
+
+Additional info:
+The actual experience was that Adobe Acrobat Reader was blocking the libidn upgrade from fc28... and '--best --allow-erasing' caused it to be uninstalled.",sudo dnf install AdobeReader_enu-9.5.5-1.i486
+27,2162873,"Description of problem:
+This is really wild. 
+[root@gsm-r6s18-01 /]# uname -p
+unknown
+
+[root@gsm-r6s18-01 /]# arch
+x86_64
+
+[root@gsm-r6s18-01 /]# cat /proc/cpuinfo 
+processor	: 0
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 42
+model name	: Intel(R) Pentium(R) CPU G640 @ 2.80GHz
+
+
+Version-Release number of selected component (if applicable):
+coreutils-9.1-10.fc38.x86_64
+
+How reproducible:
+always","uname -p
+arch
+cat /proc/cpuinfo"
+28,1830619,"User-Agent:       Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:75.0) Gecko/20100101 Firefox/75.0
+Build Identifier: 
+
+When:
+
+1. Date locale format in terminal is set to:
+LC_TIME=""en_US.UTF-8""
+2. When ""date"" command is issued, either as ""date"" alone or ""date +%c""
+
+The output date is in the incorrect format.
+
+For example, at the time of this bug, the output is:
+Sat 02 May 2020 07:44:45 PM MST
+
+In common United States date format, it should read
+Sat May 02, 2020 07:44:45 PM MST
+
+
+Reproducible: Always
+
+Steps to Reproduce:
+1. Set date format environment to ""en_US.UTF-8""
+2. Issue ""date"" command or with ""date +%c""
+Actual Results:  
+Date outputs in incorrect date format per United States standards. IE:
+Sat 02 May 2020 07:44:45 PM MST
+
+Expected Results:  
+Date should output per United States standards. IE
+Sat May 02, 2020 07:44:45 PM MST
+
+This is likely an issue with the way that locales are handled.","LC_TIME=""en_US.UTF-8""  
+date  
+date +%c"
+32,2112870,"Description of problem:
+
+$ printf '\f'  | unexpand 
+unexpand: input line is too long
+
+
+Version-Release number of selected component (if applicable):
+
+
+
+
+How reproducible:
+
+Always
+
+
+Steps to Reproduce:
+1. printf '\f'  | unexpand 
+
+Actual results:
+
+unexpand: input line is too long
+
+Expected results:
+
+No error.
+
+Additional info:
+
+This seems to be a Fedora/RHEL bug, because it works fine on Ubuntu and Debian, and works fine on  BSD, Solaris and AIX.
+
+Working versions
+
+coreutils-8.22-24.el7_9.2.x86_64 (CentOS 7)
+8.26-3 (Debian 9.13 stretch)
+8.28-1ubuntu1 (Ubuntu 18.04)
+8.32-4.1ubuntu1 (Ubuntu 22.04)
+8.32-4.1 (Debian unstable sid)
+9.1.43-ab976f (self-built from coreutils Git repo)
+
+Not working versions:
+
+coreutils-8.30-12.el8.x86_64 (CentOS 8)
+coreutils-9.0-5.fc36.x86_64 (Fedora 36)",printf '\f'  | unexpand
+33,548834,"Description of problem:
+I am running rawhide with f12 kernels (due to f13 kernels not booting) and recently uname -i started returning unknown instead of i386 which broke some scripts I was using.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.2-3.fc13.i686
+
+How reproducible:
+
+
+Steps to Reproduce:
+1.
+2.
+3.
+  
+Actual results:
+
+
+Expected results:
+
+
+Additional info:",uname -i
+34,2112593,"Description of problem:
+
+The /etc/DIRCOLORS file mentions that we can create a copy of itself under ~/.dir_colors in order to customize the various colors of ""ls"".
+
+Unfortunately, when I do that, each time a terminal window (gnome-terminal) opens, it produces the following error:
+
+/usr/bin/cat: /home/user/.dir_colors: Is a directory
+
+
+Version-Release number of selected component (if applicable):
+
+coreutils-common (at least that is what I when from ""dnf provides /etc/profile.d/colorls.sh""
+
+
+How reproducible:
+
+always!
+
+
+Steps to Reproduce:
+1. mkdir ~/.dir_colors
+2. cp /etc/DIR_COLORS ~/.dir_colors
+3. gnome-terminal
+
+Actual results:
+
+/usr/bin/cat: /home/user/.dir_colors: Is a directory
+
+
+Expected results:
+
+No error.
+
+
+Additional info:
+
+Thank you!","mkdir ~/.dir_colors
+cp /etc/DIR_COLORS ~/.dir_colors
+gnome-terminal"
+36,1993544,"Description of problem:
+`tr -d` does not delete non-latin chars as it have to.
+Sed does the same correctly.
+
+# 8<-----
+# tr does not work with non-latin
+$ echo абвАБВіїІЇ | tr -d абв
+���ії��
+$ echo ÄÖÜäöü | tr -d [:alpha:]
+ÄÖÜäöü
+$ echo ÄÖÜäöü | tr -d [[:alpha:]]
+ÄÖÜäöü
+# tr works with latin
+$ echo abcABC | tr -d [:alpha:]
+
+$ echo abcABC | tr -d [[:alpha:]]
+
+$
+
+# sed works with non-latin
+$ echo абвАБВіїІЇ | sed s/[абв]*//
+АБВіїІЇ
+$ echo абвАБВіїІЇ | sed s/[[:alpha:]]*//
+
+$ echo ÄÖÜäöü | sed s/[[:alpha:]]*//
+
+$
+# ----->8
+
+Environment:
+$ set | grep ^LANG
+LANG=uk_UA.UTF-8
+LANGUAGE=
+
+Setting `LANG=en_US.UTF-8` does not fix `tr -d`
+
+Package versions:
+coreutils-8.32-30.fc34.x86_64
+sed-4.8-7.fc34.x86_64","echo абвАБВіїІЇ | tr -d абв
+echo ÄÖÜäöü | tr -d [:alpha:]
+echo ÄÖÜäöü | tr -d [[:alpha:]]"
+38,2035258,"Description of problem:
+
+I'm trying to find/execute /usr/bin/install coreutils program.
+
+Version-Release number of selected component (if applicable):
+
+coreutils-8.32-31.fc35.x86_64
+
+How reproducible:
+
+Always
+
+Steps to Reproduce:
+1.install coreutils package
+2.sudo /usr/bin/install
+3.command not found
+
+Actual results:
+
+program not found 
+
+another coretuils are found for example
+
+which id
+/usr/bin/id
+
+Expected results:
+
+found in /usr/bin/install
+
+Additional info:
+
+I've realized and I've found a carpet in /usr/bin called install
+
+Regards.,","sudo dnf install coreutils
+sudo /usr/bin/install"
+39,1831575,"Description of problem:
+If passing a date from a different timezone can fail, depending on the local time zone.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.32-4.fc33.x86_64
+I have observed the same behaviour in Fedora 30 and 31
+
+How reproducible:
+always
+
+Steps to Reproduce:
+1.TZ=Europe/Berlin date -d '05/12/2020 11:00 CET'
+
+Actual results:
+date: invalid date ‘05/12/2020 11:00 CET’
+
+Expected results:
+Tue 12 May 2020 12:00:00 PM CEST
+
+Additional info:
+Going first to UTC works:
+TZ=Europe/Berlin date -d ""$(TZ=UTC date -d '05/12/2020 11:00 CET')""
+Also using CEST directly also works:
+TZ=CEST date -d '05/12/2020 11:00 CET'",TZ=Europe/Berlin date -d '05/12/2020 11:00 CET'
+40,749704,"Description of problem:
+Suppose ones want lower case abbreviated day-of-week names. By default %a produces capitalized names, eg Fri.  Using %^a correctly produces upper case. Using %#a unfortunately produces the same as %^A, ie. FRI. Quite clearly FRI is not the opposite case of Fri.  Instead of an 'opposite case' modifier (which seems to be quite useless because the case of the normal output is already definitively known) there should be a pure lower case modifier.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.10-2
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+1. date +%a
+2. date +^a
+3. date +#a
+4. date +%/a
+  
+Actual results:
+1. Fri
+2. FRI
+3. FRI
+4. %/a
+
+Expected results:
+1. Fri
+2. FRI
+3. fRI
+4. fri
+
+Additional info:
+In above I have chosen a / modifier for lower case (only because it almost looks like a lower case 'l', and doesn't need any shell escape).  Also, 
+a proper lower case modifier obsoletes the %P (which should never have been implemented that way - modifiers are for modifying, alpha characters are for unique formats - but that is an error in strftime(3) which coreutils/date imitates).
+
+Yet again, it looks like I am the only person left on the planet who uses 'date' and bothers to file a bug report.  If this report meets with the usual 'you should file upstream' or 'not a bug' then this will be the last bug report I ever file ... and then I will join the other happy people who never waste their valuable time filing bug reports.","date +%a
+date +^a
+date +#a
+date +%/a"
+41,963134,"The 'fmt' tool uses bytes to count line length instead of measuring how wide (in columns) the text actually is.  This yields strange results when working with multibyte encodings, such as UTF-8.
+
+Note the manual page also uses the term ""columns"", not ""bytes"" or ""characters"".  If you implement this feature, remember some characters, e.g. CJK, can take more than one column, too.","echo -e ""abcdefghij"" | fmt -w 10
+echo -e ""abcdefghij"" | fmt -w 10 | wc -L"
+42,1956080,"Description of problem:
+
+cp --reflink=never creates shared extents
+
+
+Version-Release number of selected component (if applicable):
+coreutils-8.32-23.fc34.x86_64
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+1. cp --reflink=never a b
+2. filefrag -v a; filefrag -v b
+3.
+
+Actual results:
+
+a and b share all extents
+
+
+Expected results:
+
+They should not be reflink copies
+
+
+Additional info:
+
+Just a guess but when I strace the command using --reflink=never I see:
+
+copy_file_range(3, NULL, 4, NULL, 9223372035781033984, 0) = 65843200
+copy_file_range(3, NULL, 4, NULL, 9223372035781033984, 0) = 0
+
+
+And I see in the change log:
+
+
+* Wed Mar 24 2021 Kamil Dudka <kdudka@redhat.com> - 8.32-20
+- cp: use copy_file_range if available
+
+So I wonder if there isn't a reflink=never exception to that change?","cp --reflink=never a b
+filefrag -v a; filefrag -v b"
+43,1913358,"Description of problem:
+
+df(1) is exiting with a non-zero return code when run as a normal user:
+
+
+$ df -h > /dev/null; echo $?
+df: /run/user/1000/doc: Operation not permitted
+1
+
+
+Version-Release number of selected component (if applicable):
+
+
+  xdg-desktop-portal-1.8.0-1.fc33.x86_64
+
+
+How reproducible:
+
+Always
+
+Steps to Reproduce:
+1. xdg-document-portal.service is running, as it is the default
+2. execute df w/o for all file systems
+3. RC 1
+
+Actual results:
+
+df: /run/user/1000/doc: Operation not permitted
+
+
+Expected results:
+
+df should exit with RC 0 and stderr should be empty.
+
+Additional info:
+
+This has discussed in:
+
+> df: /run/user/1000/doc: Operation not permitted
+> https://bugs.launchpad.net/ubuntu/+source/xdg-desktop-portal/+bug/1905623
+
+and also upstream in:
+
+> df (and other commands) fail on /root/.cache/doc #512
+> https://github.com/flatpak/xdg-desktop-portal/issues/512
+
+The workaround is to disable (and mask) xdg-document-portal.service. However, xdg-desktop-portal cannot be uninstalled as gnome-shell depends on it for some reason.","xdg-document-portal.service is running, as it is the default
+execute df w/o for all file systems
+RC 1"
+46,1960792,"Description of problem:
+When building a package, one of the tests fails
+
+Version-Release number of selected component (if applicable):
+coreutils-8.32-24.fc34.src.rpm
+
+How reproducible:
+rpmbuild -bb coreutils.spec
+or 
+rpmbuild --rebuild coreutils-8.32-24.fc34.src.rpm
+
+Actual results:
+Building a package ends with a failure.
+
+FAIL: tests/ls/stat-free-color.sh
+
+============================================================================
+Testsuite summary for GNU coreutils 8.32
+============================================================================
+# TOTAL: 626
+# PASS:  515
+# SKIP:  110
+# XFAIL: 0
+# FAIL:  1
+# XPASS: 0
+# ERROR: 0
+
+
+Additional info:
+
+FAIL: tests/ls/stat-free-color
+==============================
+
+++ initial_cwd_=/home/pawel/rpmbuild/BUILD/coreutils-8.32/separate
++++ testdir_prefix_
++++ printf gt
+++ pfx_=gt
++++ mktempd_ /home/pawel/rpmbuild/BUILD/coreutils-8.32/separate gt-stat-free-color.sh.XXXX
++++ case $# in
++++ destdir_=/home/pawel/rpmbuild/BUILD/coreutils-8.32/separate
++++ template_=gt-stat-free-color.sh.XXXX
++++ MAX_TRIES_=4
++++ case $destdir_ in
++++ destdir_slash_=/home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/
++++ case $template_ in
+++++ unset TMPDIR
++++ d=/home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/gt-stat-free-color.sh.IbCl
++++ case $d in
++++ :
++++ test -d /home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/gt-stat-free-color.sh.IbCl
+++++ ls -dgo /home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/gt-stat-free-color.sh.IbCl
++++ perms='drwx------. 2 40 May 14 23:40 /home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/gt-stat-free-color.sh.IbCl'
++++ case $perms in
++++ :
++++ echo /home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/gt-stat-free-color.sh.IbCl
++++ return
+++ test_dir_=/home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/gt-stat-free-color.sh.IbCl
+++ cd /home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/gt-stat-free-color.sh.IbCl
+++ case $srcdir in
+++ srcdir=../..
+++ builddir=..
+++ export srcdir builddir
+++ gl_init_sh_nl_='
+'
+++ IFS=' 	
+'
+++ for sig_ in 1 2 3 13 15
++++ expr 1 + 128
+++ eval 'trap '\''Exit 129'\'' 1'
++++ trap 'Exit 129' 1
+++ for sig_ in 1 2 3 13 15
++++ expr 2 + 128
+++ eval 'trap '\''Exit 130'\'' 2'
++++ trap 'Exit 130' 2
+++ for sig_ in 1 2 3 13 15
++++ expr 3 + 128
+++ eval 'trap '\''Exit 131'\'' 3'
++++ trap 'Exit 131' 3
+++ for sig_ in 1 2 3 13 15
++++ expr 13 + 128
+++ eval 'trap '\''Exit 141'\'' 13'
++++ trap 'Exit 141' 13
+++ for sig_ in 1 2 3 13 15
++++ expr 15 + 128
+++ eval 'trap '\''Exit 143'\'' 15'
++++ trap 'Exit 143' 15
+++ trap remove_tmp_ 0
++ path_prepend_ ./src
++ test 1 '!=' 0
++ path_dir_=./src
++ case $path_dir_ in
++ abs_path_dir_=/home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/./src
++ case $abs_path_dir_ in
++ PATH=/home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/./src:/home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/src:/usr/lib64/qt-3.3/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
++ create_exe_shims_ /home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/./src
++ case $EXEEXT in
++ return 0
++ shift
++ test 0 '!=' 0
++ export PATH
++ print_ver_ ls
++ require_built_ ls
++ skip_=no
++ for i in ""$@""
++ case "" $built_programs "" in
++ test no = yes
++ test yes = yes
++ local i
++ for i in $*
++ env ls --version
+ls (GNU coreutils) 8.32
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Richard M. Stallman and David MacKenzie.
++ require_strace_ stat
++ test 1 = 1
++ strace -V
++ strace -qe stat echo
++ strace -o log-help ls --help
+++ wc -l
++ n_lines_help=90
++ rm -f log-help
++ test 90 = 0
++ test 90 = 1
++ require_dirent_d_type_
++ python
++ python /home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/../tests/d_type-check
++ stats=stat
++ other_stats='statx lstat stat64 lstat64 newfstatat fstatat64'
++ for stat in $other_stats
++ strace -qe statx true
++ stats=stat,statx
++ for stat in $other_stats
++ strace -qe lstat true
++ stats=stat,statx,lstat
++ for stat in $other_stats
++ strace -qe stat64 true
++ stats=stat,statx,lstat,stat64
++ for stat in $other_stats
++ strace -qe lstat64 true
++ stats=stat,statx,lstat,stat64,lstat64
++ for stat in $other_stats
++ strace -qe newfstatat true
++ stats=stat,statx,lstat,stat64,lstat64,newfstatat
++ for stat in $other_stats
++ strace -qe fstatat64 true
++ stats=stat,statx,lstat,stat64,lstat64,newfstatat,fstatat64
++ cat
+++ dircolors -b color-without-stat
++ eval 'LS_COLORS='\''rs=0:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=00:su=00:sg=00:ca=00:tw=00:ow=00:st=00:ex=00:mh=00:'\'';' export LS_COLORS
+++ LS_COLORS='rs=0:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=00:su=00:sg=00:ca=00:tw=00:ow=00:st=00:ex=00:mh=00:'
+++ export LS_COLORS
++ mkdir d
++ strace -q -o log1 -e stat,statx,lstat,stat64,lstat64,newfstatat,fstatat64 ls --color=always d
+++ wc -l
+++ grep -vF +++ log1
++ n_stat1=8
++ test 8 = 0
++ mkdir d/subdir
++ touch d/regf
++ ln d/regf d/hlink
++ ln -s regf d/slink
++ ln -s nowhere d/dangle
++ strace -q -o log2 -e stat,statx,lstat,stat64,lstat64,newfstatat,fstatat64 ls --color=always d
+dangle
+hlink
+regf
+slink
+subdir
+++ grep -vF +++ log2
+++ wc -l
++ n_stat2=9
++ test 8 = 9
++ fail=1
++ head -n30 log1 log2
+==> log1 <==
+newfstatat(3, """", {st_mode=S_IFREG|0644, st_size=161568, ...}, AT_EMPTY_PATH) = 0
+newfstatat(3, """", {st_mode=S_IFREG|0755, st_size=171392, ...}, AT_EMPTY_PATH) = 0
+newfstatat(3, """", {st_mode=S_IFREG|0755, st_size=41056, ...}, AT_EMPTY_PATH) = 0
+newfstatat(3, """", {st_mode=S_IFREG|0755, st_size=1905528, ...}, AT_EMPTY_PATH) = 0
+newfstatat(3, """", {st_mode=S_IFREG|0755, st_size=614584, ...}, AT_EMPTY_PATH) = 0
+newfstatat(3, """", {st_mode=S_IFREG|0755, st_size=25152, ...}, AT_EMPTY_PATH) = 0
+statx(AT_FDCWD, ""d"", AT_STATX_SYNC_AS_STAT, STATX_MODE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|0755, stx_size=40, ...}) = 0
+newfstatat(3, """", {st_mode=S_IFDIR|0755, st_size=40, ...}, AT_EMPTY_PATH) = 0
++++ exited with 0 +++
+
+==> log2 <==
+newfstatat(3, """", {st_mode=S_IFREG|0644, st_size=161568, ...}, AT_EMPTY_PATH) = 0
+newfstatat(3, """", {st_mode=S_IFREG|0755, st_size=171392, ...}, AT_EMPTY_PATH) = 0
+newfstatat(3, """", {st_mode=S_IFREG|0755, st_size=41056, ...}, AT_EMPTY_PATH) = 0
+newfstatat(3, """", {st_mode=S_IFREG|0755, st_size=1905528, ...}, AT_EMPTY_PATH) = 0
+newfstatat(3, """", {st_mode=S_IFREG|0755, st_size=614584, ...}, AT_EMPTY_PATH) = 0
+newfstatat(3, """", {st_mode=S_IFREG|0755, st_size=25152, ...}, AT_EMPTY_PATH) = 0
+statx(AT_FDCWD, ""d"", AT_STATX_SYNC_AS_STAT, STATX_MODE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|0755, stx_size=140, ...}) = 0
+newfstatat(3, """", {st_mode=S_IFDIR|0755, st_size=140, ...}, AT_EMPTY_PATH) = 0
+newfstatat(1, """", {st_mode=S_IFREG|0644, st_size=4505, ...}, AT_EMPTY_PATH) = 0
++++ exited with 0 +++
++ Exit 1
++ set +e
++ exit 1
++ exit 1
++ remove_tmp_
++ __st=1
++ cleanup_
++ :
++ test '' = yes
++ cd /home/pawel/rpmbuild/BUILD/coreutils-8.32/separate
++ chmod -R u+rwx /home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/gt-stat-free-color.sh.IbCl
++ rm -rf /home/pawel/rpmbuild/BUILD/coreutils-8.32/separate/gt-stat-free-color.sh.IbCl
++ exit 1
+FAIL tests/ls/stat-free-color.sh (exit status: 1)","rpmbuild -bb coreutils.spec 
+rpmbuild --rebuild coreutils-8.32-24.fc34.src.rpm"
+47,1955493,"Description of problem:
+
+On a fresh Fedora 34 install, with default partitioning (btrfs).
+
+Doing a chmod other than 777 on a directory in the /home/user mess up the permissions, then permissions are shown as 'd?????????'.
+
+
+How reproducible:
+
+Every time
+
+$ mkdir test                    
+$ touch test/file
+$ ll -a test     
+total 0
+drwxr-xr-x. 1 arouene arouene   8 Apr 30 10:47 .
+drwx------. 1 arouene arouene 840 Apr 30 10:47 ..
+-rw-r--r--. 1 arouene arouene   0 Apr 30 10:47 file
+
+$ chmod 0640 test 
+$ ll -a test     
+ls: cannot access 'test/.': Permission denied
+ls: cannot access 'test/..': Permission denied
+ls: cannot access 'test/file': Permission denied
+total 0
+d????????? ? ? ? ?            ? .
+d????????? ? ? ? ?            ? ..
+-????????? ? ? ? ?            ? file
+
+Weird problem, first time I see that.","mkdir test
+touch test/file
+ll -a test
+chmod 0640 test
+ll -a test
+"
+48,1952490,"Description of problem: Default sorting – according to alphabetic order – not applied, be the option '-d' part of the command or not.
+
+Version-Release number of component: coreutils-8.32-21.fc34.x86_64
+
+Unexpected emppty argument added into right-sided column – between 
+autoconf and mingw64-binutils – be the options [-b|-i] part of the command or not.
+
+$ rpm -qa --queryformat ""%{NAME}-%{VERSION}\n"" automake autoconf m4 mingw64-* | column | sort
+m4-1.4.18			mingw64-gcc-10.2.1
+mingw64-cpp-10.2.1		automake-1.16.2
+mingw64-crt-8.0.0		mingw64-zlib-1.2.11
+mingw64-filesystem-117		mingw64-gcc-c++-10.2.1
+mingw64-headers-8.0.0		autoconf-2.69
+mingw64-pkg-config-0.28
+mingw64-winpthreads-8.0.0	mingw64-binutils-2.34
+
+Expected results: Order applied. No addition of empty argument.","rpm -qa --queryformat ""%{NAME}-%{VERSION}\n"" automake autoconf m4 mingw64-* | column | sort"
+49,1944688,"[root@vpodzime-laptop vpodzime]# rpm -qf `which basename`
+coreutils-8.32-4.fc32.2.x86_64
+
+[root@vpodzime-laptop vpodzime]# rpm -q --provides coreutils
+/bin/cat
+/bin/chmod
+/bin/echo
+/bin/ln
+/bin/rm
+/bin/touch
+bundled(gnulib)
+coreutils = 8.32-4.fc32.2
+coreutils(x86-64) = 8.32-4.fc32.2
+coreutils-full = 8.32-4.fc32.2
+libstdbuf.so()(64bit)
+
+
+I hit this when trying to install an RPM that had 'Requires: /bin/basename'.","rpm -qf `which basename`
+rpm -q --provides coreutils
+"
+50,1634200,"Description of problem:
+/bin/basename does not appear as provided by coreutils-single when querying the fedora repository. This causes installation of an rpm file (Oracle Java JDK8) to fail.
+
+
+Version-Release number of selected component (if applicable):
+coreutils-single-8.29-7.fc28.x86_64
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+1. spin-up a fedora 28 container:
+docker run -it --rm fedora:latest /bin/bash
+2. use the following commands:
+[root@a6cdd04a835c /]# rpm -q coreutils-single
+coreutils-single-8.29-7.fc28.x86_64
+[root@a6cdd04a835c /]# ls -l /bin/basename  
+-r-xr-xr-x. 1 root root 55 May 29 16:33 /bin/basename
+[root@a6cdd04a835c /]# rpm -q --whatprovides /bin/basename
+coreutils-single-8.29-7.fc28.x86_64
+[root@a6cdd04a835c /]# dnf repoquery --whatprovides /bin/basename
+Last metadata expiration check: 0:15:37 ago on Fri Sep 28 21:55:41 2018.
+coreutils-0:8.29-5.fc28.x86_64
+coreutils-0:8.29-7.fc28.x86_64
+
+
+Actual results:
+/bin/basename is installed, and shows up in local rpm query, but does not show up in repoquery. That appears to be causing a dnf install of an .rpm file which requires /bin/basename to fail.
+
+Expected results:
+repoquery should list coreutils-single as well.
+
+Additional info:
+
+By comparison, searching for /usr/bin/basename yields both coreutils and coreutils-single as candidates:
+
+[root@a6cdd04a835c /]# dnf repoquery --whatprovides /usr/bin/basename
+Last metadata expiration check: 0:19:26 ago on Fri Sep 28 21:55:41 2018.
+coreutils-0:8.29-5.fc28.x86_64
+coreutils-0:8.29-7.fc28.x86_64
+coreutils-single-0:8.29-5.fc28.x86_64
+coreutils-single-0:8.29-7.fc28.x86_64","docker run -it --rm fedora:latest /bin/bash
+rpm -q coreutils-single
+ls -l /bin/basename
+rpm -q --whatprovides /bin/basename
+dnf repoquery --whatprovides /bin/basename"
+51,1921427,"Description of problem:
+stat command shows ""UNKNOWN"" as Type for exFAT drive
+
+Version-Release number of selected component (if applicable):
+coreutils-8.32-12.fc33.x86_64 
+
+How reproducible:
+Always: the issue is observed each time.
+
+
+Steps to Reproduce:
+1. Connect exFAT drive to your computer. If you don't have an exFAT drive, just create an exFAT medium with gnome-disk-utility-3.38.0-1.fc33.x86_64
+
+2. Enter this command: stat -f '<file/folder from exFAT drive>'
+
+
+Sample:
+
+stat -f '/run/media/aurora/LABEL/iiiiiii.txt' 
+  File: ""/run/media/aurora/LABEL/iiiiiii.txt""
+    ID: 83000000000 Namelen: 1530    Type: UNKNOWN (0x2011bab0)
+Block size: 32768      Fundamental block size: 32768
+Blocks: Total: 973808     Free: 973801     Available: 973801
+Inodes: Total: 0          Free: 0
+
+3. See Type: UNKNOWN (0x2011bab0)
+
+Actual results:
+It does not show a file system name at Type.
+
+Expected results:
+It must display a file system name at Type e.g exFAT
+
+
+Additional info:
+I used this original Fedora 33 (Workstation) iso file.
+ https://download.fedoraproject.org/pub/fedora/linux/releases/33/Workstation/x86_64/iso/Fedora-Workstation-Live-x86_64-33-1.2.iso 
+
+SHA256 (Fedora-Workstation-Live-x86_64-33-1.2.iso) = 582a825d564e2682334ac893c9160667c7f4578c0c8045a25ea534af7c13334b
+
+Kernel: Linux 5.8.15-301.fc33.x86_64
+Architecture: x86-64",stat -f '<file/folder from exFAT drive>'
+55,959597,"Description of problem:
+When running ""info who"" or ""info date"", when you try to take the link ""*Note Specifying the Time Zone with `TZ': (libc)TZ Variable"", you get an error message ""libc: No such file or directory""
+
+Version-Release number of selected component (if applicable):
+date (GNU coreutils) 8.17
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+1. do ""info date"" or ""info who""
+2. try to take link ""*Note Specifying the Time Zone ...""
+3.
+  
+Actual results:
+Error message ""libc: No such file or directory""
+
+Expected results:
+View documentation on Specifying the Time Zone
+
+Additional info:","info date
+info who"
+56,1914537,"Description of problem:
+These two commands should provide identical results but do not:
+# sort -n -u < Foo > Bar
+# sort -n < Foo | uniq > Bar
+
+Version-Release number of selected component (if applicable):
+coreutils-8.32-12.fc33.x86_64
+
+How reproducible:
+
+
+Steps to Reproduce:
+1. Take a file Foo, with a list of IPs, one per line, with duplicates
+2. sort -n -u < Foo > Bar
+3. sort -n  < Foo | uniq > Baz
+4. diff Bar Baz
+
+Actual results:
+$?=1
+Bar contains 8 lines
+Baz contains 16 lines
+
+Expected results:
+$?=0
+Bar and Baz both contain 16 lines
+
+Additional info:
+sort -n -u drops lines it should keep.","sort -n -u < Foo > Bar  
+sort -n < Foo | uniq > Baz  
+diff Bar Baz"
+57,1914737,"Description of problem:
+When in Fedora 33 (GNOME) using the terminal the stat command for file or directory, it shows 
+it does not display birth time (btime).
+
+
+Version-Release number of selected component (if applicable):
+coreutils-8.32-12.fc33.x86_64
+
+
+How reproducible:
+Always: the issue is observed each time.
+
+
+Steps to Reproduce:
+1. Install Fedora 33 (GNOME) on the internal disk.
+2. Open Terminal and use stat command for file or directory.
+3. In Terminal there is no entry for ""Birth"" (btime).
+
+
+Actual results:
+Birth time (btime) has no entry.
+
+
+Expected results:
+Fedora 33 (GNOME) uses Btrfs as the file system by default. Btrfs supports birth time (btime) for files and directories, so there must also be a birth time (btime) entry per stat command.
+
+
+Additional info:
+coreutils 8.31 or later [1], stat command can display the birth time of a file or directory on file systems where it is stored.
+
+[1] https://lists.gnu.org/archive/html/coreutils-announce/2019-03/msg00000.html
+
+
+The cause could be in Fedora 33 installer. That is, when users install Fedora 33 (GNOME) to the internal disk by default, a too small Btrfs filesystem is used, so the inodes size is too small. 
+
+I'm not sure, it would be good if Fedora developers can check it more precisely what is the real cause.",stat <file-or-directory>
+58,1869624,"Description of problem:
+test -w is returning a wrong return code
+
+
+Version-Release number of selected component (if applicable):
+8.32-11.fc33
+
+How reproducible:
+
+
+Steps to Reproduce:
+1. mkdir -p /tmp/foo
+2. test -w /tmp/foo; echo $?
+
+Actual results:
+1
+
+Expected results:
+0
+
+Additional info:","mkdir -p /tmp/foo
+test -w /tmp/foo; echo $?"
+60,1882187,"Description of problem:
+b2sum, md5sum, sha1sum, sha224sum, sha256sum, sha384sum, and sha512sum each output an extraneous leading backslash when processing filenames that have embedded newlines
+
+Version-Release number of selected component (if applicable):
+coreutils-8.32-4.fc32.1.x86_64
+
+How reproducible:
+[major@empress ~]$ # show bash and coreutils versions
+[major@empress ~]$ rpm -q bash coreutils
+bash-5.0.17-1.fc32.x86_64
+coreutils-8.32-4.fc32.1.x86_64
+[major@empress ~]$ # create variable that holds filename with embedded newline
+[major@empress ~]$ file='AAA'$'\n''BBB'
+[major@empress ~]$ # show that variable contains an embedded newline
+[major@empress ~]$ printf -- '%s' ""$file"" | od -c
+0000000   A   A   A  \n   B   B   B
+0000007
+[major@empress ~]$ # create empty file with filename containing embedded newline
+[major@empress ~]$ cp -v /dev/null ""$file""
+'/dev/null' -> 'AAA'$'\n''BBB'
+[major@empress ~]$ # list file with filename containing embedded newline
+[major@empress ~]$ ls -b ""$file""
+AAA\nBBB
+[major@empress ~]$ # run md5sum, for example, on file with filename containing embedded newline
+[major@empress ~]$ md5sum ""$file""
+\d41d8cd98f00b204e9800998ecf8427e  AAA\nBBB
+[major@empress ~]$ # note the extraneous leading backslash
+
+Expected results:
+No extraneous leading backslash should occur. I do not know if this bug indicates a more serious string processing problem.","rpm -q bash coreutils
+file='AAA'$'\n''BBB'
+printf -- '%s' """"$file"""" | od -c
+cp -v /dev/null """"$file""""
+ls -b """"$file""""
+md5sum """"$file"""""
+62,1870385,"Converting a date to seconds near daylight savings time start fails:
+
+blc@localhost /tmp>date --date=""2019-03-10 01:23:45"" +""%s""
+1552209825
+blc@localhost /tmp>date --date=""2019-03-10 02:23:45"" +""%s""
+date: invalid date ‘2019-03-10 02:23:45’
+blc@localhost /tmp>date --date=""2019-03-10 03:23:45"" +""%s""
+1552213425
+blc@localhost /tmp>TZ=UTC date --date=""2019-03-10 02:23:45"" +""%s""
+1552184625
+
+My Time Zone is set to PDT (Los Angeles, United States)","date --date=""2019-03-10 01:23:45"" +""%s""
+date --date=""2019-03-10 02:23:45"" +""%s""
+date --date=""2019-03-10 03:23:45"" +""%s""
+TZ=UTC date --date=""2019-03-10 02:23:45"" +""%s"""
+66,1877625,"I'm testing Fedora 33 on x86_64. Specifically, Fedora-Workstation-Live-x86_64-33-20200909.n.0.iso. The system was installed with Btrfs.
+
+'df -h' has a slightly unusual output. /dev/sda3 is listed twice:
+
+  $ df -h
+  Filesystem      Size  Used Avail Use% Mounted on
+  devtmpfs        1.9G     0  1.9G   0% /dev
+  tmpfs           1.9G     0  1.9G   0% /dev/shm
+  tmpfs           762M  1.8M  760M   1% /run
+  /dev/sda3        28G  7.2G   21G  26% /
+  /dev/sda3        28G  7.2G   21G  26% /home
+  tmpfs           1.9G   68K  1.9G   1% /tmp
+  /dev/sda2       976M  165M  745M  19% /boot
+  /dev/sda1       599M   21M  579M   4% /boot/efi
+  tmpfs           381M  140K  381M   1% /run/user/1000
+
+I believe the package is coreutils-8.32-12.fc33.x86_64.
+
+  $ dnf provides df
+  Last metadata expiration check: 0:04:21 ago on Wed 09 Sep 2020 10:23:55 PM EDT.
+  coreutils-8.32-12.fc33.x86_64 : A set of basic GNU tools commonly used in shell
+                              : scripts
+  Repo        : @System
+  Matched from:
+  Filename    : /usr/bin/df
+  ...
+
+My apologies if this is now expected.",df -h
+69,1800597,"Description of problem:
+1. When i run make check under the building root of rpmbuild/BUILD/coreutils-8.31/single, the result of test suit failed two.
+2. When i run the test suit as root, there were about 12 failures, dose the root influence the test suit?
+
+Version-Release number of selected component (if applicable):
+The version of coreutils is 8.31.
+
+How reproducible:
+
+
+Steps to Reproduce:
+1.make test under rpmbuild/BUILD/coreutils-8.31/single or rpmbuild -ba coreutils.spec
+
+Actual results:
+================================================
+   GNU coreutils 8.31: ./tests/test-suite.log
+================================================
+
+# TOTAL: 614
+# PASS:  477
+# SKIP:  135
+# XFAIL: 0
+# FAIL:  2
+# XPASS: 0
+# ERROR: 0
+
+.. contents:: :depth: 2
+
+FAIL: tests/misc/env-S
+======================
+
+env (GNU coreutils) 8.31
+Copyright (C) 2019 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Richard Mlynarik, David MacKenzie, and Assaf Gordon.
+1...
+2...
+3...
+4...
+5...
+...
+err_sp2...
+err_sp3...
+err_sp5...
+env-S.pl: test err_sp5 failed: exit status mismatch:  expected 127, got 126
+err_sp6...
+env-S.pl: test err_sp6 failed: exit status mismatch:  expected 127, got 126
+1-debug...
+2-debug...
+...
+p10-debug...
+FAIL tests/misc/env-S.pl (exit status: 1)
+
+FAIL: tests/misc/tty
+====================
+
+++ initial_cwd_=/home/abuild/rpmbuild/BUILD/coreutils-8.31/single
++++ testdir_prefix_
++++ printf gt
+++ pfx_=gt
++++ mktempd_ /home/abuild/rpmbuild/BUILD/coreutils-8.31/single gt-tty.sh.XXXX
++++ case $# in
++++ destdir_=/home/abuild/rpmbuild/BUILD/coreutils-8.31/single
++++ template_=gt-tty.sh.XXXX
++++ MAX_TRIES_=4
+...
+Written by David MacKenzie.
++ test -t 0
++ tty
+not a tty
++ fail=1
++ tty -s
++ returns_ 1 tty
+not a tty
++ returns_ 1 tty -s
++ returns_ 1 tty
+not a tty
++ returns_ 1 tty -s
++ returns_ 2 tty a
+tty: extra operand 'a'
+Try 'tty --help' for more information.
++ returns_ 2 tty -s a
+tty: extra operand 'a'
+Try 'tty --help' for more information.
++ test -w /dev/full
++ test -c /dev/full
++ test -t 0
++ returns_ 3 tty
+tty: write error: No space left on device
++ returns_ 3 tty
+tty: write error: No space left on device
++ Exit 1
++ set +e
++ exit 1
++ exit 1
++ remove_tmp_
++ __st=1
++ cleanup_
++ :
++ test '' = yes
++ cd /home/abuild/rpmbuild/BUILD/coreutils-8.31/single
++ chmod -R u+rwx /home/abuild/rpmbuild/BUILD/coreutils-8.31/single/gt-tty.sh.HU2U
++ rm -rf /home/abuild/rpmbuild/BUILD/coreutils-8.31/single/gt-tty.sh.HU2U
++ exit 1
+FAIL tests/misc/tty.sh (exit status: 1)
+
+Expected results:
+No failures.
+
+Additional info:","cd rpmbuild/BUILD/coreutils-8.31/single  
+make check"
+70,1739747,"Description of problem: the date command returns an error unexpectedly for a valid date
+
+
+Version-Release number of selected component (if applicable): coreutils-8.31-2.fc30
+
+
+How reproducible: My system is set to UTC+8 and is in Singapore. In 1981, there was a change in TZ for Singapore and Malaysia which went from UTC+7.5 to UTC+8. It happened at at 2330 1981-12-31 which became 0000 1982-01-01. I was there when that happened so I know of that. I was testing the date -d command and noticed that it was returning an error. Perhaps I am not checking it correctly and I am not sure, therefore, if this is indeed a bug in the TZ caclculations.
+
+Steps to Reproduce:
+1. On a system set to UTC+8 Singapore, run date -d 1981-12-31. It will succeed.
+2. Then run 1982-01-01 and it will fail.
+3. Running 1928-01-02 succeeds. 
+
+Actual results:
+date -d 1982-01-01 returns date: invalid date ‘1982-01-01’
+
+Expected results:
+Fri Jan  1 00:00:00 +08 1982
+
+
+
+Additional info:","date -d 1981-12-31  
+date -d 1982-01-01"
+71,1390462,"Description of problem:
+On 2016-10-31 command `date -d 'month ago'` does not return previous month.
+
+
+Version-Release number of selected component (if applicable):
+coreutils-8.25-6.fc24.x86_64
+
+
+How reproducible:
+always
+
+
+Steps to Reproduce:
+1. # date
+   Mon Oct 31 07:32:57 CET 2016
+2. # date -d 'month ago'
+   Sat Oct  1 08:33:01 CEST 2016
+
+
+Actual results:
+Shows current month
+
+
+Expected results:
+Should show start of previous month","date
+date -d 'month ago'"
+72,1764152,"Description of problem:
+Using docker in centos7/rhel7 and trying to run image that only uses base Fedora 30 image and updates coreutils, fails with `Operation not permitted` on coreutils executables (like `ls` or `stat`).
+
+Note: I am not sure if this is Fedora coreutils problem or rhel docker problem. If it belongs somewhere else, I'll gladly move it to rhel.
+
+Version-Release number of selected component (if applicable):
+On the system: `docker-1.13.1-103.git7f2769b.el7.centos.x86_64`
+In the container: `coreutils-8.31-5.fc30.x86_64`
+
+
+How reproducible:
+Prepare simple docker image on CentOs7, run as simple command as `ls /`.
+The same is also reproducible on RHEL 7 machine (same version of Docker).
+
+
+Steps to Reproduce:
+1.
+$ cat Dockerfile 
+FROM fedora:30
+RUN dnf -y update coreutils
+2. sudo docker build
+3. sudo docker run -it --rm <build image> ls /
+
+Actual results:
+ls: cannot access '/': Operation not permitted
+
+
+Expected results:
+Just list all in `/`
+
+
+Additional info:
+Interestingly enough, `ls` without any arguments works just fine. `ls /` and `ls .` do not, even though that `ls` == `ls /` == `ls .` `ls -l` has some weird output.
+```
+sudo docker run -it --rm def0f9545f98 ls -l
+ls: cannot access 'bin': Operation not permitted
+ls: cannot access 'boot': Operation not permitted
+ls: cannot access 'dev': Operation not permitted
+ls: cannot access 'etc': Operation not permitted
+ls: cannot access 'home': Operation not permitted
+ls: cannot access 'lib': Operation not permitted
+ls: cannot access 'lib64': Operation not permitted
+ls: cannot access 'lost+found': Operation not permitted
+ls: cannot access 'media': Operation not permitted
+ls: cannot access 'mnt': Operation not permitted
+ls: cannot access 'opt': Operation not permitted
+ls: cannot access 'proc': Operation not permitted
+ls: cannot access 'root': Operation not permitted
+ls: cannot access 'run': Operation not permitted
+ls: cannot access 'sbin': Operation not permitted
+ls: cannot access 'srv': Operation not permitted
+ls: cannot access 'sys': Operation not permitted
+ls: cannot access 'tmp': Operation not permitted
+ls: cannot access 'usr': Operation not permitted
+ls: cannot access 'var': Operation not permitted
+total 0
+l????????? ? ? ? ?            ? bin
+d????????? ? ? ? ?            ? boot
+d????????? ? ? ? ?            ? dev
+d????????? ? ? ? ?            ? etc
+d????????? ? ? ? ?            ? home
+l????????? ? ? ? ?            ? lib
+l????????? ? ? ? ?            ? lib64
+d????????? ? ? ? ?            ? lost+found
+d????????? ? ? ? ?            ? media
+d????????? ? ? ? ?            ? mnt
+d????????? ? ? ? ?            ? opt
+d????????? ? ? ? ?            ? proc
+d????????? ? ? ? ?            ? root
+d????????? ? ? ? ?            ? run
+l????????? ? ? ? ?            ? sbin
+d????????? ? ? ? ?            ? srv
+d????????? ? ? ? ?            ? sys
+d????????? ? ? ? ?            ? tmp
+d????????? ? ? ? ?            ? usr
+d????????? ? ? ? ?            ? var
+```","cat Dockerfile  
+FROM fedora:30  
+RUN dnf -y update coreutils
+sudo docker build -t test-image .  
+sudo docker run -it --rm test-image ls /  "
+75,1713901,"Description of problem:
+# env LANG=en_EN date
+Sat May 25 16:56:54 CEST 2019
+# env LANG=en_US date
+Sat 25 May 2019 04:56:58 PM CEST
+
+I suppose this significantly arbitrarily modified output format with local en_US will
+break zillions of scripts worldwide.
+
+Version-Release number of selected component (if applicable):
+8.31-2.fc30","env LANG=en_EN date
+env LANG=en_US date"
+77,1705229,"Description of problem:
+
+Test file:
+
+cat sort_test.txt
+
+samba-common-4.10.2-1.fc30.noarch
+samba-4.10.2-1.fc30.x86_64
+samba-common-4.10.2-1.1.fc30.noarch
+samba-4.10.2-1.1.fc30.x86_64
+
+Result:
+
+sort -V sort_test.txt
+
+samba-4.10.2-1.1.fc30.x86_64
+samba-4.10.2-1.fc30.x86_64
+samba-common-4.10.2-1.fc30.noarch
+samba-common-4.10.2-1.1.fc30.noarch
+
+Version-Release number of selected component (if applicable):
+
+coreutils-8.31-1.fc30.x86_64
+
+Expected result:
+
+samba-4.10.2-1.fc30.x86_64
+samba-4.10.2-1.1.fc30.x86_64
+samba-common-4.10.2-1.fc30.noarch
+samba-common-4.10.2-1.1.fc30.noarch",sort -V sort_test.txt
+78,1674156,"Description of problem:
+
+""du"" stops counting filesizes for an UNKOWN reason. see below for more.
+
+As reliable counting sizes with ""du"" may/is an important part of scripting this breaks production environments
+and should be handled at the highest priority. 
+
+If someone used the result from du to allow fileupoads in any usecase, blackhats can use this bug to circumvent protections if they can force it.
+Because we don't know the cause yet, you may wanne protect this with the security flag.
+
+
+Version-Release number of selected component (if applicable):
+
+coreutils-8.29-7.fc28.x86_64
+
+How reproducible:
+
+100% reliable reproduceable
+
+Additional info:
+
+""du"" lists 227 files:
+
+# du -sh /mailacct/imapbox/Maildir//.Archives.2018/cur/* | wc --lines
+227
+
+""ls -la"" lists 453 files ( correctly confirmed with an exim mailserver )
+
+[root@xxx Maildir]# ls -la /mailacct/imapbox/Maildir//.Archives.2018/cur/* | wc --lines
+453
+
+because this happens : 
+
+...
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198296P12677.xxx.my-system.de,S=39503,W=40088:2,Sa"", {st_mode=S_IFREG|0600, st_size=39503, ...}, AT_SYMLINK_NOFOLLOW) = 0
+write(1, ""40K\t/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198296P12677.xxx.my-system.de,S=39503,W=40088:2,Sa\n"", 13040K	/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198296P12677.xxx.my-system.de,S=39503,W=40088:2,Sa
+) = 130
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198297P12677.xxx.my-system.de,S=65172,W=67346:2,Sa"", {st_mode=S_IFREG|0600, st_size=65172, ...}, AT_SYMLINK_NOFOLLOW) = 0
+write(1, ""64K\t/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198297P12677.xxx.my-system.de,S=65172,W=67346:2,Sa\n"", 13064K	/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198297P12677.xxx.my-system.de,S=65172,W=67346:2,Sa
+) = 130
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198298P12677.xxx.my-system.de,S=24701,W=25133:2,Sa"", {st_mode=S_IFREG|0600, st_size=24701, ...}, AT_SYMLINK_NOFOLLOW) = 0
+write(1, ""28K\t/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198298P12677.xxx.my-system.de,S=24701,W=25133:2,Sa\n"", 13028K	/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198298P12677.xxx.my-system.de,S=24701,W=25133:2,Sa
+) = 130
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198299P12677.xxx.my-system.de,S=87319,W=89421:2,Sa"", {st_mode=S_IFREG|0600, st_size=87319, ...}, AT_SYMLINK_NOFOLLOW) = 0
+write(1, ""88K\t/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198299P12677.xxx.my-system.de,S=87319,W=89421:2,Sa\n"", 13088K	/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198299P12677.xxx.my-system.de,S=87319,W=89421:2,Sa
+) = 130
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198300P12677.xxx.my-system.de,S=61882,W=63983:2,Sa"", {st_mode=S_IFREG|0600, st_size=61882, ...}, AT_SYMLINK_NOFOLLOW) = 0
+write(1, ""64K\t/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198300P12677.xxx.my-system.de,S=61882,W=63983:2,Sa\n"", 13064K	/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198300P12677.xxx.my-system.de,S=61882,W=63983:2,Sa
+) = 130
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198301P12677.xxx.my-system.de,S=24593,W=25033:2,Sa"", {st_mode=S_IFREG|0600, st_size=24593, ...}, AT_SYMLINK_NOFOLLOW) = 0
+write(1, ""28K\t/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198301P12677.xxx.my-system.de,S=24593,W=25033:2,Sa\n"", 13028K	/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198301P12677.xxx.my-system.de,S=24593,W=25033:2,Sa
+) = 130
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246447P12677.xxx.my-system.de,S=658661,W=667579:2,Sa"", {st_mode=S_IFREG|0600, st_size=658661, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246448P12677.xxx.my-system.de,S=35954,W=36472:2,Sa"", {st_mode=S_IFREG|0600, st_size=35954, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246449P12677.xxx.my-system.de,S=48909,W=49731:2,Sa"", {st_mode=S_IFREG|0600, st_size=48909, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246450P12677.xxx.my-system.de,S=21392,W=21909:2,Sa"", {st_mode=S_IFREG|0600, st_size=21392, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246451P12677.xxx.my-system.de,S=61071,W=61933:2,Sa"", {st_mode=S_IFREG|0600, st_size=61071, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246452P12677.xxx.my-system.de,S=9514,W=9685:2,S"", {st_mode=S_IFREG|0600, st_size=9514, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246453P12677.xxx.my-system.de,S=905500,W=920856:2,Sa"", {st_mode=S_IFREG|0600, st_size=905500, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246454P12677.xxx.my-system.de,S=17595,W=17801:2,Sa"", {st_mode=S_IFREG|0600, st_size=17595, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246455P12677.xxx.my-system.de,S=166008,W=168400:2,Sa"", {st_mode=S_IFREG|0600, st_size=166008, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246456P12677.xxx.my-system.de,S=531426,W=538390:2,S"", {st_mode=S_IFREG|0600, st_size=531426, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246457P12677.xxx.my-system.de,S=909565,W=924978:2,Sa"", {st_mode=S_IFREG|0600, st_size=909565, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246458P12677.xxx.my-system.de,S=32878,W=33357:2,Sa"", {st_mode=S_IFREG|0600, st_size=32878, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246459P12677.xxx.my-system.de,S=27487,W=28154:2,Sa"", {st_mode=S_IFREG|0600, st_size=27487, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246460P12677.xxx.my-system.de,S=36423,W=36949:2,Sa"", {st_mode=S_IFREG|0600, st_size=36423, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, ""/mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246461P12677.xxx.my-system.de,S=85554,W=87000:2,Sa"", {st_mode=S_IFREG|0600, st_size=85554, ...}, AT_SYMLINK_NOFOLLOW) = 0
+
+
+It just stops counting those files. Nothing special about the last correctly handled file :
+
+
+# ls -la /mailacct/imapbox/Maildir//.Archives.2018/cur/*  | grep -B2 ""1549609568.M246447P12677.xxx.my-system.de,S=658661,W=667579:2,Sa""
+
+-rw------- 2 50710 50710   61882 31. Dez 09:05 /mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198300P12677.xxx.my-system.de,S=61882,W=63983:2,Sa
+-rw------- 2 50710 50710   24593 31. Dez 13:51 /mailacct/imapbox/Maildir//.Archives.2018/cur/1549609248.M198301P12677.xxx.my-system.de,S=24593,W=25033:2,Sa
+-rw------- 2 50710 50710  658661 22. Sep 16:17 /mailacct/imapbox/Maildir//.Archives.2018/cur/1549609568.M246447P12677.xxx.my-system.de,S=658661,W=667579:2,Sa
+
+""stat"" did not see any irregularity at one of those files.
+
+As it happens on a production server, we will check the filesystem tonight, but as ls can and du can't parse it correctly,
+it won't be the fs .","du -a
+ls -la"
+79,1511951,"Description of problem:
+This bug symptomps are identical to those in BZ#1309247, which provided unsatisfactory fix.
+
+The autofs detection is based on '-hosts' string in /proc/self/mounts, however the name of the map can differ greatly.
+
+For example, my auto.direct map results in the following mounts entries (sample):
+/etc/auto.direct on /mnt/test/test012 type autofs (rw,relatime,fd=19,pgrp=7520,timeout=300,minproto=5,maxproto=5,direct,pipe_ino=111441)
+/etc/auto.direct on /mnt/test/test037 type autofs (rw,relatime,fd=19,pgrp=7520,timeout=300,minproto=5,maxproto=5,direct,pipe_ino=111441)
+/etc/auto.direct on /mnt/test/test006 type autofs (rw,relatime,fd=19,pgrp=7520,timeout=300,minproto=5,maxproto=5,direct,pipe_ino=111441)
+/etc/auto.direct on /mnt/test/test054 type autofs (rw,relatime,fd=19,pgrp=7520,timeout=300,minproto=5,maxproto=5,direct,pipe_ino=111441)
+
+Should one of those autofs mounts be mounted, the stat() systemcall on the ""type autofs"" entry would hang until timeout expires:
+
+sample output of strace -Ttt of ""df -l"":
+13:45:54.668017 stat(""/mnt/test/test012"", 0x7ffc1ff1c480) = -1 EIO (Input/output error) <180.238070>
+
+Upstream version of coreutils-8.28 fixes the issue by skipping dummy_fs for df -l, which prevents calling stat() on the autofs mount entries.
+
+Upstream commits I have found:
+http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commit;h=a19ff5d8179a7de38109fc78278229fd96f3941a
+http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commit;h=7c228bc55ed3fd6d56a6ad135438066de2f54a30
+http://git.savannah.gnu.org/gitweb/?p=gnulib.git;a=commit;h=2768ceb7994506e2cfba88be3b6bd13ef5440a90
+
+This has an impact on test ""tests/df/skip-rootfs.sh"", which FAILs because rootfs cannot be seen using ""df -t rootfs -a"" and additionally, the man page of df needs to be modified as dummy filesystems are not visible anymore.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.22-18.el7.x86_64
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+1. Create an NFS server, test directories and export them (/etc/exports):
+
+    /srv/exports/test001 192.168.122.0/24(ro,root_squash)
+    /srv/exports/test002 192.168.122.0/24(ro,root_squash)
+    /srv/exports/test003 192.168.122.0/24(ro,root_squash)
+    /srv/exports/test004 192.168.122.0/24(ro,root_squash)
+
+2. Create autofs map file ""/etc/autofs.direct"" with direct maps to nfs shares:
+
+    /mnt/test/test001 -ro,root_squash,soft,intr,rsize=8192,wsize=8192 192.168.122.1:/srv/exports/test001
+    /mnt/test/test002 -ro,root_squash,soft,intr,rsize=8192,wsize=8192 192.168.122.1:/srv/exports/test002
+    /mnt/test/test003 -ro,root_squash,soft,intr,rsize=8192,wsize=8192 192.168.122.1:/srv/exports/test003
+    /mnt/test/test004 -ro,root_squash,soft,intr,rsize=8192,wsize=8192 192.168.122.1:/srv/exports/test004
+
+3. Include the ""/etc/autofs.direct"" in ""/etc/auto.master"":
+
+    /- /etc/auto.direct
+
+4. Restart autofs and check for the following entries in /proc/self/mounts:
+
+    /etc/auto.direct on /mnt/test/test001 type autofs (rw,relatime,fd=19,pgrp=7520,timeout=300,minproto=5,maxproto=5,direct,pipe_ino=111441)
+    /etc/auto.direct on /mnt/test/test002 type autofs (rw,relatime,fd=19,pgrp=7520,timeout=300,minproto=5,maxproto=5,direct,pipe_ino=111441)
+    /etc/auto.direct on /mnt/test/test003 type autofs (rw,relatime,fd=19,pgrp=7520,timeout=300,minproto=5,maxproto=5,direct,pipe_ino=111441)
+    /etc/auto.direct on /mnt/test/test004 type autofs (rw,relatime,fd=19,pgrp=7520,timeout=300,minproto=5,maxproto=5,direct,pipe_ino=111441)
+
+5. Mount the autofs mountpoint by e.g. # cd /mnt/test/test004 and verify the fs is mounted (/proc/self/mounts):
+    192.168.122.1:/srv/exports/test012 on /mnt/test/test012 type nfs4 (... options trimmed ...)
+
+6. Exit the mountpoint to home directory: # cd
+7. Stop the NFS service on the NFS server (# systemctl nfs stop).
+8. Perform strace -Tttfvs 4096 df -l
+ 
+
+Actual results:
+The df -l command will hang on the stat() call for /mnt/test/test004.
+
+Expected results:
+The df -l command does not perform stat() calls on autofs (or dummy) filesystems.
+
+Additional info:
+Latest stable version of upstream is not affected. Latest GA Fedora affected too.","echo ""/srv/exports/test001 192.168.122.0/24(ro,root_squash)"" >> /etc/exports
+echo ""/srv/exports/test002 192.168.122.0/24(ro,root_squash)"" >> /etc/exports
+echo ""/srv/exports/test003 192.168.122.0/24(ro,root_squash)"" >> /etc/exports
+echo ""/srv/exports/test004 192.168.122.0/24(ro,root_squash)"" >> /etc/exports
+exportfs -a
+
+echo ""/mnt/test/test001 -ro,root_squash,soft,intr,rsize=8192,wsize=8192 192.168.122.1:/srv/exports/test001"" >> /etc/autofs.direct
+echo ""/mnt/test/test002 -ro,root_squash,soft,intr,rsize=8192,wsize=8192 192.168.122.1:/srv/exports/test002"" >> /etc/autofs.direct
+echo ""/mnt/test/test003 -ro,root_squash,soft,intr,rsize=8192,wsize=8192 192.168.122.1:/srv/exports/test003"" >> /etc/autofs.direct
+echo ""/mnt/test/test004 -ro,root_squash,soft,intr,rsize=8192,wsize=8192 192.168.122.1:/srv/exports/test004"" >> /etc/autofs.direct
+
+echo ""/- /etc/autofs.direct"" >> /etc/auto.master
+
+systemctl restart autofs
+
+cat /proc/self/mounts
+
+cd /mnt/test/test004
+mount | grep /mnt/test/test004
+
+cd
+
+systemctl stop nfs
+
+strace -Tttfvs 4096 df -l
+"
+80,1634045,"Description of problem:
+bash built-in printf will result in 'invalid number' error when formatting a number as a float
+
+
+Version-Release number of selected component (if applicable):
+bash-4.2.46-30.el7.x86_64
+
+
+How reproducible:
+Consistently
+
+
+Steps to Reproduce:
+LC_NUMERIC=de_DE.UTF-8 printf %f 1.2
+
+Actual results:
+-bash: printf: 1.2: invalid number
+0,000000
+
+Expected results:
+1,200000
+
+Additional info:
+The /usr/bin/printf provided by coreutils does not suffer from this problem.
+
+# LC_NUMERIC=de_DE.UTF-8 /usr/bin/printf %f 1.2
+1,200000
+
+Interestingly, the inverse problem also occurs -- The built-in handles the ',' radix input, but the coreutils version does not.
+
+# LC_NUMERIC=de_DE.UTF-8 printf %f 1,2
+1,200000
+
+# LC_NUMERIC=de_DE.UTF-8 /usr/bin/printf %f 1,2
+/usr/bin/printf: 1,2: value not completely converted
+1,000000
+
+IMO, both radix options should evaluate properly for both the built-in and the coreutils versions of printf. The current problem with the built-in definitely breaks the portability of bash scripts across locales, but if I am working in-locale I should also always be able to use my standard syntax at the command line.",LC_NUMERIC=de_DE.UTF-8 printf %f 1.2
+81,1649774,"Description of problem:
+
+Broken links in manpages for coreutils. For example, do:
+
+$ man install 
+
+At the very bottom of the man page it says:
+
+SEE ALSO
+       Full documentation at: <https://www.gnu.org/software/coreutils/install>
+
+But clicking the link https://www.gnu.org/software/coreutils/install results in a 404 error.
+
+Version-Release number of selected component (if applicable):
+
+coreutils-8.30-5.fc29.x86_64",man install
+82,199066,"su -c currently calls setsid() to prevent TIOCSTI attacks as described in bug 
+173008.
+
+However such protection is not needed when running programs as root, only when 
+running programs with lesser or incomparable privileges than the calling code.
+
+The attached patch makes ""su root -c command"" not call setsid() and also gives 
+a command-line option -C which does the same as -c but doesn't call setsid() 
+(note that it's very important that the default option calls setsid() to deal 
+with some proprietary software that uses ""su -c"" in system scripts).","su root -c ""command"""
+84,1637531,"Enhancement request: correct form regarding part of the output.
+
+Version-Release number of component: coreutils.x86_64 8.30-4.fc29 @fedora
+
+How reproducible: execute 'ls'; model:
+
+$ ls
+Fedora-Server-29_Beta-1.5-x86_64-CHECKSUM  Fedora-Server-dvd-x86_64-29_Beta-1.5.iso
+
+Actual results: two space marks between output expressions.
+Expected results: one space mark is enough and then appropriate.",ls
+85,1611211,"In order to improve usability of packages in Fedora, project Man Page Scan was created and its task is to provide consistency of man pages (and documentation in general). The results are now available for package maintainers to fix documentation issues.
+
+If you need to re-run the check yourself, here is the simple process of man page check:
+
+1. Download man-page-day from:
+
+    https://pagure.io/ManualPageScan/blob/master/f/man-page-day.sh
+
+2. Run the script:
+    $ ./man-page-day.sh coreutils",./man-page-day.sh coreutils
+87,1596183,"Description of problem: Conversions' results from data-storage values displayed as 1024-blocks into values in bits, do not match real sizes.
+
+Version-Release number of component: coreutils-8.29-7.fc28.x86_64
+
+How reproducible:
+$ LANG=C df -P
+Filesystem                    1024-blocks  Used    Available Capacity Mounted on
+(...)
+/dev/mapper/fedora--live-root 153761232    6048548 139832392 5%       /
+
+Actual results: 1024 * 153 761 232 = 157 451 501 568 bits; result does not match the real size which is illustrated as output from the 'lsblk' command.
+
+Expected results: df's outputs to be similar to the ones resulting from the 'lsblk' command – here 161 052 884 992 bits–
+
+Additional info: 
+$ lsblk -b
+NAME                  MAJ:MIN RM   SIZE          RO TYPE MOUNTPOINT
+(...)
+  ├─fedora--live-root 253:0    0   161052884992  0  lvm  /",LANG=C df -P
+88,1303456,"Description of problem:
+
+I am trying to copy /boot, /root, /home from a single disk (running the os) to a bigger raid 1 disk pair running in the same chassis.
+
+fedora is the lvm vg_group of the running system, fedora23 is the lvm vg_group of the new disks (raid 1, 2TB disks).
+
+[root@hoho8-chidig-com user1]# lvscan
+  ACTIVE            '/dev/fedora/swap' [15.57 GiB] inherit
+  ACTIVE            '/dev/fedora/home' [865.45 GiB] inherit
+  ACTIVE            '/dev/fedora/root' [50.00 GiB] inherit
+  ACTIVE            '/dev/fedora23/swap' [15.60 GiB] inherit
+  ACTIVE            '/dev/fedora23/root' [50.00 GiB] inherit
+  ACTIVE            '/dev/fedora23/home' [1.75 TiB] inherit
+
+
+Below is the command I'm using to copy over one partition to the raid pair:
+
+[root@hoho8-chidig-com user1]# dd if=/dev/fedora/root of=/dev/fedora23/root
+104857600+0 records in
+104857600+0 records out
+53687091200 bytes (54 GB) copied, 5639.3 s, 9.5 MB/s
+[root@hoho8-chidig-com user1]#
+
+
+[root@hoho8-chidig-com user1]# df -h
+Filesystem               Size  Used Avail Use% Mounted on
+devtmpfs                  16G     0   16G   0% /dev
+tmpfs                     16G  392K   16G   1% /dev/shm
+tmpfs                     16G  1.8M   16G   1% /run
+tmpfs                     16G     0   16G   0% /sys/fs/cgroup
+/dev/mapper/fedora-root   50G   27G   20G  58% /
+tmpfs                     16G   84K   16G   1% /tmp
+/dev/loop0               1.9G  3.0M  1.7G   1% /srv/node/swift_loopback
+/dev/mapper/fedora-home  852G   57G  752G   7% /home
+/dev/sdc1                477M  215M  233M  48% /boot
+tmpfs                    3.2G  8.0K  3.2G   1% /run/user/42
+tmpfs                    3.2G   24K  3.2G   1% /run/user/1000
+
+Note that dd says 54GB were copied over into a disk partition of size only 50GB. No errors during the copy. And the results show that only 27G was in the fedora partition to start with. (54GB is double 27GB - this may be a clue)
+
+Another example:
+
+[root@hoho8-chidig-com user1]# dd if=/dev/fedora/home of=/dev/fedora23/home
+1814978560+0 records in
+1814978560+0 records out
+929269022720 bytes (929 GB) copied, 32437.8 s, 28.6 MB/s
+[root@hoho8-chidig-com user1]# 
+
+Taking a look at the data size on the target partitions:
+
+[root@hoho8-chidig-com user1]# mount /dev/fedora23/root /mnt/rootn
+[root@hoho8-chidig-com user1]# mount /dev/fedora23/home /mnt/homen
+
+[root@hoho8-chidig-com user1]# du -h /mnt/rootn | tail -1
+26G	    /mnt/rootn
+
+[root@hoho8-chidig-com user1]# du -h /mnt/homen | tail -1
+57G	    /mnt/homen
+
+for the rootn partition, the 26G copied size is consistent with the source size.
+
+For the homen partition, the 57G is consistent with the source size.
+
+However, the count given by the dd copies don't match:
+
+ In the case of the root->rootn copy it is 54G instead of 27G
+ in the case of the home->homen copy it is 942G instead of 57G
+
+
+Version-Release number of selected component (if applicable):
+
+dd is (coreutils) 8.24
+
+How reproducible:
+
+I did two tests - as shown
+
+Steps to Reproduce:
+1. create raid 1 pair
+2. copy a 3rd single disk partition to a raid1 pair lvm partition
+3. do df and compare results.
+
+Actual results:
+
+As shown above in problem narative.
+
+Expected results:
+
+I would think that the sizes reported by dd and df would be comparable, but they are not.
+
+Additional info:","dd if=/dev/fedora/root of=/dev/fedora23/root
+dd if=/dev/fedora/home of=/dev/fedora23/home
+
+df -h"
+89,1594812,"Description of problem: System language set and system default language mixed in an stderr output stream.
+
+Version-Release number of component: coreutils.x86_64 8.29-7.fc28
+
+Actual results: 
+Test case: Finnish as System language – Enter a non-existent path:
+$ ls -l /var/lib/libvirt/pictures/
+ls: tiedostoa '/var/lib/libvirt/pictures/' ei voi käsitellä: No such file or directory
+
+Expected results: No mixing of language. Otput uniform in Finnish when available.","ls -l /var/lib/libvirt/pictures/
+"
+90,1591152,"Description of problem: Some ls commands aiming to produce identical results produce different outputs.
+
+Version-Release number of component: coreutils.x86_64 8.29-7.fc28 @updates
+
+Actual results:
+$ ls -l /usr/bin | grep waterfox
+lrwxrwxrwx. 1 root root          28 Jun 13 22:14 waterfox -> /usr/local/waterfox/waterfox
+
+$ ls -l `find /usr/bin -maxdepth 1 -type l -print` | grep waterfox
+lrwxrwxrwx. 1 root root 28 Jun 13 22:14 /usr/bin/waterfox -> /usr/local/waterfox/waterfox
+
+Expected results: Output resulting from 'ls -l /usr/bin | grep waterfox' to be identical to the once resulting from 'ls -l `find /usr/bin -maxdepth 1 -type l -print` | grep waterfox'.","ls -l /usr/bin | grep waterfox
+ls -l `find /usr/bin -maxdepth 1 -type l -print` | grep waterfox"
+91,1591002,"Description of problem:
+
+I had to logout from X11 session. After login I noticed lack of sound - pulseaudio gave me dummy output only. Other apps also behaved like I would be no one.
+
+Checked group access and got nothing:
+
+23:28 (3s) hrw@puchatek:~$ whoami; id
+hrw
+uid=1000(hrw) gid=1000(hrw) grupy=1000(hrw) kontekst=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+23:28 (0s) hrw@puchatek:~$ 
+
+But when asked for exact user I got full list:
+
+23:28 (3s) hrw@puchatek:~$ id hrw; sudo id hrw
+uid=1000(hrw) gid=1000(hrw) grupy=1000(hrw),10(wheel),11(cdrom),18(dialout),63(audio),100(users),135(mock),1001(vboxusers),986(wireshark),960(libvirt),1003(docker)
+uid=1000(hrw) gid=1000(hrw) grupy=1000(hrw),10(wheel),11(cdrom),18(dialout),63(audio),100(users),135(mock),1001(vboxusers),986(wireshark),960(libvirt),1003(docker)
+23:28 (0s) hrw@puchatek:~$ 
+
+Not that helped...
+
+Version-Release number of selected component (if applicable):
+
+coreutils-8.29-7.fc28.x86_64
+
+How reproducible:
+
+always - each relogin I get no groups
+
+Actual results:
+
+23:28 (3s) hrw@puchatek:~$ whoami; id; id hrw; sudo id hrw
+hrw
+uid=1000(hrw) gid=1000(hrw) grupy=1000(hrw) kontekst=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+uid=1000(hrw) gid=1000(hrw) grupy=1000(hrw),10(wheel),11(cdrom),18(dialout),63(audio),100(users),135(mock),1001(vboxusers),986(wireshark),960(libvirt),1003(docker)
+uid=1000(hrw) gid=1000(hrw) grupy=1000(hrw),10(wheel),11(cdrom),18(dialout),63(audio),100(users),135(mock),1001(vboxusers),986(wireshark),960(libvirt),1003(docker)
+23:28 (0s) hrw@puchatek:~$ 
+
+Expected results:
+
+23:28 (3s) hrw@puchatek:~$ whoami; id
+hrw
+uid=1000(hrw) gid=1000(hrw) grupy=1000(hrw),10(wheel),11(cdrom),18(dialout),63(audio),100(users),135(mock),1001(vboxusers),986(wireshark),960(libvirt),1003(docker)
+23:28 (0s) hrw@puchatek:~$ 
+
+Additional info:
+
+coreutils may be wrong package but had no idea where to report it and 'id' is there...",whoami; id; id hrw; sudo id hrw
+93,1577872,"Description of problem:
+
+TLDR: It would be nice if upstream made a new release of coreutils 8.30 which fixes some bugs but while it is not available it would be nice to backport some upstream patches.
+
+Long description:
+
+Some issues related with the changes in date formats have been recently fixed upstream:
+
+1. https://debbugs.gnu.org/cgi/bugreport.cgi?bug=19856 Bad month translation printed with date command in Greek locale
+
+Actually caused by https://sourceware.org/bugzilla/show_bug.cgi?id=10871 (lack of support of multiple grammar cases for month names) and affects more languages than just Greek. This is fixed, new glibc is distributed by Fedora. What is missing is the lack of support of the new format specifiers: %OB, %Ob, and %Oh in date command line utility. Currently only %B, %b, %h are supported which is usually correct but custom formats should be supported for those who need them.
+
+Fixed by the commit: http://git.savannah.gnu.org/cgit/coreutils.git/commit/?id=b1fa4aa (later overridden by http://git.savannah.gnu.org/cgit/coreutils.git/commit/?id=ad9b283 and http://git.savannah.gnu.org/cgit/coreutils.git/commit/?id=3299901)
+
+2. https://debbugs.gnu.org/cgi/bugreport.cgi?bug=30814 Increase the value of MAX_MON_WIDTH in ls.c
+
+As a consequence of the changes in dates the date column in ""ls -l"" is too narrow to fit the month name in several languages, for example in Catalan. Now March and May are both displayed as ""de ma""; June and July both displayed as ""de ju"".
+
+
+Version-Release number of selected component (if applicable): 8.29
+
+
+How reproducible: always (""ls -l"" issue depending on locale)
+
+
+Steps to Reproduce:
+1. Open a text console (Terminal, xterm, konsole, text mode)
+2. Execute the command:
+
+LC_ALL=ca_ES.utf8 ls -l
+
+3. Execute the command:
+
+date ""+%OB""
+
+
+Actual results:
+
+If the current directory contains files last updated in March, May, June or July (any year) then ""ls -l"" in Catalan displays the month name as ""de ma"" which is ambiguous. The same problem may also appear in other languages.
+
+The date command displays:
+
+%OB
+
+
+Expected results:
+
+ls -l should have enough space to display the full abbreviated month name: ""de març"", ""de maig"", ""de juny"", ""de jul."" (yes, if the name of a month is short it is not abbreviated).
+
+date should display the name of the current month, in all languages. If a language needs multiple grammar forms of a month name then the form appropriate when displaying a month standalone should be used (this usually means a nominative case)
+
+
+Additional info:
+
+See also my article, scroll down to Catalan: http://lingonborough.com/fedora-28-updates-for-czech-catalan-greek-and-lithuanian-users","LC_ALL=ca_ES.utf8 ls -l
+date ""+%OB"""
+95,453709,"Description of problem:
+/bin/ls -i / ignores mount points and shows underlying filesystem
+inode numbers.
+
+Version-Release number of selected component (if applicable):
+$ ls --version
+ls (GNU coreutils) 6.9
+$ rpm -q coreutils
+coreutils-6.9-9.fc7
+
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+1. /bin/ls -i /
+2. /bin/ls -i -color=auto
+3.
+  
+Actual results:
+$ cd /
+$ /bin/ls -i
+ 648321 bin    907649 home         162081 misc   842817 proc     1329057 srv   
+   1977377 usr
+ 680737 boot   226913 lib         2463617 mnt   2301537 root     1718049 sys   
+    583489 var
+2269121 dev        11 lost+found   486241 net   1426305 sbin      713153 tftpboot
+1102145 etc   1944961 media       1588385 opt   1912545 selinux  2236705 tmp
+$ /bin/ls -i --color
+ 648321 bin         2 home           6954 misc        1 proc     1329057 srv   
+         2 usr
+      2 boot   226913 lib         2463617 mnt   2301537 root           1 sys   
+         2 var
+    197 dev        11 lost+found     6957 net   1426305 sbin      713153 tftpboot
+1102145 etc   1944961 media       1588385 opt         1 selinux        2 tmp
+
+
+Expected results:
+$ /bin/ls -i
+ 648321 bin         2 home           6954 misc        1 proc     1329057 srv   
+         2 usr
+      2 boot   226913 lib         2463617 mnt   2301537 root           1 sys   
+         2 var
+    197 dev        11 lost+found     6957 net   1426305 sbin      713153 tftpboot
+1102145 etc   1944961 media       1588385 opt         1 selinux        2 tmp
+$ /bin/ls -i --color
+ 648321 bin         2 home           6954 misc        1 proc     1329057 srv   
+         2 usr
+      2 boot   226913 lib         2463617 mnt   2301537 root           1 sys   
+         2 var
+    197 dev        11 lost+found     6957 net   1426305 sbin      713153 tftpboot
+1102145 etc   1944961 media       1588385 opt         1 selinux        2 tmp
+
+
+Additional info:
+
+I posted this as a question on comp.unix.shell on 6/30/08, """"Gnu ls bug?"",
+and had the bug confirmed on other Linux systems as well.
+
+Stephane Chazelas (a smart guy) added this:
+<quote>
+Could be a Linux bug. With -i alone, ls gets the inode number
+from readdir, which if you have --color, ls does a lstat to get
+the type of file (directory, regular...) and gets the result
+from there.
+
+So with -i alone, you get the inode of the dir entry in the
+parent filesystem while with other options that trigger the call
+of lstat(2), you get the inode of the mount point.
+</quote>
+
+Also, Geoff Clare (another smart guy) wrote:
+<quote>
+Yes, this is a known bug in some implementations of readdir(),
+although I didn't think any modern systems suffered from it.
+
+It is mentioned in the rationale for readdir() in the new POSIX
+revision:
+
+    When returning a directory entry for the root of a mounted file
+    system, some historical implementations of readdir() returned the
+    file serial number of the underlying mount point, rather than of
+    the root of the mounted file system. This behavior is considered
+    to be a bug, since the underlying file serial number has no
+    significance to applications.
+</quote>
+
+So, this is a bug that manifests with ls, but might be a bug in the kernel
+system call or glibc, I don't know which.
+
+I marked this bug as ""urgent"" since reporting incorrect inode numbers can break
+backups, and reporting underlying ""hidden"" inode numbers represents a security risk.","/bin/ls -i /
+/bin/ls -i -color=auto"
+97,1555079,"Description of problem:
+
+I installed the debuginfo for coreutils to look at how it does things and when using GDB to track through the source I found that the .y files seem to be missing from the debuginfo.
+
+[ben@Mustang ~]$ sudo dnf debuginfo-install coreutils
+enabling updates-debuginfo repository
+enabling fedora-debuginfo repository
+enabling rpmfusion-free-updates-debuginfo repository
+enabling rpmfusion-free-debuginfo repository
+enabling rpmfusion-nonfree-updates-debuginfo repository
+enabling rpmfusion-nonfree-debuginfo repository
+Fedora 27 - x86_64 - Updates - Debug            2.7 MB/s |  13 MB     00:04    
+RPM Fusion for Fedora 27 - Free - Updates Debug 664 kB/s | 425 kB     00:00    
+RPM Fusion for Fedora 27 - Nonfree - Updates De  93 kB/s |  31 kB     00:00    
+Last metadata expiration check: 0:00:00 ago on Tue 13 Mar 2018 01:25:54 PM PDT.
+Dependencies resolved.
+================================================================================
+ Package                  Arch      Version          Repository            Size
+================================================================================
+Installing:
+ coreutils-debuginfo      x86_64    8.27-20.fc27     updates-debuginfo    2.8 M
+Installing weak dependencies:
+ coreutils-debugsource    x86_64    8.27-20.fc27     updates-debuginfo    1.0 M
+
+Transaction Summary
+================================================================================
+Install  2 Packages
+
+Total download size: 3.8 M
+Installed size: 22 M
+Is this ok [y/N]: y
+Downloading Packages:
+(1/2): coreutils-debugsource-8.27-20.fc27.x86_6 276 kB/s | 1.0 MB     00:03    
+(2/2): coreutils-debuginfo-8.27-20.fc27.x86_64. 332 kB/s | 2.8 MB     00:08    
+--------------------------------------------------------------------------------
+Total                                           409 kB/s | 3.8 MB     00:09     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                        1/1 
+  Installing       : coreutils-debugsource-8.27-20.fc27.x86_64              1/2 
+  Installing       : coreutils-debuginfo-8.27-20.fc27.x86_64                2/2 
+  Verifying        : coreutils-debuginfo-8.27-20.fc27.x86_64                1/2 
+  Verifying        : coreutils-debugsource-8.27-20.fc27.x86_64              2/2 
+
+Installed:
+  coreutils-debuginfo.x86_64 8.27-20.fc27                                       
+  coreutils-debugsource.x86_64 8.27-20.fc27                                     
+
+Complete!
+
+in GDB:
+
+(gdb) 
+543	              valid_date = parse_datetime2 (&when, datestr, NULL,
+(gdb) 
+parse_datetime2 (result=0x7fffffffdc50, p=0x7fffffffe18b ""2018-01-01T00:00"", now=0x0, flags=0, tzdefault=0x55555576f280, tzstring=0x0) at parse-datetime.y:1728
+1728	parse-datetime.y: No such file or directory.
+(gdb) n
+1741	in parse-datetime.y
+
+ben@Mustang src]$ rpm -ql coreutils-debugsource-8.27-20.fc27.x86_64 | grep date
+/usr/src/debug/coreutils-8.27-20.fc27.x86_64/lib/parse-datetime.h
+/usr/src/debug/coreutils-8.27-20.fc27.x86_64/src/date.c
+[ben@Mustang src]$ rpm -ql coreutils-debuginfo-8.27-20.fc27.x86_64 | grep date
+/usr/lib/debug/usr/bin/date-8.27-20.fc27.x86_64.debug
+
+However, if you look at the old coreutils debuginfo package from before we did the debugsource/debuginfo split it included the yacc files:
+
+[ben@Mustang Downloads]$ rpm -qlp coreutils-debuginfo-8.22-18.el7.x86_64.rpm | grep date
+warning: coreutils-debuginfo-8.22-18.el7.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID fd431d51: NOKEY
+/usr/lib/debug/usr/bin/date.debug
+/usr/src/debug/coreutils-8.22/lib/parse-datetime.h
+/usr/src/debug/coreutils-8.22/lib/parse-datetime.y
+/usr/src/debug/coreutils-8.22/src/date.c","sudo dnf debuginfo-install coreutils
+rpm -ql coreutils-debugsource-8.27-20.fc27.x86_64 | grep date
+rpm -ql coreutils-debuginfo-8.27-20.fc27.x86_64 | grep date
+rpm -qlp coreutils-debuginfo-8.22-18.el7.x86_64.rpm | grep date"
+100,1259942,"Description of problem:
+
+I believe I have encountered  a major memory leak in coreutils sort when sorting by month ""-M""
+
+Version-Release number of selected component (if applicable):
+
+[sam@deben coreutils]$ rpm -q coreutils
+coreutils-8.22-22.fc21.x86_64
+[sam@deben coreutils]$ sort --version
+sort (GNU coreutils) 8.22
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Mike Haertel and Paul Eggert.
+
+
+How reproducible: Every time
+
+
+Steps to Reproduce:
+1. Create a test file
+
+base64 /dev/urandom | head -n 10000 > 10000.txt
+
+2. Run under valgrind (defaults)
+
+valgrind sort 10000.txt > /dev/null
+
+3. Run under valgrind (-M)
+
+valgrind sort -M 10000.txt > /dev/null
+
+Actual results:
+
+[sam@deben coreutils]$ valgrind sort 10000.txt > /dev/null
+==8382== Memcheck, a memory error detector
+==8382== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==8382== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==8382== Command: sort 10000.txt
+==8382== 
+==8382== 
+==8382== HEAP SUMMARY:
+==8382==     in use at exit: 192 bytes in 14 blocks
+==8382==   total heap usage: 60 allocs, 46 frees, 74,697,309 bytes allocated
+==8382== 
+==8382== LEAK SUMMARY:
+==8382==    definitely lost: 0 bytes in 0 blocks
+==8382==    indirectly lost: 0 bytes in 0 blocks
+==8382==      possibly lost: 0 bytes in 0 blocks
+==8382==    still reachable: 192 bytes in 14 blocks
+==8382==         suppressed: 0 bytes in 0 blocks
+==8382== Rerun with --leak-check=full to see details of leaked memory
+==8382== 
+==8382== For counts of detected and suppressed errors, rerun with: -v
+==8382== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+
+[sam@deben coreutils]$ valgrind sort -M 10000.txt > /dev/null
+==8312== Memcheck, a memory error detector
+==8312== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==8312== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==8312== Command: sort -M 10000.txt
+==8312== 
+
+==8312== 
+==8312== HEAP SUMMARY:
+==8312==     in use at exit: 92,753,702 bytes in 481,851 blocks
+==8312==   total heap usage: 722,815 allocs, 240,964 frees, 186,001,505 bytes allocated
+==8312== 
+==8312== LEAK SUMMARY:
+==8312==    definitely lost: 92,731,870 bytes in 481,751 blocks
+==8312==    indirectly lost: 0 bytes in 0 blocks
+==8312==      possibly lost: 21,021 bytes in 78 blocks
+==8312==    still reachable: 811 bytes in 22 blocks
+==8312==         suppressed: 0 bytes in 0 blocks
+==8312== Rerun with --leak-check=full to see details of leaked memory
+==8312== 
+==8312== For counts of detected and suppressed errors, rerun with: -v
+==8312== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+
+Expected results:
+
+No ""definitely lost"" blocks when using -M
+
+Additional info:
+
+This issue was found when a set of machines were receiving intermittent OOM killer triggers.  We tracked it down to a ""sort -M <large file>"" command being run as root which was using all the available memory.","base64 /dev/urandom | head -n 10000 > 10000.txt
+valgrind sort 10000.txt > /dev/null
+valgrind sort -M 10000.txt > /dev/null"
+101,1527074,"Description of problem:
+Execute permission “x” is not applied to an .sh file while it is granted successfully.
+
+Version-Release number of selected component (if applicable):
+bash-4.4.12-12.fc27.x86_64
+
+How reproducible: The .sh file has to be located on an external USB drive formatted with VFAT.
+
+Used commands in terminal:
+[yk@_]$ chmod +x install.sh
+[yk@_]$ ls -l  install.sh
+-rw-r--r--. 1 yk yk 1415 12. 7. 14:21 install.sh
+[yk@_]$ mount|grep /dev/sdb1
+/dev/sdb1 on /run/media/yk/FEDORA-WS-L type vfat (rw,nosuid,nodev,relatime,uid=1000,gid=1000,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,showexec,utf8,flush,errors=remount-ro,uhelper=udisks2)
+
+Actual results:
+[yk@_]$ ./install.sh
+bash: ./install.sh: Permission denied
+
+As far as I understand from the above mentioned outputs, nothing seems to indicate that execute permission cannot be applied to the .sh file here. As noticeable the file-system is not mounted with a noexec option, so there is no need for 
+$ sudo mount -o remount,exec /dev/sdb1
+
+Expected results:
+The -sh file with the present characteristics to be executable from an USB drive formatted with VFAT.
+
+Additional info:
+Thought that very script can be executed by using the bash command.","chmod +x install.sh
+ls -l install.sh
+mount | grep /dev/sdb1
+"
+102,1520399,"Description of problem:
+
+$ stat --help
+says for ""-c %N"":
+  %N   quoted file name with dereference if symbolic link
+
+But it doesn't quote.
+
+
+Version-Release number of selected component (if applicable):
+
+$ cat /etc/redhat-release 
+Fedora release 27 (Twenty Seven)
+$ which stat
+/usr/bin/stat
+$ rpm -qf /usr/bin/stat
+coreutils-8.27-17.fc27.x86_64
+$ 
+
+How reproducible:
+
+always
+
+
+Steps to Reproduce:
+
+$ touch foo
+$ ln -s foo bar
+$ stat -c %N bar
+bar -> foo
+$
+
+Actual results:
+
+bar -> foo
+
+Expected results:
+
+'bar' -> 'foo'","touch foo
+ln -s foo bar
+stat -c %N bar"
+103,1504053,"Description of problem:
+Command chmod allows generally to perform some granting rights commands with missing options, without producing any kind of message error.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.27-6.fc26.x86_64
+
+How reproducible:
+Steps to Reproduce:
+1. Open a terminal, log in as root and move to the folder containing the target file for testing purpose.
+
+2. Test at least one of the commands or all of them – It makes an over total of twenty commands that should produce a message error.
+
+All the followings possible combinations are:
+# chmod [u, g, o, ugo, a, ugoa, ugao, uago, augo]+/-<no_value [r, w, x, X, s, t]> </file>
+which makes 18 combinations, and
+
+# chmod +/-<no_value [r, w, x, X, s, t]> </file>
+which makes a total of two combinations.
+
+Examples of such combinations:
+# chmod o- </file>
+# chmod + </file>
+# chmod ugao- </file>
+and so on.
+
+Actual results:
+All attempts will be validated without any notification from coreutils.
+
+Expected results:
+It makes an over total of twenty commands that should produce a message error.
+
+Additional info:
+Issues apply to current Centos (v. 7.4.1708) as well.","sudo su
+cd /path/to/folder
+chmod o- <file>
+chmod + <file>
+chmod ugoa- <file>"
+104,1499625,"Description of problem:
+
+ln's `-f` option is supposed to remove an existing symlink of the same name first. It works if the target does not exist or is a file, but it silently does not if the target is a directory.
+
+
+Version-Release number of selected component (if applicable):
+
+coreutils-8.27-16.fc27.x86_64
+
+How reproducible: always
+
+
+Steps to Reproduce:
+1. mkdir old new
+2. ln -s old foo
+3. ln -sf new foo
+4. ls -l foo
+
+Actual results:
+
+Symlink did not get updated to point to ""new"":
+
+lrwxrwxrwx 1 martin martin 3  9. Okt 08:25 foo -> old
+
+Expected results:
+
+""foo"" symlink should point to ""new"".","mkdir old new
+ln -s old foo
+ln -sf new foo
+ls -l foo
+"
+105,573377,"Description of problem:
+
+""ln -sf"" fails in certain situations silently.
+
+Version-Release number of selected component (if applicable):
+
+Fedora 12 / coreutils-7.6-9.fc12.i686
+
+How reproducible:
+
+Always.
+
+Steps to Reproduce:
+1. $ mkdir foo bar
+2. $ ln -s foo baz
+3. Verify:
+        $ ls -ld foo bar baz
+        drwxr-xr-x 2 wd users 6 Mar 14 15:02 bar
+        lrwxrwxrwx 1 wd users 3 Mar 14 15:02 baz -> foo
+        drwxr-xr-x 2 wd users 6 Mar 14 15:02 foo
+        $ ls -l foo bar
+        bar:
+        total 0
+
+        foo:
+        total 0
+4. $ ln -s -f bar baz
+
+  
+Actual results:
+
+No error raised. ""baz"" still pointing to ""foo"".
+""foo"" now contains anew symboic link ""bar"" pointing to itself:
+
+        $ ls -ld foo bar baz
+        drwxr-xr-x 2 wd users  6 Mar 14 15:02 bar
+        lrwxrwxrwx 1 wd users  3 Mar 14 15:02 baz -> foo
+        drwxr-xr-x 2 wd users 16 Mar 14 15:05 foo
+        $ ls -l foo bar
+        bar:
+        total 0
+
+        foo:
+        total 0
+        lrwxrwxrwx 1 wd users 3 Mar 14 15:05 bar -> bar
+
+Expected results:
+
+My expectation is that the result of ""ln -s -f target link_name"" is the same
+as that of ""rm -f link_name; ln -s target link_name"".
+
+In this case I exoect that the symbolic link ""baz"" gets removed and a new one created, pointing to ""bar"" similar to this:
+        $ rm -f baz
+        $ ln -s bar baz
+        $ ls -ld foo bar baz
+        drwxr-xr-x 2 wd users 6 Mar 14 15:09 bar
+        lrwxrwxrwx 1 wd users 3 Mar 14 15:09 baz -> bar
+        drwxr-xr-x 2 wd users 6 Mar 14 15:08 foo
+        $ ls -l foo bar baz
+        lrwxrwxrwx 1 wd users 3 Mar 14 15:09 baz -> bar
+
+        bar:
+        total 0
+
+        foo:
+        total 0
+
+
+Additional info:","mkdir foo bar
+ln -s foo baz
+ls -ld foo bar baz
+ls -l foo bar
+ln -s -f bar baz
+"
+106,1496905,"Description of problem:
+wc -l gives the wrong line count for files with windows line breaks and single trailing CRNL.
+
+These are the contents of a file with which this can be tested:
+
+jonas@cyberman:~$ hexdump test.txt
+0000000 6261 0d63 640a 6665 0a0d               
+000000a
+jonas@cyberman:~$
+
+Check notepad.png (attached) to see that this file shows up as 3 lines with a trailing empty line on Microsoft Windows. (which I suggest should be canonical on how to interpret Windows line breaks)
+
+This is what wc -l says on this exact file:
+
+jonas@cyberman:~$ wc -l test.txt
+2 test.txt
+jonas@cyberman:~$
+
+Version-Release number of selected component (if applicable):
+coreutils-8.27-16.fc27.x86_64
+
+How reproducible:
+100%
+
+Steps to Reproduce:
+1. Create above file with Windows line breaks
+2. Check it out in Notepad on Windows
+3. Try wc -l file.txt
+
+Actual results:
+wc -l doesn't agree with Notepad.exe about how many lines this file has
+
+Expected results:
+wc -l prints out same line count as visible in Notepad.exe on Windows
+
+Additional info:","touch file.txt
+notepad file.txt
+wc -l file.txt"
+109,1482445,"Description of problem:
+
+ptx coredumps for particular input file. 
+
+Version-Release number of selected component (if applicable):
+coreutils-8.27-5.fc26.x86_64
+
+How reproducible:
+always with this file, probably more # CPU ? (could not reproduced in openstack)
+
+Steps to Reproduce:
+1. ptx reproducer_file
+
+Actual results:
+Segmentation fault (core dumped)
+
+
+Additional info:
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+#0  0x000000af3b98a2e9 in define_all_fields (occurs=0x7f587aac5e90) at ../src/ptx.c:1434
+1434          SKIP_WHITE_BACKWARDS (cursor, buffer_start);
+(gdb) bt
+#0  0x000000af3b98a2e9 in define_all_fields (occurs=0x7f587aac5e90) at ../src/ptx.c:1434
+#1  generate_all_output () at ../src/ptx.c:1780
+#2  main (argc=<optimized out>, argv=<optimized out>) at ../src/ptx.c:2155",ptx reproducer_file
+112,1470769,"Description of problem: When chroot invokes execvp() and suffers a failure return because of EIO, then localizing the error string can cause confusion and trouble because it is likely that localization depends on setting up the locale machinery, which depends on I/O, which has just failed.
+
+After EIO, then it is preferable to emit an immediate, non-localized indication 
+of the EIO using as few system calls as possible; then [perhaps] resume the regular error processing.  Something in the spirit of:
+   write(2, ""\nchroot:(raw)EIO\n"", 17);
+just before the existing
+   error (0, errno, _(""failed to run command %s""), quote (argv[0]));
+
+
+Version-Release number of selected component (if applicable):
+coreutils-8.25-17.fc25.x86_64
+
+
+How reproducible: every time, using deliberate error injection
+
+
+Steps to Reproduce:
+1. Inject a deliberate error.
+--- coreutils-8.25/src/chroot.c.orig	2017-07-13 07:43:21.915621653 -0700
++++ coreutils-8.25/src/chroot.c	2017-07-13 07:44:41.806713319 -0700
+@@ -420,8 +420,8 @@
+   if (uid_set (uid) && setuid (uid))
+     error (EXIT_CANCELED, errno, _(""failed to set user-ID""));
+ 
+-  /* Execute the given command.  */
+-  execvp (argv[0], argv);
++  /* Inject deliberate error. */  /* Execute the given command.  */
++  errno = EIO;  /* execvp (argv[0], argv);*/
+ 
+   int exit_status = errno == ENOENT ? EXIT_ENOENT : EXIT_CANNOT_INVOKE;
+   error (0, errno, _(""failed to run command %s""), quote (argv[0]));
+
+2.
+3.
+
+Actual results: Localization of the third argument to error(), namely
+   _(""failed to run command %s"")
+uses I/O, namely to set up the locale machinery.
+
+
+Expected results:  After EIO, then signal the error using as little I/O as possible.
+
+
+Additional info:
+Yes, this is rare.  But not _that_ rare, and anyway it is important because booting a machine into ""Rescue mode"" and then performing ""chroot /mnt/sysimage"" in order to fix an installation by running the package manager in its native environment, is prone to EIO if the boot was to a ""Live"" system stored on a physical DVD.  (Mechanical drive, infrequently used, intensive seeking for tens of seconds, cheap manufacture, etc.)  Of course booting a ""Live"" system from USB flash memory is preferable, but there are cheap USB flash drives, too.","cd coreutils-8.25/src
+cp chroot.c chroot.c.orig
+sed -i 's/execvp (argv\[0\], argv);/errno = EIO;  \/* execvp (argv[0], argv); *\//g' chroot.c
+"
+113,1024730,"(1) You mounted two partititions - 
+    part    -> fs   -> mnt point    ->  avl disk    ->  used    ->  avl %
+------------------------------------------------------------------------------
+    mpath1  -> fuse -> /tmp/test/   ->  1.0 T       ->  1.0 T   ->  100% 
+    mpath2  -> ext3 -> /mnt         ->  1.8 T       ->  21G     ->  2% 
+ 
+(2) You unmount the /mnt (formatted with ext3)
+(3) mount mpath2 (you unmounted in step 2) on /tmp/test/
+(4) Now , you do df and expect this - 
+
+Filesystem          Type      Size  Used Avail Use% Mounted on
+/dev/mapper/mpatha2 ext3      1.8T   21G  1.7T   2% /tmp/test
+ 
+But you see this - 
+Filesystem          Type      Size  Used Avail Use% Mounted on
+/dev/mapper/mpatha1 fuse      1.8T   21G  1.7T   2% /tmp/test","mount /dev/mpath1 /tmp/test/
+umount /mnt
+mount /dev/mpath2 /tmp/test/
+df"
+114,1465935,"Description of problem:
+The verification by sha256sum of any ISO image file fails invariably.
+
+Version-Release number of selected component (if applicable):
+8.27-5.fc26.x86_64
+
+How reproducible:
+Steps to Reproduce:
+1. Move both one to another related downloaded official files to the same folder.
+2. Compute required command mentioned on site’s url (https://fedoramagazine.org/verify-fedora-iso-file/) till the sha256sum command.
+
+Actual results:
+Output resulted from the function sha256sum claims ""No such file or directory"", while not only the very file is present at the correct location but also its related rights are sufficient enough (see attachment).
+
+Expected results:
+Function sha256sum should return a viable message regarding the ISO image file in directory.
+
+Additional info:
+Component’s identification resulted from:
+$ rpm -qf /usr/bin/sha256sum","mv file1 file2 /path/to/same/folder/
+curl https://fedoramagazine.org/verify-fedora-iso-file/
+(Follow the instructions until the sha256sum command is mentioned)"
+117,1283760,"When watching, e.g., `tail -F scratchdir/tests.log` with inotify
+support, if scratchdir (and contents) ceases to exist and is re-created,
+tail *will not* show the contents of the new file.
+
+By contrast, with, e.g., `tail ---disable-inotify -F
+scratchdir/tests.log`, when scratchdir (and contents) ceases to exist
+and is re-created, tail *will* show the contents of the new file.
+
+To my mind, the behavior *without* inotify is the correct one (it's
+certainly the one that the description of ""following names"" from the man
+page suggests to me) and the behavior *with* inotify is in error.
+
+Thanks!","tail -F scratchdir/tests.log
+rm -rf scratchdir && mkdir scratchdir"
+118,1444802,"Description of problem:
+With DNF2 it's no longer possible to install coreutils-single as it's obsoleted by the main package, ""to give priority"" to it, according to a comment in the SPEC file.
+
+The reason this ever worked is, according to Igor, a bug in the old DNF which the new release fixed.  That makes sense to me.
+
+Which variant is installed shouldn't be decided by the packager but by the deployment tools, e.g. Anaconda or mock configuration.
+
+Please, revert c553cab787c2499ffaa36748a2de7c0e08fe31d5.
+
+Version-Release number of selected component (if applicable):
+8.24-105 and newer.
+
+How reproducible:
+Always.
+
+Steps to Reproduce:
+1. Attempt to install coreutils-single with DNF2.
+
+Actual results:
+coreutils is installed.
+
+Expected results:
+coreutils-single is installed.",dnf install coreutils-single
+119,1446494,"Error: coreutils conflicts with coreutils-single-8.27-3.fc27.x86_64
+ You could try using --skip-broken to work around the problem
+ You could try running: rpm -Va --nofiles --nodigest
+
+Please fix if possible!
+
+*rawhide*
+
+Please also see this in case of weak deps:
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1324623
+https://pagure.io/fesco/issue/1611
+
+We still depend on using *yum* because of limitations of *dnf* (and the huge refactoring it's going under now ... from what I believe it's happening).","sudo yum install coreutils
+sudo yum install coreutils-single-8.27-3.fc27.x86_64
+sudo yum install coreutils"
+120,1361694,"Description of problem:
+For some reason the coreutils developers have changed the output of the ls command such that ls will now output single quote characters around file names containing spaces.  This is a change to the default behaviour of a command that has had consistent output for 30-40 years.  I would like Fedora to consider adding the -N option to /etc/profile.d/colorls.sh in order to return the output of the ls command to the traditional default on Fedora systems.
+
+This appears to have caused a lot of annoyance elsewhere
+e.g. http://unix.stackexchange.com/questions/258679/why-is-ls-suddenly-wrapping-items-with-spaces-in-single-quotes
+e.g. http://lists.gnu.org/archive/html/coreutils/2016-02/msg00000.html
+
+Version-Release number of selected component (if applicable):
+Coreutils 8.25
+
+How reproducible:
+Run the ls command in a directory containing a file with a space in the name.  Observe the quoted file name.
+
+Note, other distributions are disabling this by reverting the patch.  Debian, for example (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=813164#msg210) and therefore Ubuntu and the other variants.  OpenSuSE already use the -N option to ls by default so that distro will not be effected.",ls
+121,186879,"Description of problem:
+
+When using su -c ""bash"" (for example), the resulting bash shell has no access to
+its controlling terminal (/dev/tty), so there is no job-control possible, and
+tools like 'resize' fail.
+
+Version-Release number of selected component (if applicable):
+coreutils 5.93 (bug was not present in the FC4 version 5.2.1)
+
+How reproducible: allways.
+
+
+Steps to Reproduce:
+1. su root -c ""bash"" (enter password)
+2. cat
+3. type ^C to interrupt.
+  
+Actual results:
+[karel@fc5 karel]$ /bin/su root -c ""bash""
+Password: 
+[root@fc5 karel]# cat
+(type ^C)
+Session terminated, killing shell... ...killed.
+(session hangs, with 2 processes reading from terminal)
+
+Expected results:
+[karel@fc5 karel]$ /tmp/su4 root -c ""bash""
+Password: 
+[root@fc5 karel]# cat
+(type ^C)
+[root@fc5 karel]# exit
+exit
+
+
+Additional info:","su root -c ""bash""
+cat
+^C"
+122,1398913,"Description of problem:
+Creating multiple levels of directories together with mkdir -p -Z fails to set the SELinux context for all but the highest and lowest directories.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.25-7.fc24.x86_64
+
+How reproducible:
+Always for any more than two directory levels.
+
+Steps to Reproduce:
+1. Create 3 or more directories together with (for eg) mkdir -p -Z a/b/c
+
+Actual results:
+mkdir: failed to set default creation context for 'a/b': No such file or directory
+SELinux labels set on a and a/b/c, but not on a/b.
+
+Expected results:
+a/b should also be labeled.
+
+Additional info:
+Same problem all intermediary directories, eg mkdir -p -Z a/b/c/d fails to label a/b and a/b/c (but labels a and a/b/c/d).
+
+NOTE: mkdir will usually correct the labels on existing directories, but fails to do so here as well.",mkdir -p -Z a/b/c
+123,1421495,"Description of problem:
+I came across a use of `df -m` in a book recently, which was a bit of a surprise to me, since I fairly often end up checking the output of `df --help`, but I'd never seen it before. After double-checking, I see that there is no mention of the -m switch in either the `df --help` output or the man page. Apparently it's almost just a shorthand for -GM, except that it leaves out the 'M' suffices in its output.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.25-15.fc25.x86_64
+
+How reproducible:
+easily
+
+Steps to Reproduce:
+1. df -m
+2. df --help
+3. man df
+
+Actual results:
+partitions listed in megabytes (mebibytes, really)
+documentation not mentioning any -m switch
+
+Expected results:
+partitions listed in megabytes
+documentation at least mentions the switch exists","df -m
+df --help
+man df"
+124,1411403,"Description of problem:
+
+Coreutils - coreutils-8.25-15.fc25.x86_64 does not display thousands separator properly.
+
+Version-Release number of selected component (if applicable):
+
+coreutils-8.25-15.fc25.x86_64
+
+How reproducible:
+
+100%
+
+Steps to Reproduce:
+1.  unalias ls && ls -l --block-size=""'1""
+2.
+3.
+
+Actual results:
+
+-rw-r--r-- 1 greg greg  75434 Oct 31 12:12 coreutils.spec
+-rw-r--r-- 1 greg greg 172107 Dec 25 12:42 kernel.spec
+
+Expected results:
+
+-rw-r--r-- 1 greg greg  75,434 Oct 31 12:12 coreutils.spec
+-rw-r--r-- 1 greg greg 172,107 Dec 25 12:42 kernel.spec
+
+Additional info:
+
+sudo locale
+LANG=C
+LC_CTYPE=""C""
+LC_NUMERIC=""C""
+LC_TIME=""C""
+LC_COLLATE=""C""
+LC_MONETARY=""C""
+LC_MESSAGES=""C""
+LC_PAPER=""C""
+LC_NAME=""C""
+LC_ADDRESS=""C""
+LC_TELEPHONE=""C""
+LC_MEASUREMENT=""C""
+LC_IDENTIFICATION=""C""
+LC_ALL=C
+[greg@macbook SPECS]$ !1036
+sudo localectl
+   System Locale: LANG=en_US.UTF-8
+       VC Keymap: us
+      X11 Layout: us","unalias ls && ls -l --block-size=""1"""
+125,1084376,"Description of problem:
+/bin/echo does not treat -- as the last option, which makes it impossible to print strings ""-n"", ""-e"", ""-E"", and ""--help"". There is no way to tell echo not to treat them as it's options.
+
+Version-Release number of selected component (if applicable):
+8.21
+
+How reproducible:
+always
+
+Steps to Reproduce:
+1. echo -n
+2. echo -- -n
+
+Actual results:
+The first command prints nothing, as it treats -n as an option.
+The second command print ""-- -n"", as it treats -- as the first argument.
+
+Expected results:
+The second command should print just ""-n"".","echo -n
+echo -- -n"
+126,953194,"Description of problem:
+ABRT Testing! If you are seeing this comment something very very bad happend! Sorry!
+
+Version-Release number of selected component:
+coreutils-8.17-8.fc18
+
+Additional info:
+backtrace_rating: 4
+cmdline:        sleep 1000
+crash_function: __nanosleep_nocancel
+executable:     /usr/bin/sleep
+kernel:         3.8.5-201.fc18.x86_64
+runlevel:       unknown
+uid:            18601
+ureports_counter: 1
+
+Truncated backtrace:
+[New LWP 29174]
+Core was generated by `sleep 1000'.
+Program terminated with signal 11, Segmentation fault.
+#0  0x00000035896bb430 in __nanosleep_nocancel () at ../sysdeps/unix/syscall-template.S:81
+81	T_PSEUDO (SYSCALL_SYMBOL, SYSCALL_NAME, SYSCALL_NARGS)
+
+Thread 1 (LWP 29174):
+#0  0x00000035896bb430 in __nanosleep_nocancel () at ../sysdeps/unix/syscall-template.S:81
+No locals.
+#1  0x00000000004040b7 in rpl_nanosleep (requested_delay=requested_delay@entry=0x7fff491afce0, remaining_delay=remaining_delay@entry=0x0) at nanosleep.c:85
+        limit = 2073600
+        seconds = 1000
+        intermediate = {tv_sec = 1000, tv_nsec = 0}
+#2  0x0000000000403f4a in xnanosleep (seconds=seconds@entry=1000) at xnanosleep.c:51
+        ts_sleep = {tv_sec = 1000, tv_nsec = 0}
+#3  0x0000000000401904 in main (argc=<optimized out>, argv=<optimized out>) at sleep.c:145
+        i = <optimized out>
+        seconds = <optimized out>
+        ok = <optimized out>
+From                To                  Syms Read   Shared Object Library
+0x000000358961f1a0  0x0000003589760960  Yes         /lib64/libc.so.6
+0x0000003589200b20  0x000000358921a3d9  Yes         /lib64/ld-linux-x86-64.so.2
+$1 = 0x0
+No symbol ""__glib_assert_msg"" in current context.
+rax            0xfffffffffffffdfc	-516
+rbx            0x3e8	1000
+rcx            0xffffffffffffffff	-1
+rdx            0x0	0
+rsi            0x0	0
+rdi            0x7fff491afca0	140734419893408
+rbp            0x0	0x0
+rsp            0x7fff491afc98	0x7fff491afc98
+r8             0x0	0
+r9             0x0	0
+r10            0x7fff491afb10	140734419893008
+r11            0x246	582
+r12            0x401c90	4201616
+r13            0x7fff491afe58	140734419893848
+r14            0x0	0
+r15            0x0	0
+rip            0x35896bb430	0x35896bb430 <__nanosleep_nocancel+7>
+eflags         0x246	[ PF ZF IF ]
+cs             0x33	51
+ss             0x2b	43
+ds             0x0	0
+es             0x0	0
+fs             0x0	0
+gs             0x0	0
+Dump of assembler code for function __nanosleep_nocancel:
+   0x00000035896bb429 <+0>:	mov    $0x23,%eax
+   0x00000035896bb42e <+5>:	syscall 
+=> 0x00000035896bb430 <+7>:	cmp    $0xfffffffffffff001,%rax
+   0x00000035896bb436 <+13>:	jae    0x35896bb469 <nanosleep+73>
+   0x00000035896bb438 <+15>:	retq   
+End of assembler dump.
+
+Potential duplicate: bug 696222","sleep 1000
+"
+128,1396064,"Description of problem:
+'who' command isn't returning the list of logged in users e.g.
+
+lnxd4bed99499df $ who
+lnxd4bed99499df $
+
+If I run this on a PC with F21 installed then it returns a list of the users logged into the system e.g.
+
+lnxf04da2206406 $ who
+dxxxxx.txxxxx pts/0        2016-11-16 17:13 (:0)
+dxxxxx.txxxxx pts/3        2016-11-16 16:40 (:0)
+dxxxxx.txxxxx pts/5        2016-11-16 22:39 (:0)
+jxxx.kxxxxxx pts/2        2016-11-17 11:49 (10.1.65.145)
+
+
+I posted about this on the Fedora Forums where someone said it's working on Fedora 25 but I don't have that installed as yet.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.25-7.fc24.x86_64
+
+How reproducible:
+
+
+Steps to Reproduce:
+1. Run the 'who' command
+2.
+3.
+
+Actual results:
+Blank
+
+Expected results:
+List of logged in users.
+
+Additional info:",who
+129,1392210,"Description of problem:
+
+Unable to dnf update coreutils-common
+
+Version-Release number of selected component (if applicable):
+
+8.25-15.fc25
+
+How reproducible:
+
+100%
+
+Steps to Reproduce:
+1. Try to upgrade coreutils-common by dnf
+2.
+3.
+
+Actual results:
+
+Error while installing
+
+Expected results:
+
+Install without error
+
+Additional info:
+
+See attachment",sudo dnf upgrade coreutils-common
+130,1339135,"Description of problem:
+
+install -d or install -D is not setting the context on directories to match file_contexts, only on the final file.
+
+Test case:
+
+$ sudo semanage fcontext -a -t user_home_t ""/tmp/foobar(/.*)?""
+$ touch foo
+$ install -D foo /tmp/foobar/foo
+$ ls -Zd /tmp/foobar
+unconfined_u:object_r:user_tmp_t:s0 /tmp/foobar
+$ ls -Z /tmp/foobar/foo
+system_u:object_r:user_home_t:s0 /tmp/foobar/foo
+$ rm -rf /tmp/foobar
+$ install -d /tmp/foobar
+$ ls -Zd /tmp/foobar
+unconfined_u:object_r:user_tmp_t:s0 /tmp/foobar
+$ restorecon -v /tmp/foobar
+restorecon reset /tmp/foobar context unconfined_u:object_r:user_tmp_t:s0->unconfined_u:object_r:user_home_t:s0","sudo semanage fcontext -a -t user_home_t ""/tmp/foobar(/.*)?""
+touch foo
+install -D foo /tmp/foobar/foo
+ls -Zd /tmp/foobar
+ls -Z /tmp/foobar/foo
+rm -rf /tmp/foobar
+install -d /tmp/foobar
+ls -Zd /tmp/foobar
+restorecon -v /tmp/foobar
+"
+131,1158494,"Description of problem:
+When the locale isn't UTF-8, expand and unexpand tools don't correctly manage files having an UTF-8 BOM header. With expand, some spaces are missing and with unexpand, there is some extra spaces so the result aren't correct.
+
+Version-Release number of selected component (if applicable):
+Fedora-20
+coreutils-8.21-21.fc20.x86_64
+
+How reproducible:
+See below
+
+Steps to Reproduce:
+1. Write an UTF-8 file (file_spaces) having a BOM header with the following contents:
+    é   à   ç
+    é   à   ç
+
+Two lines with four spaces + 'é' + three spaces + 'à' + three spaces + 'ç' + EOL
+
+It's important to test with stressed characters. With ASCII characters, only the first line is incorrect and the second one is OK. With stressed characters, all lines are incorrect.
+
+NB: For writing files with BOM header, I'm using the scite editor.
+
+2. LANG=C unexpand -t4 file_spaces > file_unexpand
+
+3. Edit the two files (e.g. with gedit or scite) and see the problem in file_unexpand
+
+4. Write an UTF-8 file (file_tabs) having a BOM header with the following contents:
+    é   à   ç
+    é   à   ç
+
+Two lines with one tab + 'é' + one tab + 'à' + one tab + 'ç' + EOL
+
+5. LANG=C expand -t4 file_tabs > file_expand
+
+6. Edit the two files (e.g. with gedit or scite) and see the problem in file_expand
+
+Actual results:
+
+
+Expected results:
+
+
+Additional info:","nano file_spaces
+LANG=C unexpand -t4 file_spaces > file_unexpand
+gedit file_spaces file_unexpand
+nano file_tabs
+LANG=C expand -t4 file_tabs > file_expand
+gedit file_tabs file_expand "
+132,1001092,"while after the breakage in F15 this was fine with F18
+""df"" in F19 is again too stupid to show the real mountpoint
+instead a random bind-mount
+
+coreutils-8.21-12.fc19.x86_64
+
+[root@testserver:~]$ /usr/bin/df -hT --exclude-type=tmpfs --exclude-type=devtmpfs
+Dateisystem    Typ  Größe Benutzt Verf. Verw% Eingehängt auf
+/dev/sdb1      ext4   12G    2,6G  9,2G   22% /
+/dev/sda1      ext4  189M     33M  153M   18% /boot
+/dev/sdc1      ext4   30G    4,3G   26G   15% /tmp
+_____________________________________
+
+/dev/sdc1 is for sure *not* /tmp
+hence there is no logic at all display the thris bind-mount 
+
+UUID=bb7dfa33-8d31-496c-99a9-a1978eef98ec  /Volumes/dune                         ext4   defaults,commit=45,inode_readahead_blks=16,noatime,nodiratime  0 1
+/Volumes/dune/www-servers/cms              /usr/local/sftp-homes/flow/cms        none   bind
+/Volumes/dune/builduser                    /home/builduser                       none   bind
+/Volumes/dune/.tmp                         /tmp                                  none   bind
+/Volumes/dune/.tmp                         /var/tmp                              none   bind
+/Volumes/dune/buildserver/autotest         /Volumes/dune/www-servers/autotest    none   bind",/usr/bin/df -hT --exclude-type=tmpfs --exclude-type=devtmpfs
+134,901517,"Is not the sort broken or did I miss some option?
+
+Below is the patch file. The update was generated by a script. Though I can not guarantee that the original file from several months or years ago was generated by the same script but it seems it might be.
+
+I tried to use different sort options and combine that with either field separator "":"" or no separator option but was unable to produce the original sorting order to reduce the patch size. The new sort order seems to be rather incorrect to move the 0:0:1 past 0:0:1f on numeric sort on both field separator : or no separator.
+
+diff -up ./ethercodes.dat.orig ./ethercodes.dat
+--- ./ethercodes.dat.orig       2013-01-18 11:31:10.998394976 +0100
++++ ./ethercodes.dat    2013-01-18 11:45:28.466851677 +0100
+@@ -1,5 +1,4 @@
+ 0:0:0  XEROX CORPORATION
+-0:0:1  XEROX CORPORATION
+ 0:0:10 SYTEK INC.
+ 0:0:11 NORMEREL SYSTEMES
+ 0:0:12 INFORMATION TECHNOLOGY LIMITED
+@@ -16,7 +15,7 @@
+ 0:0:1d CABLETRON SYSTEMS, INC.
+ 0:0:1e TELSIST INDUSTRIA ELECTRONICA
+ 0:0:1f Telco Systems, Inc.
+-0:0:2  XEROX CORPORATION
++0:0:1  XEROX CORPORATION
+ 0:0:20 DATAINDUSTRIER DIAB AB
+ 0:0:21 SUREMAN COMP. & COMMUN. CORP.
+ 0:0:22 VISUAL TECHNOLOGY INC.
+@@ -33,7 +32,7 @@
+ 0:0:2d CHROMATICS INC
+ 0:0:2e SOCIETE EVIRA
+ 0:0:2f TIMEPLEX INC.
+-0:0:3  XEROX CORPORATION
++0:0:2  XEROX CORPORATION
+ 0:0:30 VG LABORATORY SYSTEMS LTD
+ 0:0:31 QPSX COMMUNICATIONS PTY LTD
+ 0:0:32 Marconi plc","sort -n ./ethercodes.dat > ./sorted_ethercodes.dat
+diff -up ./ethercodes.dat.orig ./sorted_ethercodes.dat"
+135,1376801,"the manpage of 'echo' command lists --help and --version, which is wrong.
+
+The GNU info page of 'echo' specifically says that '--' is treated just like any other character.
+So manpage should be updated to reflect this change.",man echo
+136,1374678,"Description of problem: In some cases the sort sorts incorrectly
+
+
+Version-Release number of selected component (if applicable):
+
+
+How reproducible: 100%
+
+
+Steps to Reproduce:
+1.(echo ""./Invoice.m4""; echo ""./Invoice.java""; echo ""./InvoiceLine.m4""; echo ""./InvoiceLine.java"") | sort 
+
+2.
+3.
+
+Actual results:
+./Invoice.java
+./InvoiceLine.java
+./InvoiceLine.m4
+./Invoice.m4
+
+
+Expected results:
+./Invoice.java
+./Invoice.m4
+./InvoiceLine.java
+./InvoiceLine.m4
+
+
+
+Additional info: Curious issue, not critical but I am sure it shows up other places. And NO, I am not sure what component to file this against.","echo ""./Invoice.m4""; echo ""./Invoice.java""; echo ""./InvoiceLine.m4""; echo ""./InvoiceLine.java"" | sort"
+137,1347746,"Description of problem:
+
+The time has been replaced by 2016 (the year)
+with older betas, the time was listed has hh:mm  
+
+Refer to two listings attached.
+
+Version-Release number of selected component (if applicable):
+
+Three listings   
+F24 beta (from koji)
+
+f24 gold  (from koji)
+
+F23       (from f23 gold)
+How reproducible:
+
+
+Steps to Reproduce:
+1.
+2.
+3.
+
+Actual results:
+
+
+Expected results:
+
+
+Additional info:",ls -l /dev/disk/by-uuid
+138,1370362,"Description of problem:
+
+The ls -l /dev/disk/by-xxxx has replaced hh:mm by yyyy.  WHY?
+
+/**
+        ls -l /dev/disk/by-uuid or ls -l /dev/disk/by-label
+ *                 PRIOR TO FEDORA 25
+lrwxrwxrwx. 1 root root 10 Aug 21 12:57 sdb4MateBoot -> ../../sdb4       #/dev/disk/by-label
+lrwxrwxrwx. 1 root root 10 Aug 21 12:57 013171d7-2863-43df-b168-179f50892774 -> ../../sde4
+
+
+
+
+                   WITH FEDORA 25
+lrwxrwxrwx. 1 root root 10 Aug 26  2016 abe96c41-479d-4922-8602-027680f6be5c -> ../../sdb7
+lrwxrwxrwx. 1 root root 10 Aug 26  2016 0d655ac4-fbeb-4b63-b184-a424c8b7894b -> ../../sdb6
+**/
+
+Fedora 25's
+ls -l /dev/disk/by-xxxx is incompatible with all RH and Centos and F24 or earlier versions 
+and with other distributions 
+
+
+Version-Release number of selected component (if applicable):
+
+
+How reproducible:
+
+
+Steps to Reproduce:
+1.
+2.
+3.
+
+Actual results:
+
+Expected timestamp to not change for Fedora 25
+
+Expected results:
+
+In place of 2016, the year, I expected hh:mm
+
+Additional info:",ls -l /dev/disk/by-xxxx
+139,1349701,"Description of problem:
+  `ls` command now quote file name if there're spaces or special characters (such as single quote)
+
+  example:
+  -------------------------------
+  # ls /hdd/VirtualBox\ VMs -d
+  '/hdd/VirtualBox VMs'
+  -------------------------------
+
+Version-Release number of selected component (if applicable):
+  8.25-5.fc24 (perhaps started from 8.25)
+
+How reproducible:
+  Always
+
+
+Steps to Reproduce:
+  1. ls a file/directory name with whitespaces or single quotes
+
+Actual results:
+  File name with whitespaces are quoted with single quote
+
+Expected results:
+  Output the original file name without quoting
+
+Additional info:
+  I found a QA thread: http://unix.stackexchange.com/questions/258679/why-is-ls-suddenly-wrapping-items-with-spaces-in-single-quotes
+  As L Spice commented in the above QA thread, `export QUOTING_STYLE=literal` should do the trick
+
+  Some useful links:
+  http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=blobdiff;f=src/ls.c;h=2ae548d996b236660c6cea10293a31c674c21f01;hp=c22c536c04731ff25c9cb265c2e8e7952381f4ad;hb=109b9220cead6e979d22d16327c4d9f8350431cc;hpb=5ef08864113505c6392158c9fac9a6cb1b3ac0e6
+  http://lists.gnu.org/archive/html/coreutils/2016-02/msg00000.html",ls 'My Documents'
+140,1358888,"Document URL: 
+
+Section Number and Name: 
+
+Describe the issue: when you do uname -v it will not show version. But in its man uname its discription shown as version 
+
+Suggestions for improvement: it should show its kernal version
+
+Additional information: uname -v it need to show version but not showing now","uname -v
+man uname"
+141,1285623,"Description of problem: The F22 version of df in coreutils doesn't show all mounts when the mount point is a subdirectory of file-system on the remote host.
+
+For example, the file system on the remote host is simply mounted on /volume1. The mount command shows
+
+
+[egreshko@meimei x86_64]$ mount | grep ds
+ds:/volume1/syntegra on /syntegra type nfs4 (rw,relatime,vers=4.0,rsize=131072,wsize=131072,namlen=255,hard,proto=tcp,port=0,timeo=600,retrans=2,sec=sys,clientaddr=192.168.1.18,local_lock=none,addr=192.168.1.152)
+ds:/volume1/misty on /home/egreshko/misty type nfs4 (rw,relatime,vers=4.0,rsize=131072,wsize=131072,namlen=255,hard,proto=tcp,port=0,timeo=600,retrans=2,sec=sys,clientaddr=192.168.1.18,local_lock=none,addr=192.168.1.152)
+ds:/volume1/video on /home/egreshko/Videos type nfs4 (rw,relatime,vers=4.0,rsize=131072,wsize=131072,namlen=255,hard,proto=tcp,port=0,timeo=600,retrans=2,sec=sys,clientaddr=192.168.1.18,local_lock=none,addr=192.168.1.152)
+
+while df shows
+
+[egreshko@meimei ~]$ /usr/bin/df
+Filesystem         1K-blocks       Used  Available Use% Mounted on
+devtmpfs             4071524          0    4071524   0% /dev
+tmpfs                4082468     304268    3778200   8% /dev/shm
+tmpfs                4082468       1544    4080924   1% /run
+tmpfs                4082468          0    4082468   0% /sys/fs/cgroup
+/dev/sda2           50264772   20194444   27493944  43% /
+tmpfs                4082468        112    4082356   1% /tmp
+/dev/sdb1          480589520   11981140  444172720   3% /home
+/dev/sda5          894266040  423171176  425645700  50% /opt
+/dev/sda1             487652     136081     321875  30% /boot
+ds:/volume1/video 2879621632 1182232064 1697287168  42% /home/egreshko/Videos
+tmpfs                 816496          0     816496   0% /run/user/985
+tmpfs                 816496         28     816468   1% /run/user/1029
+
+
+In F23 it is OK....
+
+Suggest updating F22 to coreutils-8.24-4.  I built it locally and installed it on an F22 system and found no regressions thus far.
+
+Version-Release number of selected component (if applicable):
+
+
+How reproducible:
+
+
+Steps to Reproduce:
+1.
+2.
+3.
+
+Actual results:
+
+
+Expected results:
+
+
+Additional info:","mount | grep ds  
+/usr/bin/df
+"
+142,1354078,"Hi, I'm running fedora live and am getting an error when trying to install coreutils: 
+
+[root@localhost liveuser]# dnf --installroot=/tmp --releasever=24 install coreutils
+Last metadata expiration check performed 0:02:08 ago on Sat Jul  9 03:58:19 2016.
+Dependencies resolved.
+======================================================================================================================================================
+ Package                             Arch                             Version                                  Repository                        Size
+======================================================================================================================================================
+Installing:
+ coreutils                           x86_64                           8.25-5.fc24                              fedora                           1.1 M
+
+Transaction Summary
+======================================================================================================================================================
+Install  1 Package
+
+Total download size: 1.1 M
+Installed size: 5.3 M
+Is this ok [y/N]: y
+Downloading Packages:
+coreutils-8.25-5.fc24.x86_64.rpm                                                                                      2.5 MB/s | 1.1 MB     00:00    
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                 704 kB/s | 1.1 MB     00:01     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+error: %prein(coreutils-8.25-5.fc24.x86_64) scriptlet failed, exit status 126
+Error in PREIN scriptlet in rpm package coreutils
+Error in PREIN scriptlet in rpm package coreutils
+coreutils-8.25-5.fc24.x86_64 was supposed to be installed but is not!
+  Verifying   : coreutils-8.25-5.fc24.x86_64                                                                                                      1/1 
+
+Failed:
+  coreutils.x86_64 8.25-5.fc24                                                                                                                        
+
+Complete!
+
+I'd appreciate if you could please tell me if there's a dnf flag to enable scritlet output to the shell, atm I'm only seeing status 126 (Command invoked cannot execute)",dnf --installroot=/tmp --releasever=24 install coreutils
+143,1352691,"Description of problem:
+Terminal sessions display quotes for files with spaces in them. This is non-intuitive behavior. The file name does not have quotes unless quotes have been used in the filename. The coreutil ls has been updated to default to this new behavior. This behavior should not be foisted on users but users should be allowed to choose whether they want to OPT IN. Debian and Ubuntu distros have already reverted.
+
+
+Version-Release number of selected component (if applicable): coreutils-8.25-5.fc24.x86_64
+
+
+How reproducible:
+Fresh install of Fedora 24. All the time.
+
+
+Steps to Reproduce:
+1. > ""File with spaces.txt""
+2. ls
+
+Actual results:
+'File with spaces.txt'
+
+Expected results:
+File with spaces.txt
+
+Additional info:
+This is a core expectation. The filename we see should be the same as the filename in use. We do not require additional tools to help us identify what is a complete filename and what is not. ESPECIALLY in the terminal session where the user is expected to be versant in POSIX. If the user needs hand-holding, they can use the GUI tools like Dolphin or Konqueror. Note - neither of these tools shows 'quotes' around files with space in the name. Neither does Windows. Neither does Mac OS.
+
+Please revert. Please instruct coreutils developers to revert. Please set any defaults required to not show the quotes. The user should not have to discover there is no error.
+
+E.g. I downloaded an MP3 file today with spaces. I saw the single quotes and immediately thought there was a problem in firefox naming the file on download.
+
+This is insane.","> ""File with spaces.txt""
+ls
+"
+144,1348043,"Description of problem:
+
+# dnf --installroot /tmp/hoge --releasever=25 --disablerepo=* \
+      --enablerepo=rawhide install coreutils
+(snip)
+  Installing  : coreutils-common-8.25-8.fc25.x86_64  39/44
+/var/tmp/rpm-tmp.9sTgKX: line 3: /bin/mv: No such file or directory
+  Installing  : libkadm5-1.14.1-7.fc25.x86_64        40/44
+  Installing  : krb5-libs-1.14.1-7.fc25.x86_64       41/44
+  Installing  : openssl-libs-1:1.0.2h-1.fc25.x86_64  42/44
+  Installing  : coreutils-8.25-8.fc25.x86_64         43/44
+(snip)
+
+This bug is introduced by
+http://pkgs.fedoraproject.org/cgit/rpms/coreutils.git/commit/?id=8236de4f4bb46d0145978c6c9abc4160240e82f0
+
+The post-script of coreutils-common requires /bin/mv command,
+but the command is provided by coreutils package.
+And coreutils package requires coreutils-common package...
+So, a kind of 'circular dependency' occurs.
+
+Version-Release number of selected component (if applicable):
+
+coreutils-8.25-8.fc25.x86_64
+
+How reproducible:
+
+always.
+
+Steps to Reproduce:
+1. run the above command.
+2.
+3.
+
+Actual results:
+
+install without error message.
+
+Expected results:
+
+shows the above error message.
+
+Additional info:","dnf --installroot /tmp/hoge --releasever=25 --disablerepo=* \
+--enablerepo=rawhide install coreutils"
+146,1303795,"Description of problem:
+
+Description	
+
+sort(1) in coreutils 8.24 has an OPTION to check for strict ordering.
+
+       -u, --unique
+               with -c, check for strict ordering; without -c, output only the first of an equal run
+
+However, df(1) in coreutils 8.24 has no OPTION to check for strict ordering.
+
+This is inconsistent considering both df and sort reside in same coreutils package, and generated df output can contain duplicates.
+
+Feature Request: The df utility should support strict ordering OPTION (-u).
+
+
+Version-Release number of selected component (if applicable):
+
+coreutils-8.24, 
+
+How reproducible:
+
+Always
+
+Steps to Reproduce:
+
+1. # cd /
+
+2. Execute these commands:
+# df *
+# df /*
+# df bin lib lib64 sbin
+
+3. Execute these commands:
+
+# cd /
+# df --totals *
+# df --totals /l*
+# df --totals bin lib lib64 sbin
+
+
+Expected results:
+
+N/A
+
+Additional info:","cd /
+df *
+df /*
+df bin lib lib64 sbin
+cd /
+df --totals *
+df --totals /l*
+df --totals bin lib lib64 sbin
+"
+148,440056,"Description of problem:
+
+There are several inconsistencies between documentation and behavior of cp
+command regarding security context preservation.
+
+Version-Release number of selected component (if applicable):
+coreutils-6.9-17.fc8
+
+cp-ing /etc/shadow with respective options give these results:
+
+system_u:object_r:unconfined_tmp_t:s0 /tmp/shadow-dpPR
+system_u:object_r:unconfined_tmp_t:s0 /tmp/shadow-p
+system_u:object_r:unconfined_tmp_t:s0 /tmp/shadow--preserve 
+system_u:object_r:shadow_t:s0    /tmp/shadow--preserve=all
+system_u:object_r:shadow_t:s0    /tmp/shadow--preserve=context
+system_u:object_r:shadow_t:s0    /tmp/shadow-a
+
+man page and --help says option -a is the same as -dpPR
+but it preserves security context too (should there be -cdpPR?)
+
+man page --preserve option description says:
+
+   preserve  the  specified  attributes  (default:  mode,ownership,timestamps)
+   AND security contexts, if possible additional attributes: links, all
+
+which sounds like security contexts are preserved too (but they are not)
+moreover ""if possible attributes"" condition is somewhat confusing... and context
+attribute is not mentioned at all --- i suggest using something like this:
+
+   preserve  the  specified  attributes and security contexts, if possible
+   (default: mode,ownership,timestamps)
+   additional attributes: context, links, all
+   
+option -c is missing in the man page completely...","cp --help
+man cp"
+149,921708,"Description of problem:
+
+$ stat source
+  File: `source'
+  Size: 172253    	Blocks: 344        IO Block: 4096   regular file
+Device: fd02h/64770d	Inode: 1704360     Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1002/ydroneaud)   Gid: ( 1002/ydroneaud)
+Access: 2013-03-14 19:05:12.642541940 +0100
+Modify: 2013-03-14 19:04:46.787541606 +0100
+Change: 2013-03-14 19:04:46.787541606 +0100
+ Birth: -
+
+$ cp --reflink=always source dest
+cp: failed to clone `dest' from `source': Inappropriate ioctl for device
+
+$ stat dest
+  File: `dest'
+  Size: 0         	Blocks: 0          IO Block: 4096   regular empty file
+Device: fd02h/64770d	Inode: 1707547     Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1002/ydroneaud)   Gid: ( 1002/ydroneaud)
+Access: 2013-03-14 19:07:06.493543407 +0100
+Modify: 2013-03-14 19:07:06.493543407 +0100
+Change: 2013-03-14 19:07:06.493543407 +0100
+ Birth: -
+
+
+Expected results:
+
+As reflink are not supported on Ext4 filesystem, cp --reflink=always is expected to fail, but it must not create the file, and it must not leave an empty file.","stat source
+cp --reflink=always source dest
+stat dest"
+150,981845,"Description of problem:
+Although the 'rm' utility has a -I option the coder has arbitrarily decided that more than 3 files is the magic number of files which determines whether a prompt to remove is issued or not. So why wasn't the -I option simply allowed to take an arg such as ""-I 3"" or ""-I 1""?  Hard coding some arbitrary number according to the preferences of one individual programmer is very poor form. Why provide a crippled option?
+
+Version-Release number of selected component (if applicable):
+8.21-11
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+1. man rm
+2.
+3.
+
+Actual results:
+1. -I     prompt once before removing more than three files
+
+Expected results:
+1. -I NUM    prompt once before removing more than NUM files
+
+
+Additional info:
+The older bsd-style rm had a very nice feature by default. It would prompt if more than one file was provided on the command-line (say, as result of wildcard expansion). That would be equivalent to ""-I1"". Very difficult to understand what anyone would arbitrarily hard-code the number 3 into the rm.c source.",man rm
+153,890223,"Version-Release number of selected component:
+coreutils-8.15-9.fc17
+
+Additional info:
+libreport version: 2.0.18
+abrt_version:   2.0.18
+backtrace_rating: 4
+cmdline:        du -sh -sh 6e56p56v.default/
+crash_function: leave_dir
+kernel:         3.6.10-2.fc17.x86_64
+
+truncated backtrace:
+:Thread no. 1 (4 frames)
+: #2 leave_dir at fts-cycle.c:136
+: #4 fts_build at fts.c:1329
+: #5 fts_read at fts.c:909
+: #6 du_files at du.c:592",du -sh 6e56p56v.default/
+154,1334898,"Description of problem:
+When executing ls I find that directories and filenames that contain spaces are surrounded by single tic marks.  This just doesn't feel or look right for a modern operating system and appears to be a regression in expected behavior from prior releases.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.25-5.fc24.x86_64
+
+How reproducible:
+always
+
+Steps to Reproduce:
+1. mkdir Test\ Dir
+2. ls 
+
+
+Actual results:
+'Test File'
+
+Expected results:
+Test File
+
+
+Additional info:","mkdir Test\ Dir
+ls
+"
+157,1319594,"Description of problem:
+
+When use ""ls -lh"" in English locale, the output is:
+$ ls -lh
+total 168K
+-rw-rw-r--. 1 guest guest 165K Mar 21 14:27 coreutils.po
+
+When use ""ls -lh"" in Simplified Chinese locale, the output is:
+$ ls -lh
+总用量 168K
+-rw-rw-r--. 1 guest guest 165K 3月  21 14:27 coreutils.po
+
+
+Version-Release number of selected component (if applicable):
+coreutils-8.25-5.fc24.x86_64
+
+How reproducible:
+run ""ls -lh"" in English and Simplified Chinese locale.
+
+Steps to Reproduce:
+1. log-in with Simplified Chinese locale;
+2. run ""ls -lh"";
+
+Actual results:
+总用量 168K
+-rw-rw-r--. 1 guest guest 165K 3月  21 14:27 coreutils.po
+
+
+Expected results:
+总用量 168K
+-rw-rw-r--. 1 guest guest 165K 3月21日 14:27 coreutils.po
+
+
+Additional info:
+For Simplified Chinese users, the expected data/time is:
+3月21日 14:27","export LANG=zh_CN.UTF-8
+ls -lh
+"
+158,706605,"od --help says about these options:
+
+  -S, --strings[=BYTES]       output strings of at least BYTES graphic chars
+  -w, --width[=BYTES]         output BYTES bytes per output line
+
+man od says:
+
+       -S, --strings[=BYTES]
+              output strings of at least BYTES graphic chars
+       -w, --width[=BYTES]
+              output BYTES bytes per output line
+
+First, both are wrong about -S option parameter: it is not optional. That is, they should show --strings=BYTES, not --strings[=BYTES].
+
+Second, what option -S actually does? I Its ""description"" is not clear at all, so I resorted to experimenting: I tried feeding it various files. On text files, it prints nothing - ??! On binary files (such as executables), it starts showing some strings >BYTES long, but it also skips a lot of other strings which are clearly longer than BYTES... In any case, description needs expanding.
+
+Third, please document what is the default value for -w WIDTH.","od --help
+man od"
+159,1314722,"Description of problem:
+I found a bug on cut from coreutils that does not output extract fields as expected in specific Fedora rawhide version. 
+
+I asked for help on GNU coreutils official bug mailing list. They tell me that Fedora patches GNU coreutils to add i18n support. So I get there to file the bug after failing at finding for similar bugs in this bugzilla.
+
+Version-Release number of selected component (if applicable):
+cut version (GNU coreutils) 8.25 in Fedora rawhide
+
+How reproducible:
+The bug is always reproducible.
+
+Steps to Reproduce:
+1. Execute shell command:
+echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0""|cut -d'|' -f2
+
+Actual results:
+https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip
+jaxb-xew-plugin-release-1.0
+
+Expected results:
+zip
+
+Additional info:
+I can not reproduce in Fedora 23 (version (GNU coreutils) 8.24).","echo ""https://github.com/dmak/jaxb-xew-plugin/archive/release-1.0.zip|zip|jaxb-xew-plugin-release-1.0|com.github.jaxb-xew-plugin:jaxb-xew-plugin:jar:1.0"" | cut -d'|' -f2
+"
+160,586029,"Description of problem:
+
+During shell startup, an unnecessary directory scan of the current directory is performed, which can cause a noticeable delay if the current directory is large or slow to access (such as over nfs).
+
+Version-Release number of selected component (if applicable):
+
+coreutils-7.2-7.fc11.x86_64
+
+How reproducible:
+
+Always.
+
+Steps to Reproduce:
+1. cd to a large directory (I noticed this in /usr/share/man/man3)
+2. echo exit | script -c ""strace -f bash 2>&1"" /dev/stdout | less
+3. search for blocks of consecutive getdents calls. Two instances of scanning /etc/profile.d can be ignored. After these the next instance is a scan of the current directory.
+  
+Actual results:
+
+Shell is slow to start if the current directory is slow to enumerate.
+
+Expected results:
+
+Shell startup time would ideally be as independent as possible of the current directory.
+
+Additional info:
+
+For most shells, /etc/profile.d/colorls.sh is executed. Line 33 is:
+
+    eval `dircolors --sh ""$COLORS"" 2>/dev/null`
+
+dircolors produces a shell snippet that defines and exports LS_COLORS, which itself contains a list of glob patterns and their corresponding colour mappings. So the above expands to, roughly:
+
+    eval LS_COLORS='......:*.tgz=01;31:....'; export LS_COLORS
+
+The single quoting which normally supressed globbing in that line is interpreted in within the command line of the eval, what finally gets executed by the eval has had the quotes stripped so undergoes pathname expansion. Unless you're in a very weird directory when this happens, this will fail and leave the string unmodified, but not before scanning the current directory ""just in case"".
+
+(Attempts to make the expansion do anything more interesting usually fail with ENAMETOOLONG, but I suppose if you could get a user to launch a shell in a chosen directory in a filesystem with an unfeasibly large name limit containing a file with a chosen name, you could inject arbitrary strings into the user's LS_COLORS variable. For example if the user's home directory is mounted on such a filesystem and an attacker can create, or persuade the user to create, such a file there. That could then perhaps be used to hide certain files (including the one that triggered this), or inject arbitrary escape sequences into ls output attempting to exploit terminal emulator bugs.)
+
+To preserve the quotes into the eval the arguments must be double-quotes:
+
+    eval ""`dircolors --sh ""$COLORS"" 2>/dev/null`""
+
+A similar problem probably exists in /etc/profile.d/colorls.csh (for C-shell type shells) but my csh-fu is too weak to know for sure.","cd /usr/share/man/man3
+echo exit | script -c ""strace -f bash 2>&1"" /dev/stdout | less
+/getdents"
+161,1306393,"Description of problem:
+
+unexpand doesn't like when there are empty lines in a file and finishes abruptly.
+
+Version-Release number of selected component (if applicable):
+
+coreutils-8.24-5
+
+How reproducible:
+
+Always
+
+Steps to Reproduce:
+1. echo >test.txt
+2. unexpand test.txt
+
+Actual results:
+
+unexpand: input line is too long
+
+Expected results:
+
+it should successfully process all lines.
+
+Additional info:","echo >test.txt
+unexpand test.txt"
+162,1304839,"Description of problem:
+Following applies to any coreutils version carrying coreutils-i18n-cut.patch:
+
+$ echo 'a_long_field_wider_than_sixty_three_characters_XXXXXXXXXXXXXXXX::foo' > test
+$ cut -d':' -f 3 test
+a_long_field_wider_than_sixty_three_characters_XXXXXXXXXXXXXXXX
+
+$ echo 'a_shorter_field::foo' > test
+$ cut -d':' -f 3 test
+foo
+$
+
+This is breaking jetring / debian-keyring builds.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.24-107.fc24 onwards
+
+How reproducible:
+Always","echo 'a_long_field_wider_than_sixty_three_characters_XXXXXXXXXXXXXXXX::foo' > test
+cut -d':' -f 3 test
+echo 'a_shorter_field::foo' > test
+cut -d':' -f 3 test"
+163,1304071,"Description of problem:
+sorting files produces error message for ""-S 3g"" but NOT for ""-S3g"".
+
+Version-Release number of selected component (if applicable):
+sort 8.23 (coreutils-8.23-11.fc22.x86_64)
+
+How reproducible:
+always
+
+Steps to Reproduce:
+1.see additional info
+2.
+3.
+
+Actual results:
+
+
+Expected results:
+
+
+Additional info:
+
+# this seems to work
+
+sort -T $sorttmp -S""3g"" -uk1 | egrep -v '^$' | egrep '\.com' < 1000s > 1000s.srtd
+
+# this does not note the blank after ""-S""
+
+sort -T $sorttmp -S ""3g"" -uk1 | egrep -v '^$' | egrep '\.com' < 1000s > 1000s.srtd
+
+sort: cannot read: 3g: No such file or directory
+
+which sort
+
+/bin/sort
+
+sort --version
+sort (GNU coreutils) 8.23
+Copyright (C) 2014 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Mike Haertel and Paul Eggert.","sort -T $sorttmp -S""3g"" -uk1 | egrep -v '^$' | egrep '\.com' < 1000s > 1000s.srtd
+sort -T $sorttmp -S ""3g"" -uk1 | egrep -v '^$' | egrep '\.com' < 1000s > 1000s.srtd"
+164,1249695,"Description of problem:
+Install utility manpage is outdated.
+
+Version-Release number of selected component (if applicable):
+
+
+How reproducible:
+
+
+Steps to Reproduce:
+1. $man install
+2. /yum
+
+Actual results:
+Mentions yum
+
+Expected results:
+Should mention dnf
+
+Additional info:","man install
+"
+166,1297464,"Description of problem:
+When mv is mistakenly given arguments including a directory listed at least twice as a source as well as the destination, it will destroy that directory and everything in it will be lost.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.24-4.fc23.x86_64
+
+How reproducible:
+Trivially reproducible with steps
+
+Steps to Reproduce:
+1. mkdir test
+2. mv test test test
+
+Actual results:
+mv: cannot move 'test' to a subdirectory of itself, 'test/test'
+mv: warning: source directory 'test' specified more than once
+(and the directory and all contents are destroyed)
+
+Expected results: (per EPEL7)
+mv: cannot move 'test' to a subdirectory of itself, 'test/test'
+mv: will not create hard link 'test/test' to directory 'test/test'
+(and the directory remains unchanged with contents intact)
+
+
+Additional info:","mkdir test
+mv test test test"
+167,1013171,"Description of problem:
+When a root-owned write-protected file is encountered ""rm"" will silently remove it for user root only.
+
+Version-Release number of selected component (if applicable):
+oreutils-8.21
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+1. touch testfile
+2. chmod -w testfile
+3. rm testfile
+
+Actual results:
+As a non-root user result is prompt ""remove write-protected regular empty file 'testfile'"".
+For root user the result is silent removal of file.
+
+Expected results:
+root should also be prompted, just like an ordinary user
+
+Additional info:
+What is a ""write-protected"" file?  It is a file with write permission mode bits turned off.  The fact that root user is able to remove the file is neither here nor there. By turning off the write mode bits the ""intent"" is to write-protect the file. Therefore ALL users should be prompted to remove such a write-protected file. This is not only for consistency but also so as the obey the intent behind clearing the write mode bits.","touch testfile
+chmod -w testfile
+rm testfile
+"
+168,1199679,"Description of problem:
+
+At one time in history, the ""-l"" option on the ""df"" command worked fine even when some NFS mounted filesystems were not talking (because, for instance, the remote system is down or troubled in some way).
+
+Now, df issues a stat() for every dadgum mountpoint, even when called with the -l option. If an NFS mount is having trouble this can hang forever (with the right mount options). The whole point of -l was to avoid this (well, a major point, anyway).
+
+
+Version-Release number of selected component (if applicable):
+coreutils-8.21-21.fc20.x86_64
+
+
+How reproducible:
+100%
+
+Steps to Reproduce:
+1.run strace df -l -h on a system with network mounts.
+2.grep the strace output for stat() calls.
+3.see stat() calls for every single network mount as well as the local ones.
+
+Actual results:
+Hang when there is network or server trouble
+
+Expected results:
+No hang, it shouldn't be touching anything on the network.
+
+Additional info:
+Here are some of the stat() calls from my fedora 20 system at work. All
+these names are NFS mountpoints, yet I ran with the -l option:
+
+stat(""/trex/tooth"", {st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+stat(""/userland"", {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0
+stat(""/raptor/fang"", {st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+stat(""/ada/denmark"", {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0
+stat(""/raptor/foot"", {st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+stat(""/varmit/stew"", {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0
+stat(""/tt/sulphur"", {st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+stat(""/marmot/burrow"", {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0
+stat(""/marmot/fur"", {st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+stat(""/raptor/bite"", {st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+stat(""/tt/hydrogen"", {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0
+stat(""/raptor/claw"", {st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+stat(""/iggy/pop"", {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0
+stat(""/tt/carbon"", {st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0","strace df -l -h
+strace df -l -h 2>&1 | grep stat"
+169,1196642,"Description of problem:
+
+DIR_COLORS.256color uses dark variants of the colors for directories and links which are sometimes hard to read; DIR_COLORS variants look fine.
+
+I've tested two terminals -- GNOME 3.14 gnome-terminal (TERM=xterm-256color, dark gray background) and xterm (TERM=xterm-256color, white background) and both look better with light variants:
+
+The directories are dark blue in DIR_COLORS.256color variant. They're near to unreadable with GNOME terminal while the light variant is fine and looks better in white xterm too.
+
+The symbolic links are dark cyan in DIR_COLORS.256color which is barely readable in white xterm. The light variant looks better in xterm as well as in GNOME.
+
+Same apples to red (for *.rpm files?) -- light variant looks better on white xterm as well as on dark GNOME.
+
+The light variants are used in grep and systemd tools and seems like they're a more interoperable choice for different backgrounds.
+
+Please consider using more light variants by default for 256 color terminals.
+
+Version-Release number of selected component (if applicable):
+
+coreutils-8.22-19.fc21.x86_64
+
+Thanks!
+Lubo","gnome-terminal -- bash -c 'export TERM=xterm-256color; bash'
+xterm -bg white -e 'export TERM=xterm-256color; bash'"
+170,1027279,"Version: coreutils 8.21.11
+
+Behavior:
+
+The setup script /etc/profile.d/colorls.csh works fine in a stock F19
+installation, but if a local admin adds a default shell setting of
+""noclobber"" in a profile setting that runs before this script (as we do)
+then the script will error out with an error of:
+
+/tmp/.colorlsXXX: File exists.
+
+Cause:
+
+The script creates that temporary file with mktemp, but on the first
+write it uses only a single redirect (>), which fails when noclobber is set.
+
+Since the file is already created, I think we can safely use an append
+redirect (>>) in all cases where that file is written to, which works
+regardless of the state of the noclobber settting.
+
+Patch:
+
+35c35
+< if ( ""$INCLUDE"" != '' ) cat ""$INCLUDE"" > $TMP
+---
+> if ( ""$INCLUDE"" != '' ) cat ""$INCLUDE"" >> $TMP","echo ""set -o noclobber"" >> ~/.bashrc
+source ~/.bashrc
+/etc/profile.d/colorls.csh"
+171,1270480,"It came to my attention, that coreutils 8.23-11 has a broken sort utility while coreutirls 8.23-9 has a working sort utility.
+
+This is inacceptable. Please test your patches before applying them. Sorry for sounding a bit harsh here but *sort* is a core element and tons of scripts use sort to sort lists or pipe sort output that get's processed later on. The current sort totally misbehaves, gives wrong output and if you use the outout of the new sort to diff e.g. lists that has been done with old sort, then the result is - to say it in good words - fatal!
+
+Please find 2 attachments:
+
+old.txt -> coreutils 8.23-9
+new.txt -> coreutils 8.23-11
+
+diff -ruN old.txt new.txt > diff.txt
+
+... or simply load in an editor and you will see.
+
+You can also find in ""new.txt"" that
+
+a
+b
+c
+d
+e
+                      : e
+f
+g
+h
+
+...
+
+... but the long spaced line with "" : e"" is not the correct sorting after e because it has a bunch of spaces and a colon infront of it.","cat > input.txt <<EOF
+b
+c
+a
+d
+f
+                      : e
+e
+h
+g
+EOF
+sort input.txt > old.txt # using coreutils 8.23-9 
+sort input.txt > new.txt # using coreutils 8.23-11
+diff -ruN old.txt new.txt > diff.txt
+cat diff.txt"
+172,920806,"Description of problem:
+I have 5 NFS volumes mounted from my NAS. Running 'mount' shows all 5, but running 'df' will only show 1 volume out of the 5.
+
+# mount | grep nas
+nas.example.com:/Photos on /mnt/Photos type nfs (rw,nosuid,nodev,noexec,relatime,vers=3,rsize=32768,wsize=32768,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,mountaddr=192.168.1.64,mountvers=3,mountport=35825,mountproto=udp,local_lock=none,addr=192.168.1.64,user)
+nas.example.com:/Download on /mnt/Download type nfs (rw,nosuid,nodev,noexec,relatime,vers=3,rsize=32768,wsize=32768,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,mountaddr=192.168.1.64,mountvers=3,mountport=35825,mountproto=udp,local_lock=none,addr=192.168.1.64,user)
+nas.example.com:/Multimedia on /mnt/Multimedia type nfs (rw,nosuid,nodev,noexec,relatime,vers=3,rsize=32768,wsize=32768,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,mountaddr=192.168.1.64,mountvers=3,mountport=35825,mountproto=udp,local_lock=none,addr=192.168.1.64,user)
+nas.example.com:/VirtualMachines on /mnt/VirtualMachines type nfs (rw,nosuid,nodev,noexec,relatime,vers=3,rsize=32768,wsize=32768,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,mountaddr=192.168.1.64,mountvers=3,mountport=35825,mountproto=udp,local_lock=none,addr=192.168.1.64,user)
+nas.example.com:/Backups on /mnt/Backups type nfs (rw,nosuid,nodev,noexec,relatime,vers=3,rsize=32768,wsize=32768,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,mountaddr=192.168.1.64,mountvers=3,mountport=35825,mountproto=udp,local_lock=none,addr=192.168.1.64,user)
+
+
+# df | grep nas
+nas.example.com:/Photos   2879673344 2489566368 389582688  87% /mnt/Photos
+
+
+I believe this broken behaviour arrived in Fedora 18, though I no longer have any F17 install to confirm this categorically.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.17-8.fc18.x86_64
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+1. Export multiple NFS volumes from a remote server
+2. Mount all volumes on the client
+3. Run 'df'
+  
+Actual results:
+df only shows usage for one random mount
+
+Expected results:
+df shows all usage for every single mount point that the 'mount' command reports
+
+Additional info:","sudo exportfs -o rw,sync /export/vol1 client_IP
+sudo mount -t nfs server_IP:/export/vol1 /mnt/vol1
+df"
+173,1243572,"Description of problem:
+formats such as +3days no longer work in Fedora 22.
+Worked fine in fedora 21.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.23-10.fc22.i686
+
+How reproducible:
+always
+
+Steps to Reproduce:
+1. date +%F --date=""00:00:00 +3 days""
+
+Actual results:
+gives todays' date
+
+Expected results:
+should give a date 3 days from now at midnight
+
+
+Additional info:
+breaks scripts that rely on the old behaviour","date +%F --date=""00:00:00 +3 days""
+"
+174,1135583,"Description of problem:
+When upgrading coreutils from 8.22 to 8.23, the output formatting for SELinux security labels has changed for the ls command.  While seemingly minor this threatens to break any script/tool which relies on the older, well established format.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.23-1 or greater
+
+How reproducible:
+Everytime.
+
+Steps to Reproduce:
+Compare the output of 'ls -Z' using coreutils-8.22 to coreutils-8.23.
+
+Actual results:
+<< Original behavior (coreutils-8.22)
+# rpm -q coreutils
+coreutils-8.22-11.el7.x86_64
+# ls -Z foo
+-rw-r--r--. root root root:object_r:user_tmp_t:s0      foo
+# ls -lZ foo
+-rw-r--r--. root root root:object_r:user_tmp_t:s0      foo
+<< New behavior (coreutils-8.23)
+# rpm -q coreutils
+coreutils-8.23-3.fc22.x86_64
+# ls -Z foo
+unconfined_u:object_r:user_tmp_t:s0 foo
+# ls -lZ foo
+-rw-r--r--. 1 root root unconfined_u:object_r:user_tmp_t:s0 0 Aug 29 13:11 foo
+
+Expected results:
+Similar output.
+
+Additional info:
+Based on the RPM changelog, the problem first occurred when moving coreutils to 8.23.","rpm -q coreutils
+ls -Z foo
+ls -lZ foo"
+175,1235873,"Description of problem:
+
+See this file:
+
+cat sortbug.txt 
+NetworkManager-1.0.0-5.fc22
+NetworkManager-0.9.10.0-8.git20140704.fc22
+NetworkManager-1.0.0-8.fc22
+NetworkManager-1.0.0-9.fc22
+NetworkManager-1.0.4-0.1.git20150618.8cffaf3bf5.fc22
+NetworkManager-0.9.10.0-10.git20140704.fc22
+NetworkManager-1.0.0-7.fc22
+NetworkManager-0.9.10.0-14.git20140704.fc22
+NetworkManager-0.9.10.0-13.git20140704.fc22
+NetworkManager-1.0.2-1.fc22
+NetworkManager-1.0.0-1.fc22
+NetworkManager-1.0.4-0.1.git20160624.f245b49a.fc22
+NetworkManager-1.0.0-4.fc22
+NetworkManager-1.0.0-6.fc22
+NetworkManager-1.0.0-3.fc22
+NetworkManager-0.9.10.0-11.git20140704.fc22
+NetworkManager-0.9.10.0-6.git20140704.fc22
+NetworkManager-0.9.10.0-12.git20140704.fc22
+
+Sorted this:
+
+sort -rV sortbug.txt 
+NetworkManager-1.0.4-0.1.git20150618.8cffaf3bf5.fc22
+NetworkManager-1.0.4-0.1.git20160624.f245b49a.fc22
+NetworkManager-1.0.2-1.fc22
+NetworkManager-1.0.0-9.fc22
+NetworkManager-1.0.0-8.fc22
+NetworkManager-1.0.0-7.fc22
+NetworkManager-1.0.0-6.fc22
+NetworkManager-1.0.0-5.fc22
+NetworkManager-1.0.0-4.fc22
+NetworkManager-1.0.0-3.fc22
+NetworkManager-1.0.0-1.fc22
+NetworkManager-0.9.10.0-14.git20140704.fc22
+NetworkManager-0.9.10.0-13.git20140704.fc22
+NetworkManager-0.9.10.0-12.git20140704.fc22
+NetworkManager-0.9.10.0-11.git20140704.fc22
+NetworkManager-0.9.10.0-10.git20140704.fc22
+NetworkManager-0.9.10.0-8.git20140704.fc22
+NetworkManager-0.9.10.0-6.git20140704.fc22
+
+OK, check out date is too new :), but second row is newer then first row.
+
+
+Version-Release number of selected component (if applicable):
+
+rpm -qf `which sort`
+coreutils-8.23-10.fc22.x86_64
+
+
+Actual results:
+
+First and second row changed.
+
+
+Expected results:
+
+Correct order.","echo -e ""version-1.2.10\nversion-1.2.2\nversion-1.2.3\nversion-1.10.1\nversion-1.2.20"" > sortbug.txt
+cat sortbug.txt
+sort -rV sortbug.txt"
+176,1146185,"Description of problem:
+When sorting on one of several fields and using e.g. the en_US.utf8 locale, ""sort"" looks at more than the specified keys when sorting.
+
+Version-Release number of selected component (if applicable):
+coreutils-8.21-20.fc20.x86_64
+
+How reproducible:
+Every time
+
+Steps to Reproduce:
+1. printf 'a b!x\na-b-c!x\n' | LANG=en_US.utf8 ltrace -e strcoll sort -s --debug -k1,1 -t!
+
+Actual results:
+sort: using ‘en_US.utf8’ sorting rules
+sort->strcoll(""a b!x"", ""a-b-c!x"")                = 21
+a-b-c!x
+_____
+a b!x
+___
++++ exited (status 0) +++
+
+
+Expected results:
+sort: using ‘en_US.utf8’ sorting rules
+sort->strcoll(""a b"", ""a-b-c"")                    = -1
+a b!x
+___
+a-b-c!x
+_____
++++ exited (status 0) +++
+
+(That is, strcoll only called on the key, not the whole string, and the output in the opposite order.)
+
+Additional info:
+This is shortened version of a bug report I filed upstreams: http://debbugs.gnu.org/cgi/bugreport.cgi?bug=18540  It appears this bug is not present upstreams, but actually introduced in the Fedora packaging.","printf 'a b!x\na-b-c!x\n' | LANG=en_US.utf8 ltrace -e strcoll sort -s --debug -k1,1 -t!
+"
+177,1169027,"Description of problem:
+
+The filesystem package owns /usr/share/locale/<lang>/LC_MESSAGES, but it should also own /usr/share/locale/<lang>/LC_TIME .  Moreover, some packages (e.g. coreutils) own /usr/share/locale/<lang>/LC_TIME (which is a bug by itself), yet they do not provide the corresponding %lang tag for these directories.  I think the latter is a bug related to the %find_lang macro.
+
+Version-Release number of selected component (if applicable):
+
+The following packages are known to have the related bugs
+
+filesystem - should define the LC_TIME directories the very same way as it does for LC_MESSAGES
+coreutils - should not own LC_TIME directories themselves
+
+Steps to Reproduce:
+
+[root@localhost ~]# rpm -ql --queryformat '[%{FILELANGS}\t%{FILENAMES}\n]' coreutils | grep LC_TIME | head -5
+	/usr/share/locale/af/LC_TIME
+af	/usr/share/locale/af/LC_TIME/coreutils.mo
+	/usr/share/locale/be/LC_TIME
+be	/usr/share/locale/be/LC_TIME/coreutils.mo
+	/usr/share/locale/bg/LC_TIME
+[root@localhost ~]# rpm -qf /usr/share/locale/af
+filesystem-3.2-18.el7.x86_64
+[root@localhost ~]# rpm -qf /usr/share/locale/af/LC_MESSAGES
+filesystem-3.2-18.el7.x86_64
+[root@localhost ~]# rpm -qf /usr/share/locale/af/LC_TIME
+coreutils-8.22-11.el7.x86_64
+[root@localhost ~]#","rpm -ql --queryformat '[%{FILELANGS}\t%{FILENAMES}\n]' coreutils | grep LC_TIME | head -5  
+rpm -qf /usr/share/locale/af  
+rpm -qf /usr/share/locale/af/LC_MESSAGES  
+rpm -qf /usr/share/locale/af/LC_TIME  
+"
+178,1177515,"Description of problem:
+Cat produces wrong results at the end of the file. It includes characters that should not be in the file.
+
+Tail, view and others produce correct results.
+
+Example:
+
+[ljm@verlaine ~]$ sudo cat  /var/log/lastbackup
+.....
+{lines ommitted for brevity}
+.....
+/verlaine/home/vbox/VDI/ton/Logs/VBox.log.3’
+‘/home/vbox/VDI/ton/Logs/VBox.log.2’ -> ‘/room/wdbook1/nfs/Public/backup/verlaine/home/vbox/VDI/ton/Logs/VBox.log.2’
+‘/home/vbox/VDI/ton/ton.vbox-prev’ -> ‘/room/wdbook1/nfs/Public/backup/verlaine/home/vbox/VDI/ton/ton.vbox-prev’
+��Tpts/0�[n`�ZHd\H�6ZH�d\Hl?�YH�d\HМd\HМd\H�6ZHP�a\HМd\H �d\Мd\H`�ޣ�0�a\HX�ޣ��d\H��6ZH�d\H�d\H�c\H�d\H��d\?��T:0[ljm@verlaine ~]$ 
+[ljm@verlaine ~]$ 
+
+As an example, tail produces:
+
+[ljm@verlaine ~]$ sudo tail -2  /var/log/lastbackup
+‘/home/vbox/VDI/ton/Logs/VBox.log.2’ -> ‘/room/wdbook1/nfs/Public/backup/verlaine/home/vbox/VDI/ton/Logs/VBox.log.2’
+‘/home/vbox/VDI/ton/ton.vbox-prev’ -> ‘/room/wdbook1/nfs/Public/backup/verlaine/home/vbox/VDI/ton/ton.vbox-prev’
+[ljm@verlaine ~]$ 
+
+
+Version-Release number of selected component (if applicable):
+coreutils-8.21-21.fc20.x86_64 : A set of basic GNU tools commonly used in shell scripts
+
+
+How reproducible:
+
+
+Steps to Reproduce:
+1. Star a process that produces output. In my case: cp -vrup /home/* /room/wdbook1/nfs/Public/backup/verlaiine/home >> /var/log/lastbackup
+2.After a while, do a cat of that file.
+
+
+Actual results:
+/verlaine/home/vbox/VDI/ton/Logs/VBox.log.2’
+‘/home/vbox/VDI/ton/ton.vbox-prev’ -> ‘/room/wdbook1/nfs/Public/backup/verlaine/home/vbox/VDI/ton/ton.vbox-prev’
+��Tpts/0�[n`�ZHd\H�6ZH�d\Hl?�YH�d\HМd\HМd\H�6ZHP�a\HМd\H �d\Мd\H`�ޣ�0�a\HX�ޣ��d\H��6ZH�d\H�d\H�c\H�d\H��d\?��T:0[ljm@verlaine ~]$ 
+
+Expected results:
+/verlaine/home/vbox/VDI/ton/Logs/VBox.log.2’
+‘/home/vbox/VDI/ton/ton.vbox-prev’ -> ‘/room/wdbook1/nfs/Public/backup/verlaine/home/vbox/VDI/ton/ton.vbox-prev’
+[ljm@verlaine ~]$ 
+
+Additional info:","cp -vrup /home/* /room/wdbook1/nfs/Public/backup/verlaiine/home >> /var/log/lastbackup  
+cat /var/log/lastbackup  
+"
+179,1207314,"Description of problem:
+When there is file ':' in working directory tr does not do its work
+
+Version-Release number of selected component (if applicable):
+tr (GNU coreutils) 8.21
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+1. echo > :
+2. echo abc | tr [:lower:] [:upper:]
+3. rm \:
+
+Actual results:
+abc
+
+Expected results:
+ABC
+
+Additional info:
+It is loooong-standing bug:
+
+I've found it in:
+CentOS 3/4/5/6/7
+Fedora 20-22
+SunOS 5.7
+SunOS 5.11","echo > :
+echo abc | tr '[:lower:]' '[:upper:]'
+rm \:"
+180,239501,"Steps to reproduce:
+Type ""ls /""
+  
+Actual results:
+Directory colors are dark blue.
+
+Expected results:
+Directory colors are light blue.
+
+Additional info:
+To fix this problem I simply ""rm /etc/DIR_COLORS.xterm"". IIRC, this change 
+happened in Red Hat 8 and had to do with Unicode. Other file types are too 
+dark.","ls /
+"
+181,243588,"Description of problem:
+
+Previous versions of cp would honour symlinks as the target of a copy. 
+coreutils-5.97-12.5.fc6 exhibits the usual, expected behavior.  The version
+released with F7 does not, giving an error message instead.  
+
+Version-Release number of selected component (if applicable):
+
+coreutils-6.9-2.fc7.i386.rpm
+
+How reproducible:
+
+always
+
+Steps to Reproduce:
+1. cd /var
+2. ln -sf beta tmp/alpha
+3. echo ""blah"" > tmp/alpha  (this creates a file called beta with ""blah"" in it)
+4. rm tmp/beta
+5. echo ""blah"" > file
+6. cp file tmp/alpha
+  
+Actual results:
+
+cp: cannot create regular file `tmp/alpha': File exists
+
+Expected results:
+
+[root@localhost var]# dir tmp
+total 12
+lrwxrwxrwx 1 root     root        4 Jun 10 04:35 alpha -> beta
+-rw-r--r-- 1 root     root        5 Jun 10 04:36 beta
+
+Additional info:
+
+Regressing to coreutils-5.97-12.5.fc6 exhibits the correct behavior","cd /var
+ln -sf beta tmp/alpha
+echo ""blah"" > tmp/alpha
+rm tmp/beta
+echo ""blah"" > file
+cp file tmp/alpha
+"
+182,228304,"Description of problem:
+receiving an avc denial when running ""cp -av"" to copy an entire iso image to
+another directory for customization.
+
+Version-Release number of selected component (if applicable):
+coreutils-6.7-3.fc7 [application]
+selinux-policy-2.5.2-2.fc7
+
+How reproducible:
+persistent
+
+Steps to Reproduce:
+1. mount an ISO image file
+   i.e.
+   mount -o loop dvdimage.iso /mnt
+2. mkdir ~/test ; cd 
+3. cp -av /mnt/* ~/test
+  
+Actual results:
+`/mnt/autorun.apm' -> `test/autorun.apm'
+cp: cannot create regular file `test/autorun.apm': Permission denied
+
+Expected results:
+Should proceed without AVC denial
+
+Additional info:
+see attached file for detailed selinux log","mount -o loop dvdimage.iso /mnt
+mkdir ~/test ; cd ~
+cp -av /mnt/* ~/test
+"
+184,430821,"Description of problem:
+sort command does not sort as expected. The following URL also describe the issue:
+
+http://pankaj-k.net/weblog/2007/08/is_gnu_sort_broken.html
+
+Version-Release number of selected component (if applicable):
+$ rpm -q coreutils
+coreutils-6.9-12.fc8
+
+How reproducible:
+If the environment variable is not set at all. LC_ALL
+
+Steps to Reproduce:
+1. Write a file called ""a.txt"" with the following 3 lines:
+F-A
+FB
+F-C
+
+2. run in shell this command:
+
+sort a.txt
+
+ 
+Actual results:
+F-A
+FB
+F-C
+
+Expected results:
+F-A
+F-C
+FB
+
+Additional info:
+In the URL field there is an explanation of why this is happening. BAsically the
+issue is fixed if we run it in this way:
+
+export LC_ALL=POSIX
+sort a.txt
+
+also, it works in this way too:
+
+export LC_ALL=C
+sort a.txt
+
+I found the issue getting the bad sort order postgresql, basically the hyphen
+got ignored. I wonder if the issue is correctly reported here or if it should be
+reported to another component.","echo -e ""F-A\nFB\nF-C"" > a.txt
+sort a.txt
+"
+185,284881,"Description of problem:
+sort -n -t, does not work as expected (in the default, i.e. en_US.UTF-8 locale).
+
+Version-Release number of selected component (if applicable):
+coreutils-6.9-3.fc7
+
+How reproducible:
+100%
+
+Steps to Reproduce:
+1. keep the default locales (LC_COLLATE and LC_NUMERIC) value of en_US.UTF-8
+2. sort -n -t, -k1 <<'EOF'
+2101,:4AgE3<G4RNDP`
+21012,:A0QIX6AI10gMP
+2101,2IJIETPY=g<10@
+21012,V8:AACI4TD925@
+21014,:1MG<hEb@AIhU`
+2101,4H@38`5ELC66M`
+2101,4h>HM812P4820P
+21014,V8:AACI4TD925@
+2101,5AHBVEQW@dUGE@
+EOF
+
+Actual results:
+2101,:4AgE3<G4RNDP`
+21012,:A0QIX6AI10gMP
+2101,2IJIETPY=g<10@
+21012,V8:AACI4TD925@
+21014,:1MG<hEb@AIhU`
+2101,4H@38`5ELC66M`
+2101,4h>HM812P4820P
+21014,V8:AACI4TD925@
+2101,5AHBVEQW@dUGE@
+
+Expected results:
+2101,4H@38`5ELC66M`
+2101,4h>HM812P4820P
+2101,5AHBVEQW@dUGE@
+2101,:4AgE3<G4RNDP`
+21012,:A0QIX6AI10gMP
+21012,V8:AACI4TD925@
+21014,:1MG<hEb@AIhU`
+21014,V8:AACI4TD925@
+
+Additional info:
+Locales from glibc-common-2.6-4.
+
+When LC_ALL=C is set, sorting works correctly.
+
+Apparently sort ignores the comma inside the number values (though in the en_US
+locale it probably should only be used as _thousands_ separator, so 2101,4
+should not be a valid number in English).
+
+Also sort does not handle the ""-t,"" separator argument correctly, because it
+seems the value after the comma is still being included in the sorting key.","export LC_COLLATE=en_US.UTF-8
+export LC_NUMERIC=en_US.UTF-8
+sort -n -t, -k1 <<'EOF'"
+186,428494,"Description of problem:
+SORT behaves as if the -b and -d options are always set.  Sort ignores all
+leading blanks and special characters
+
+Version-Release number of selected component (if applicable):
+May 25 2005 compile date of /bin/sort
+
+How reproducible:
+Always
+
+
+Steps to Reproduce:
+1.create a file with some lines having leading space or leading _
+2.sort
+3.
+  
+Actual results:
+sort order ignores leading spaces
+
+Expected results:
+lines with leading space or _ should sort to top unless -b and -d set
+
+
+Additional info:","echo -e ""  leading space\n_leading underscore\nnormal line\n another space"" > file.txt  
+sort file.txt  
+"
+187,428679,"Description of problem:
+
+Sort is set up to behave as if the -b and -d options are always set, namely 
+that if 
+a blank or a special character are in column one of a specified field, then 
+sort looks ahead for the first alphanumeric character and uses that to begin 
+the key.  This is not in accordance with the man pages, and I need to be 
+able to sort on the field I specified for my programs to work correctly. 
+How do I unseclect this behavior?  Specifically, I want column one of each 
+field to be 
+ordered all on it's own, and only then to look at column two, unless I ask 
+for -b or -d.
+
+
+Version-Release number of selected component (if applicable):
+All versions from Fedora 6 to 8
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+1.
+2.
+3.
+  
+Actual results:
+
+
+a
+ a
+  a
+_a
+A
+aa
+Z
+_Z
+
+Expected results:
+  a
+ a
+_a
+_Z
+a
+aa
+A
+Z
+
+Additional info:
+
+So far the only workaround I found is to sort each column as a separate 
+field such as -k 1.1,1.1 -k 1.2,1.2 etc","echo -e ""a\na\n a\n_a\nA\naa\nZ\n_Z"" > test.txt
+sort test.txt"
+188,232458,"Description of problem:
+
+false stats are returned after a run of dd in the hu_HU.UTF-8 locale.
+
+
+Version-Release number of selected component (if applicable):
+coreutils-5.97-12.3.fc6
+
+How reproducible:
+always:
+
+Steps to Reproduce:
+1. use dd
+2. wait untils finishez
+3. see bas statistics -> panic!
+  
+Actual results:
+
+[ggergely@vosztok ~]$ LC_ALL=hu_HU.UTF-8 dd if=/dev/zero of=/dev/null bs=4M
+count=1024
+1024+0 beolvasott rekord
+1024+0 kiírt rekord
+1 bájt (1 B) másolva, 0,24047 másodperc, 17,9 GB/mp
+[ggergely@vosztok ~]$ 
+
+
+Expected results:
+
+[ggergely@vosztok ~]$ LC_ALL=C dd if=/dev/zero of=/dev/null bs=4M count=1024
+1024+0 records in
+1024+0 records out
+4294967296 bytes (4.3 GB) copied, 0.242406 seconds, 17.7 GB/s
+[ggergely@vosztok ~]$ 
+
+(or the same in hungarian)
+
+
+Additional info:
+
+I use the hungrian locale. maybe a problem on other locales too.",LC_ALL=hu_HU.UTF-8 dd if=/dev/zero of=/dev/null bs=4M count=1024
+189,230950,"Description of problem:
+
+After a boot with images using kernel-2.6.20-1.2962.fc7 and
+in a shell supplied by ancoda if you try, say, this:
+
+mkdir /tmp/logs
+cp /tmp/syslog /tmp/logs/
+
+then the second operation results in the following error:
+
+cp: cannot set setfscreatecon `system_u:object_r:ramfs_t:s0': Read-only file system
+
+That file system is not read-only.  If you will do instead
+
+cat /tmp/syslog > /tmp/logs/syslog
+
+then this works fine.  Also booting with 'selinux=0' kills that error.
+
+Version-Release number of selected component (if applicable):
+anaconda-11.2.0.28-1
+
+How reproducible:
+always","mkdir /tmp/logs  
+cp /tmp/syslog /tmp/logs/
+"
+190,246567,"Description of problem:
+
+Symbolic links are not listed properly when colouring is enabled for directory
+listings containing symbolic link children.
+
+Version-Release number of selected component (if applicable):
+
+coreutils-6.9-3.fc7
+
+How reproducible:
+
+Always.
+
+Steps to Reproduce:
+1. create a symbolic link such as /home/user -> ../../etc/hosts
+2. cd /home/user
+3. /bin/ls --color=always | grep hosts
+  
+Actual results:
+
+host::karlcz[~] /bin/ls --color=always | grep hosts
+argetmhosts
+
+
+Expected results:
+
+host::karlcz[~] /bin/ls --color=always | grep hosts
+hosts
+
+Additional info:
+
+The corruption does not appear in long listings, nor when the file is listed
+explicitly, nor when coloring is disabled:
+
+host::karlcz[~] /bin/ls --color=always hosts
+hosts
+
+host::karlcz[~] /bin/ls --color=always -l | grep hosts
+lrwxrwxrwx  1 karlcz karlcz       15 2007-07-03 11:48 hosts -> ../../etc/hosts
+
+host::karlcz[~] /bin/ls --color=never | grep hosts
+hosts","ln -s ../../etc/hosts /home/user
+cd /home/user
+/bin/ls --color=always | grep hosts
+"
+191,411181,"According to the manpage for format, --format=%C should display the selinux
+security context of a given file.
+
+On Fedora 7, the output makes sense and agrees with ls -Z:
+
+[fs@avocent ~]$ ls -Z /bin/ls
+-rwxr-xr-x  root root system_u:object_r:ls_exec_t      /bin/ls
+[fs@avocent ~]$ stat --format=%C /bin/ls
+system_u:object_r:ls_exec_t
+
+On Fedora 8, however, stat produces what appears to be a few bytes of garbage
+that varies from file to file:
+
+[root@gkar ~]# ls -Z /bin/ls
+-rwxr-xr-x  root root system_u:object_r:bin_t          /bin/ls
+[root@gkar ~]# stat --format=%C /bin/ls
+%=s
+
+This is on a Fedora 8 system with all patches as of 12/4/2007 applied.","ls -Z /bin/ls
+stat --format=%C /bin/ls"
+193,358701,"Description of problem:
+
+On a filesystem such as NFS that doesn't know how to store SELinux metadata,
+/bin/cp can create empty target files due to incorrect error handling.
+
+Version-Release number of selected component (if applicable):
+coreutils-6.9-6.fc8
+
+How reproducible:
+100%
+
+Steps to Reproduce:
+1. Go to an NFS-mounted directory that has a non-empty file named 'file1'.
+2. Run 'cp -av file1 file2'.
+3. Run 'cp -av file1 file2' again.
+  
+Actual results:
+file2 is empty
+
+Expected results:
+file2 has same contents as file1
+
+Additional info:
+
+Patch is attached that fixes this particular case. However, I would almost argue
+that all errors generated by fsetfilecon() should be ignored (and not just
+EOPNOTSUPP), simply because they're not fatal, and because truncating the user's
+files to zero-length is a really bad outcome for a basic utility like /bin/cp.","cd /path/to/nfs-mounted-directory
+ls file1
+cp -av file1 file2
+cp -av file1 file2"
+194,356311,"Description of problem:
+
+With an NFS mounted home directory and use_nfs_home_dirs --> on
+
+zorro:~ $ echo poo > a
+zorro:~ $ cat a
+poo
+zorro:~ $ cp -a a b
+zorro:~ $ echo $?
+1
+zorro:~ $ cat b
+zorro:~ $ ls -l b
+-rw-r--r-- 1 aph aph 0 2007-10-29 11:33 b
+
+The failure is when ""cp -a"" tries to set the attrs:
+
+fsetxattr(4, ""security.selinux"", ""system_u:object_r:nfs_t:s0"", 27, 0) = -1
+EOPNOTSUPP (Operation not supported)
+
+Kernel is 2.6.23-0.214.rc8.git2.fc8","echo poo > a
+cat a
+cp -a a b
+echo $?
+cat b
+ls -l b
+"
+195,340291,"Description of problem:
+test -n doesn't seem to work.
+It is stated in the man that
+""STRING equivalent to -n STRING"",
+however, the following script
+prints ""14"", which is impossible.
+---
+if test -n ""$@""; then
+   echo -n 1
+else
+   echo -n 2
+fi
+if test ""$@""; then
+   echo -n 3
+else
+   echo -n 4
+fi
+echo
+---
+
+Version-Release number of selected component (if applicable):
+coreutils-6.9-3.fc7
+
+How reproducible:
+always
+
+Steps to Reproduce:
+1. Run the attached script
+  
+Actual results:
+14
+
+Expected results:
+24
+
+Additional info:
+Well, I know that such a bugs are very
+unlikely, and I might be missing something
+obvious. Or maybe it is just a documentation
+error, and -n means something very different...","bash
+---
+if test -n ""$@""; then
+   echo -n 1
+else
+   echo -n 2
+fi
+if test ""$@""; then
+   echo -n 3
+else
+   echo -n 4
+fi
+echo
+---"
+196,313401,"Description of problem:
+date --help, man date and info date now omit --iso option
+
+Version-Release number of selected component (if applicable):
+
+$ rpm -q coreutils
+coreutils-5.97-12.5.fc6
+$ rpm -ql coreutils | grep date
+/bin/date
+/usr/share/man/man1/date.1.gz
+$ rpm -ql coreutils | grep info
+/usr/share/info/coreutils.info.gz
+
+How reproducible:
+every time
+
+Steps to Reproduce:
+1. date --help or man date or info date
+2. search for --iso
+3.
+  
+Actual results:
+not found
+
+Expected results:
+documentation of date --iso
+
+Additional info:
+
+$ date --iso=sec
+2007-09-30T20:38:15-0400
+$ date --help | grep iso
+$","date --help
+man date
+info date"
+197,305341,"Description of problem:
+
+If you set the set[ug]id bits on a directory (or file). You can't take them off.
+
+e.g in say /tmp
+
+$ umask
+0007
+
+$ mkdir testdir
+$ ls -ld testdir
+drwxrwx---
+
+$ chmod 2770 testdir
+$ ls -ld testdir
+drwxrws---
+
+$ chmod 770 testdir
+$ ls -ld testdir
+drwxrws---
+
+(Sticky bit still present)
+
+Under FC6 the final chmod gives drwxrwx---
+
+strace snippet of chmod 700 testdir shows 
+
+fchmodat(AT_FDCWD, ""testdir"", 02770)    = 0
+
+Version-Release number of selected component (if applicable):
+
+glibc-2.6-4
+
+How reproducible:
+
+100%
+
+Steps to Reproduce:
+
+1. Create a directory
+2. Set the group and/or user bits on the directory
+3. Try to remove the sticky bits
+  
+Actual results:
+
+Sticky bits remain
+
+Expected results:
+
+Sticky bits should be removed 
+
+Additional info:
+
+Tested on both x86 and x86_64","umask
+mkdir testdir
+ls -ld testdir
+chmod 2770 testdir
+ls -ld testdir
+chmod 770 testdir
+ls -ld testdir"
+199,280331,"Description of problem:
+With selinux as permissive, cp --preserve=all on NFS fails.
+Copy is empty (0 bytes)
+
+Version: Fedora 7 64 bits up-to-date on Sep 6th (problem also occuring with FC6).
+
+Steps to Reproduce:
+cd /partition  (NFS mounted, for instance localhost:/partition; so NFS server
+                 and NFS client are FC7-64)
+rm -f toto*
+date > toto1
+cp -i -a toto1 toto2
+cp -i -a toto1 toto2
+ls -l toto*
+
+Actual results:
+-rw-r--r-- 1 beig hard 30 Sep  6 13:17 toto1
+-rw-r--r-- 1 beig hard  0 Sep  6 13:17 toto2     <<< BUG!
+
+
+
+Expected results:
+-rw-r--r-- 1 beig hard 30 Sep  6 13:17 toto1
+-rw-r--r-- 1 beig hard 30 Sep  6 13:17 toto2      <<< CORRECT
+
+
+Additional info:
+strace may give hints (getxattr failures??)","cd /partition
+rm -f toto*
+date > toto1
+cp -i -a toto1 toto2
+cp -i -a toto1 toto2
+ls -l toto*
+"
+201,251653,"Description of problem:
+rm -f kills files even if the user doesn't have write permission.
+But it doesn't remove directories
+
+Version-Release number of selected component (if applicable):
+all versions of core utils.
+
+How reproducible:
+always
+
+Steps to Reproduce:
+1. mkdir -p a/b/c
+2. chmod 0 a
+3. rm -rf a
+  
+Actual results:
+""a"" is not removed even if rm could change its permission. The unix manual
+incorrectly states that one should do chown +rwx first. This is incorrect,
+because some of files could be hard-linked to others. Oh, ther
+
+
+Expected results:
+I'd expect rm to try hard to remove the directory by changing its mode. If it
+can't remove the directory it should restore the mode. It would be even better
+if it try to chmod just to read and then chmod just to x to remove subdirs.
+It's hard to do safely and simply by shell script.
+
+
+
+Additional info:","mkdir -p a/b/c
+chmod 0 a
+rm -rf a"
+202,250089,"Also affects Fedora.
+
++++ This bug was initially created as a clone of Bug #250077 +++
+
+Description of problem:
+
+When using du against a directory target that contains, whithin its tree,
+non-accessible directories, du will not report the size of these. Since stat can
+get the size, du should do it as well. Moreover, in the code it seems that this
+was the intention, but a code bug has prevented this tool to report the size of
+these directories:
+
+--
+                } else if ((sp->fts_child = fts_build(sp, BREAD)) == NULL) {
+                        if (ISSET(FTS_STOP))
+                                return (NULL);
+                        /* If fts_build's call to fts_safe_changedir failed
+                           because it was not able to fchdir into a
+                           subdirectory, tell the caller.  */
+
+ 			   because it was not able to fchdir into a
+ 			   subdirectory, tell the caller.  */
+ 			if (p->fts_errno)
+-				p->fts_info = FTS_ERR;
++				if (p->fts_info != FTS_DNR)
++			    		p->fts_info = FTS_ERR;
+ 			/* FIXME: see if this should be in an else block */
+ 			LEAVE_DIR (sp, p, ""2"");
+ 			return (p);
+--
+
+fts_build will return NULL on problems, and if it couldn't opendir() a directory
+it will set the flag fts_info to FTS_DNR which is an unreadable directory.
+So not checking if we just reset the flag and avoid counting the size of that
+directory, however, if we remember it, we can then stat and count its size.
+
+Version-Release number of selected component (if applicable):
+5.2.1
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+
+1. cd /tmp
+2. mkdir -p du_test/unreadable
+3. du -a -b du_test
+   4096    du_test/unreadable
+   8192    du_test
+4. chmod 000 du_test/unreadable
+5. du -b -a du_test
+   du: `du_test/unreadable': Permission denied
+   4096    du_test
+  
+Actual results:
+   du: `du_test/unreadable': Permission denied
+   4096    du_test
+
+Only the directories that can be readable are counted.
+
+Expected results:
+  du test
+  4       test/dir
+  du: cannot read directory `test/unreachable-dir': Permission denied
+  12      test
+
+Additional info:
+Patch attached by Bryan Mason <bjmason@redhat.com>
+
+Let me know if you need anything else,
+
+-- Additional comment from jplans@redhat.com on 2007-07-30 07:47 EST --
+Created an attachment (id=160237)
+Fix report size of unredable subdirectories.
+
+
+-- Additional comment from meyering@redhat.com on 2007-07-30 08:10 EST --
+Nice one!  Thanks.
+That's a bug upstream, too.","cd /tmp
+mkdir -p du_test/unreadable
+du -a -b du_test
+chmod 000 du_test/unreadable
+du -b -a du_test"
+203,249421,"Description of problem: sort -R is *not* random
+
+Version-Release number of selected component (if applicable): coreutils-6.9-3.fc7
+
+How reproducible:
+Easy
+
+Steps to Reproduce:
+1. cat /etc/passwd | sort -R
+  
+Actual results:
+Results are sorted alphabetically 
+
+Expected results:
+Results should be sorted randomly",cat /etc/passwd | sort -R
+204,248591,"Description of problem:
+The i and u switches for the cp command do not work correctly.
+
+Version-Release number of selected component (if applicable):
+FC7
+
+How reproducible:
+Able to reproduce at will.
+
+Steps to Reproduce:
+1. Create a file (file1).
+2. Create another file (file2) with the same name in another directory.
+3. Make sure file1 has an older file modified date than file2.
+4. Use cp -iu to copy file to the directory in the same place as file2.
+  
+Actual results:
+You will be prompted to overwrite file2.
+
+Expected results:
+You should not be prompted. The u switch indicates that the file should only be
+copied if file1 is newer than file2.
+
+Additional info:
+It prompts you no matter what. And no matter what you pick at the prompt,
+nothing will happen. It should not prompt, I have tested other flavors and they
+do not prompt. (Note there was no cp Component, so I selected another)","touch file1
+mkdir dir && touch dir/file2
+touch -t 202301010000 file1 && touch file2
+cp -iu file1 dir/"
+205,232652,"Description of problem:
+The runcon program reorders parameters since it uses the default getopt_long
+setup.  But runcon differs from su here since su does not take a command and its
+parameters on the command line.  Trying to run
+
+  runcon -t unconfined_t /usr/sbin/prelink --no-update-cache some/binary
+
+fails since --no-update-cache is no option for runcon.  But runcon shouldn't use
+it in the first place.  Of course one can add -- as a parameter before the
+program name but this is not how other programs with similar interface work,
+they don't require this kind of knowledge from the user (strace, sh, ...).
+
+Version-Release number of selected component (if applicable):
+coreutils-6.7-9.fc7
+
+How reproducible:
+always
+
+Steps to Reproduce:
+1.echo 'int main(){return 0;}' > u.c
+2.gcc -o u u.c
+3.runcon -t unconfined_t /usr/sbin/prelink -N ./u
+  
+Actual results:
+runcon: invalid option -- N
+[...]
+
+Expected results:
+Success
+
+Additional info:
+The solution is easy: add + as the first character in the option string of the
+getopt_long call.  I very much doubt any script today depends on this level of
+option reordering so it should not introduce any regression.","echo 'int main(){return 0;}' > u.c
+gcc -o u u.c
+runcon -t unconfined_t /usr/sbin/prelink -N ./u
+"
