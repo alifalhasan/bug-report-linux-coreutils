@@ -6,7 +6,7 @@ csv_file = "../dataset/descriptions.csv"  # Change to your CSV filename
 df = pd.read_csv(csv_file)
 
 # Define the Ollama model (e.g., llama2, mistral, etc.)
-model = "deepseek-r1:70b"
+model = "llama3.3:70b"
 
 # Function to generate response
 def generate_response(prompt):
