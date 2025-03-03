@@ -18,9 +18,10 @@ This repository contains all scripts, datasets, and supplementary materials used
 
 - **`/dataset/`**  
   Includes datasets generated and annotated during the study:
-  - **`model-outputs/`**: Outputs from three models.
   - **`dataset.csv`**: Final dataset comprising **206** bug reports.  
   - **`descriptions.csv`**: Dataset containing **779** bug descriptions.  
+
+- **`outputs/`**: Outputs from three models.
 
 - **`data-collection-instructions.pdf`**
   Detailed guidelines for dataset collection and annotation.  
