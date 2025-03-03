@@ -5,7 +5,7 @@ This study explores how large language models (LLMs) perform in extracting preci
 
 ## Project Overview  
 
-This repository contains all scripts, datasets, and supplementary materials used in our research. It is structured to ensure clarity, reproducibility, and ease of use for researchers and practitioners working on similar topics.  
+This repository contains all scripts, datasets, and supplementary materials used in our research. It is structured to ensure clarity, reproducibility, and ease of use for researchers and practitioners working on similar topics.
 
 ## Repository Structure  
 
@@ -14,7 +14,9 @@ This repository contains all scripts, datasets, and supplementary materials used
   - **`bleu-score/`**: BLEU score calculation module.  
     - **`bleu.ipynb`**: Jupyter Notebook for computing BLEU scores.  
     - **`input.csv`**: CSV file containing **206** bug report IDs, manually extracted inputs, and inputs recommended by LLaMA, Qwen, and Qwen-Coder.
+  - **`outputs/model-outputs/`**: Outputs from three models.
   - **`ollama-run.py`**: Python script for running the models.
+  - **`parse_bug_report.ipynb`**: Python script for parsing bug reports from the Redhat website.
 
 - **`/dataset/`**  
   Includes datasets generated and annotated during the study:
