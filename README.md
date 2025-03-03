@@ -16,7 +16,6 @@ This repository contains all scripts, datasets, and supplementary materials used
     - **`input.csv`**: CSV file containing **206** bug report IDs, manually extracted inputs, and inputs recommended by LLaMA, Qwen, and Qwen-Coder.
   - **`outputs/model-outputs/`**: Outputs from three models.
   - **`ollama-run.py`**: Python script for running the models.
-  - **`parse_bug_report.ipynb`**: Python script for parsing bug reports from the Redhat website.
 
 - **`/dataset/`**  
   Includes the annotated dataset during the study:
