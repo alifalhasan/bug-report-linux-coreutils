@@ -19,9 +19,8 @@ This repository contains all scripts, datasets, and supplementary materials used
   - **`parse_bug_report.ipynb`**: Python script for parsing bug reports from the Redhat website.
 
 - **`/dataset/`**  
-  Includes datasets generated and annotated during the study:
+  Includes the annotated dataset during the study:
   - **`dataset.csv`**: Final dataset comprising **206** bug reports.  
-  - **`descriptions.csv`**: Dataset containing **779** bug descriptions.  
 
 - **`outputs/`**: Outputs from three models.
 
