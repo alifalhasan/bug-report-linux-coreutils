@@ -14,14 +14,13 @@ This repository contains all scripts, datasets, and supplementary materials used
   - **`bleu-score/`**: BLEU score calculation module.  
     - **`bleu.ipynb`**: Jupyter Notebook for computing BLEU scores.  
     - **`input.csv`**: CSV file containing **206** bug report IDs, manually extracted inputs, and inputs recommended by LLaMA, Qwen, and Qwen-Coder.
-  - **`outputs/model-outputs/`**: Outputs from three models.
   - **`ollama-run.py`**: Python script for running the models.
 
 - **`/dataset/`**  
   Includes the annotated dataset during the study:
   - **`dataset.csv`**: Final dataset comprising **206** bug reports.  
 
-- **`outputs/`**: Outputs from three models.
+- **`outputs/model-outputs/`**: Outputs from three models.
 
 - **`data-collection-instructions.pdf`**
   Detailed guidelines for dataset collection and annotation.  
